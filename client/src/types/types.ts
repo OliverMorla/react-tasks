@@ -18,3 +18,11 @@ interface SidebarLinkWithMenuProps extends HeaderNavLinkProps {
 interface sidebarLinkProps extends HeaderNavLinkProps {
   transitionDelay: number;
 }
+
+interface ButtonProps {
+  title?: string;
+  fontAwesomeIconUrl: any;
+  pathUrl?: string;
+  className?: string
+  action?: () => any;
+}

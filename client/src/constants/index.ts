@@ -79,12 +79,24 @@ const usersAssigned = [
 ];
 
 const listOfTasks = [
-  {,
+  {
     tags: [],
     title: "Improve cards readability",
     desc: "As a team license owner, I want to use multiplied limits",
-    createdAt: "21/03/22"
+    createdAt: "21/03/22",
+  },
+  {
+    tags: [],
+    title: "Improve cards readability",
+    desc: "As a team license owner, I want to use multiplied limits",
+    createdAt: "21/03/22",
+  },
+  {
+    tags: [],
+    title: "Improve cards readability",
+    desc: "As a team license owner, I want to use multiplied limits",
+    createdAt: "21/03/22",
   },
 ];
 
-export { navPrimaryLinks, sidebarMenuLinks, usersAssigned };
+export { navPrimaryLinks, sidebarMenuLinks, usersAssigned, listOfTasks };

@@ -4,7 +4,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const SearchTasksSection = () => {
+const SearchTasks = () => {
   return (
     <section className="flex justify-between py-4 px-8 border-b-[--color-text-lightest] border-b-[1px] items-center">
       <div className="relative flex items-center">
@@ -38,4 +38,4 @@ const SearchTasksSection = () => {
   );
 };
 
-export default SearchTasksSection;
+export default SearchTasks;

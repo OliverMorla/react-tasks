@@ -39,21 +39,3 @@ body {
   width: 100%;
   flex-grow: 1;
 }
-
-/* Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-dark-gray);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-gunmetal);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}

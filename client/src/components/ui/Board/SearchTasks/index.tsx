@@ -4,7 +4,7 @@ import {
   faArrowUpWideShort,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import Button from "@/components/shared/Button";
+import Button from "@/components/shared/ui/Button";
 
 const SearchTasks = () => {
   return (

@@ -6,9 +6,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "@/components/ui/Header";
 import Sidebar from "@/components/ui/Sidebar";
 
-import Board from "@/components/containers/Board/index.tsx";
-import List from "@/components/containers/List/index.tsx";
-import Calendar from "@/components/containers/Calendar/index.tsx";
+import Board from "@/components/containers/Board";
+import List from "@/components/containers/List";
+import Calendar from "@/components/containers/Calendar";
 
 import "./global.css";
 

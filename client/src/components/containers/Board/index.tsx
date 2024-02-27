@@ -1,13 +1,13 @@
 import { faEllipsis, faGear, faPlus } from "@fortawesome/free-solid-svg-icons";
-import SearchTasks from "@/components/ui/Board/SearchTasks";
 import AssignedUsers from "@/components/ui/Board/AssignedUser";
-import Button from "@/components/ui/Button";
+import SearchTasks from "@/components/ui/Board/SearchTasks";
+import Button from "@/components/shared/Button";
 
-const App = () => {
+const Board = () => {
   return (
-    <main className="flex w-full h-full flex-col ">
+    <section className="flex flex-col w-full h-full">
       <div className="flex gap-2 flex-col border-b-[--color-text-lightest] border-b-[1px] p-8">
-        <div className="flex justify-between">
+        <div className="flex justify-between flex-wrap max-md:gap-4">
           <div className="flex text-xs gap-4">
             <p className="opacity-60">Projects</p>
             <span>{">"}</span>
@@ -31,15 +31,13 @@ const App = () => {
             />
           </div>
         </div>
-        <div>
-          <h1 className="font-bold text-4xl">My Tasks</h1>
-        </div>
+        <h1 className="font-bold text-4xl">My Tasks</h1>
         <AssignedUsers />
       </div>
       <SearchTasks />
       <div className="bg-[--color-text-lightest] h-full w-full"></div>
-    </main>
+    </section>
   );
 };
 
-export default App;
+export default Board;

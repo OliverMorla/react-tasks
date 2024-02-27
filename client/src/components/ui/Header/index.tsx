@@ -3,6 +3,7 @@ import NavLink from "@/components/ui/Header/NavLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faGear, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Button from "@/components/shared/Button";
 
 const Header = () => {
   return (
@@ -18,14 +19,14 @@ const Header = () => {
             />
           ))}
         </ul>
-        
+
         <div className="flex items-center px-4 gap-4">
-          <div className="relative flex items-center justify-center max-md:hidden">
+          <div className="relative flex items-center justify-center max-lg:hidden">
             <input
               type="text"
               name="search"
               placeholder="Search"
-              className="outline-[--color-text-lightest] border-[--color-text-lightest] border-[1px] py-2 px-10"
+              className="outline-[--color-text-lightest] border-[--color-text-lightest] border-[1px] py-2 px-10 rounded-lg"
             />
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
@@ -36,18 +37,19 @@ const Header = () => {
           </div>
           <ul className="flex gap-2">
             <li>
-              <button>
-                <FontAwesomeIcon icon={faBell} width={25} height={25} />
-              </button>
+              <Button
+                fontAwesomeIconUrl={faBell}
+                className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
+              />
             </li>
             <li>
-              <button>
-                <FontAwesomeIcon icon={faGear} width={25} height={25} />
-              </button>
+              <Button
+                fontAwesomeIconUrl={faGear}
+                className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
+              />
             </li>
           </ul>
         </div>
-        
       </nav>
     </header>
   );

@@ -1,18 +1,29 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Header from "@/components/ui/Header";
 import Sidebar from "@/components/ui/Sidebar";
+
+import Board from "@/components/containers/Board/index.tsx";
+import List from "@/components/containers/List/index.tsx";
+import Calendar from "@/components/containers/Calendar/index.tsx";
 
 import "./global.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Sidebar />
-    <div className="flex flex-col h-full w-full">
-      <Header />
-      <App />
-    </div>
+    <BrowserRouter>
+      <Sidebar />
+      <main className="flex flex-col h-full w-full">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Board />} />
+          <Route path="/tab/list" element={<List />} />
+          <Route path="/tab/calendar" element={<Calendar />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
   </React.StrictMode>
 );

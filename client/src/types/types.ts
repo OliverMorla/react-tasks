@@ -12,6 +12,7 @@ interface HeaderNavLinkProps {
 interface FooterNavLinkProps extends HeaderNavLinkProps {}
 
 interface SidebarLinkWithMenuProps extends HeaderNavLinkProps {
+  subMenu: any[]
   transitionDelay: number;
 }
 

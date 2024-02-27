@@ -14,17 +14,17 @@ import {
 const navPrimaryLinks = [
   {
     title: "Board",
-    pathUrl: "?header=board",
+    pathUrl: "/",
     fontAwesomeIconUrl: faFlipboard,
   },
   {
     title: "List",
-    pathUrl: "?header=board",
+    pathUrl: "/tab/list",
     fontAwesomeIconUrl: faList,
   },
   {
     title: "Calendar",
-    pathUrl: "?header=board",
+    pathUrl: "/tab/calendar",
     fontAwesomeIconUrl: faCalendar,
   },
 ];

@@ -1,0 +1,56 @@
+import { navPrimaryLinks } from "@/constants";
+import NavLink from "@/components/ui/Header/NavLink";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { faGear, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
+const Header = () => {
+  return (
+    <header className="max-h-[65px] h-full border-b-[--color-text-lightest] border-b-[1px] flex justify-center items-center">
+      <nav className="flex justify-between items-center w-full">
+        <ul className="list-none flex gap-8 px-4">
+          {navPrimaryLinks.map((item, index) => (
+            <NavLink
+              key={index}
+              title={item.title}
+              pathUrl={item.pathUrl}
+              fontAwesomeIconUrl={item.fontAwesomeIconUrl}
+            />
+          ))}
+        </ul>
+        
+        <div className="flex items-center px-4 gap-4">
+          <div className="relative flex items-center justify-center max-md:hidden">
+            <input
+              type="text"
+              name="search"
+              placeholder="Search"
+              className="outline-[--color-text-lightest] border-[--color-text-lightest] border-[1px] py-2 px-10"
+            />
+            <FontAwesomeIcon
+              icon={faMagnifyingGlass}
+              width={25}
+              height={25}
+              className="absolute left-2 opacity-60"
+            />
+          </div>
+          <ul className="flex gap-2">
+            <li>
+              <button>
+                <FontAwesomeIcon icon={faBell} width={25} height={25} />
+              </button>
+            </li>
+            <li>
+              <button>
+                <FontAwesomeIcon icon={faGear} width={25} height={25} />
+              </button>
+            </li>
+          </ul>
+        </div>
+        
+      </nav>
+    </header>
+  );
+};
+
+export default Header;

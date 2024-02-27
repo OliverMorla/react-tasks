@@ -1,22 +1,23 @@
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 const NavLink = ({
   title,
-  pathUrl,
   fontAwesomeIconUrl,
-  iconUrl,
-  transitionDelay,
+  pathUrl,
 }: FooterNavLinkProps) => {
   return (
     <motion.li
-      className="flex gap-2 items-center transition-all cursor-pointer opacity-60 w-fit"
+      className="transition-all cursor-pointer opacity-60 w-fit"
       whileHover={{
-        borderBottom: "1px solid",
+        fontWeight: "bold",
       }}
     >
-      {fontAwesomeIconUrl && <FontAwesomeIcon icon={fontAwesomeIconUrl} />}
-      {title}
+      <Link to={pathUrl} className="flex gap-2 items-center">
+        {fontAwesomeIconUrl && <FontAwesomeIcon icon={fontAwesomeIconUrl} />}
+        <span>{title}</span>
+      </Link>
     </motion.li>
   );
 };

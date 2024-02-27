@@ -11,7 +11,7 @@ const NavLink = ({
     <motion.li
       className="transition-all cursor-pointer opacity-60 w-fit"
       whileHover={{
-        borderBottom: "1px solid",
+        fontWeight: "bold",
       }}
     >
       <Link to={pathUrl} className="flex gap-2 items-center">

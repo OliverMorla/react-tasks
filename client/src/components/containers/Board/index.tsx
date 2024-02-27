@@ -40,7 +40,9 @@ const Board = () => {
         <div className=" flex-grow w-full px-4 py-6">
           <div className="bg-gray-200 flex flex-col w-fit p-4">
             <div className="flex justify-between items-center">
-              <h1 className="font-bold text-lg text-[--color-text-light]">Backlog</h1>
+              <h1 className="font-bold text-lg text-[--color-text-light]">
+                Backlog
+              </h1>
               <div className="flex">
                 <Button
                   fontAwesomeIconUrl={faPlus}
@@ -62,7 +64,9 @@ const Board = () => {
         <div className=" flex-grow w-full px-4 py-6">
           <div className="bg-gray-200 flex flex-col w-fit p-4">
             <div className="flex justify-between items-center">
-              <h1 className="font-bold text-lg text-[--color-text-light]">To Do (4)</h1>
+              <h1 className="font-bold text-lg text-[--color-text-light]">
+                To Do (4)
+              </h1>
               <div className="flex">
                 <Button
                   fontAwesomeIconUrl={faPlus}
@@ -84,7 +88,9 @@ const Board = () => {
         <div className=" flex-grow w-full px-4 py-6">
           <div className="bg-gray-200 flex flex-col w-fit p-4">
             <div className="flex justify-between items-center">
-              <h1 className="font-bold text-lg text-[--color-text-light]">In Progress (3)</h1>
+              <h1 className="font-bold text-lg text-[--color-text-light]">
+                In Progress (3)
+              </h1>
               <div className="flex">
                 <Button
                   fontAwesomeIconUrl={faPlus}

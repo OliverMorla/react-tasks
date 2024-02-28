@@ -28,7 +28,7 @@ const Button = ({
           {fontAwesomeIconUrl && (
             <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
           )}
-          {title}
+          {title && title}
         </button>
       )}
     </>

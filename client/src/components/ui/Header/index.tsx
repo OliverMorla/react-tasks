@@ -1,5 +1,5 @@
 import { navPrimaryLinks } from "@/constants";
-import NavLink from "@/components/ui/Header/NavLink";
+import HeaderNavLink from "@/components/ui/Header/NavLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faGear, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -7,11 +7,14 @@ import Button from "@/components/shared/ui/Button";
 
 const Header = () => {
   return (
-    <header className="max-h-[65px] min-h-[65px] h-full border-b-[--color-text-lightest] border-b-[1px] flex justify-center items-center" role="heading">
+    <header
+      className="max-h-[65px] min-h-[65px] h-full border-b-[--color-text-lightest] border-b-[1px] flex justify-center items-center"
+      role="heading"
+    >
       <nav className="flex justify-between items-center w-full">
         <ul className="list-none flex gap-8 px-4">
           {navPrimaryLinks.map((item, index) => (
-            <NavLink
+            <HeaderNavLink
               key={index}
               title={item.title}
               pathUrl={item.pathUrl}

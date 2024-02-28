@@ -7,12 +7,11 @@ const SidebarLink = ({
   fontAwesomeIconUrl,
   transitionDelay,
   pathUrl,
-}: sidebarLinkProps) => {
+}: SidebarLinkProps) => {
   return (
     <motion.li
-      className="transition-all cursor-pointer w-fit"
+      className="transition-all duration-75 cursor-pointer w-fit"
       whileHover={{
-        borderBottom: ".5px solid var(--color-text-lightest)",
         opacity: 1,
       }}
       initial={{
@@ -24,13 +23,19 @@ const SidebarLink = ({
         opacity: 0.6,
         transition: {
           delay: transitionDelay * 0.1,
-          duration: 0.5,
+          duration: 0.8,
         },
+      }}
+      whileTap={{
+        scale: 0.95,
+        color: "var(--color-primary)",
       }}
     >
       <Link to={pathUrl} className="flex gap-2 items-center">
-        {fontAwesomeIconUrl && <FontAwesomeIcon icon={fontAwesomeIconUrl} />}
-        <span>{title}</span>
+        {fontAwesomeIconUrl && (
+          <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
+        )}
+        {title}
       </Link>
     </motion.li>
   );

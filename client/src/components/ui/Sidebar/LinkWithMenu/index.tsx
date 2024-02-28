@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import ProjectsModal from "../../Modals/Projects";
 
 const SidebarLinkWithMenu = ({
   title,
@@ -9,11 +11,11 @@ const SidebarLinkWithMenu = ({
   transitionDelay,
   pathUrl,
 }: SidebarLinkWithMenuProps) => {
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
   return (
     <motion.li
-      className="transition-all cursor-pointer w-fit"
+      className="transition-all cursor-pointer w-full relative"
       whileHover={{
-        borderBottom: ".5px solid var(--color-text-lightest)",
         opacity: 1,
       }}
       initial={{
@@ -22,18 +24,39 @@ const SidebarLinkWithMenu = ({
       }}
       animate={{
         x: 0,
-        opacity: 0.6,
+        opacity: 1,
         transition: {
           delay: transitionDelay * 0.1,
-          duration: 0.5,
+          duration: 0.8,
         },
       }}
+      whileTap={{
+        scale: 0.95,
+        color: "var(--color-primary)",
+      }}
     >
-      <Link to={pathUrl} className="flex gap-2 items-center">
-        {fontAwesomeIconUrl && <FontAwesomeIcon icon={fontAwesomeIconUrl} />}
-        <span>{title}</span>
-        <FontAwesomeIcon icon={faCaretDown} width={25} height={25} />
+      <Link to={pathUrl} className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {fontAwesomeIconUrl && (
+            <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
+          )}
+          {title}
+        </div>
+        <motion.div
+          onHoverStart={() => {
+            setIsSubMenuOpen(true);
+          }}
+          className={`transition-all ${isSubMenuOpen ? "rotate-180" : ""}`}
+        >
+          <FontAwesomeIcon icon={faCaretUp} width={25} height={25} />
+        </motion.div>
       </Link>
+      {isSubMenuOpen && (
+        <ProjectsModal
+          setIsSubMenuOpen={setIsSubMenuOpen}
+          isSubMenuOpen={isSubMenuOpen}
+        />
+      )}
     </motion.li>
   );
 };

@@ -1,7 +1,7 @@
+import Button from "@/components/shared/ui/Button";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const UserMenu = () => {
+const SidebarUserBar = () => {
   return (
     <div className="flex items-center justify-center gap-4 pb-8 pt-4 border-t-[--color-text-lightest] border-t-[1px]">
       <img
@@ -14,11 +14,12 @@ const UserMenu = () => {
         <h1 className="font-bold">Donye</h1>
         <p className="opacity-60">collins@brees.com</p>
       </div>
-      <button className="border-[--color-text-lightest] border-[1px] rounded-lg">
-        <FontAwesomeIcon icon={faEllipsis} width={25} height={50} />
-      </button>
+      <Button
+        fontAwesomeIconUrl={faEllipsis}
+        className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
+      />
     </div>
   );
 };
 
-export default UserMenu;
+export default SidebarUserBar;

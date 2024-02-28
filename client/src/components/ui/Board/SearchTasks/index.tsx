@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "@/components/shared/ui/Button";
 
-const SearchTasks = () => {
+const BoardSearchTasks = () => {
   return (
     <div className="flex justify-between py-4 px-8 border-b-[--color-text-lightest] border-b-[1px] items-center">
       <div className="relative flex items-center">
@@ -45,4 +45,4 @@ const SearchTasks = () => {
   );
 };
 
-export default SearchTasks;
+export default BoardSearchTasks;

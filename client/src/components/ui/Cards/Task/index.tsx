@@ -3,6 +3,7 @@ import { faFlag } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsis, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
+import TaskTagCard from "../TaskTag";
 
 const TaskCard = () => {
   return (
@@ -21,12 +22,16 @@ const TaskCard = () => {
       }}
     >
       <div className="flex gap-2 text-sm">
-        <div className="text-green-600 bg-green-200 p-1 rounded-md flex items-center justify-center">
-          <p>Feedback</p>
-        </div>
-        <div className="text-red-600 bg-red-200 p-1 rounded-md flex items-center justify-center">
-          <p>Bug</p>
-        </div>
+        <TaskTagCard
+          title="Feeback"
+          backgroundColor="bg-red-200"
+          textColor="text-red-600"
+        />
+        <TaskTagCard
+          title="Bug"
+          backgroundColor="bg-green-200"
+          textColor="text-green-600"
+        />
       </div>
       <div className="flex justify-between w-full items-center">
         <h1 className="font-bold text-2xl">Task Title</h1>

@@ -1,8 +1,8 @@
 import { faEllipsis, faGear, faPlus } from "@fortawesome/free-solid-svg-icons";
-import AssignedUsers from "@/components/ui/Board/AssignedUser";
-import SearchTasks from "@/components/ui/Board/SearchTasks";
+import BoardAssignedUsers from "@/components/ui/Board/AssignedUsers";
+import BoardSearchTasks from "@/components/ui/Board/SearchTasks";
 import Button from "@/components/shared/ui/Button";
-import TaskCard from "@/components/ui/Card/Task";
+import TaskCard from "@/components/ui/Cards/Task";
 
 const Board = () => {
   return (
@@ -33,9 +33,9 @@ const Board = () => {
           </div>
         </div>
         <h1 className="font-bold text-4xl">My Tasks</h1>
-        <AssignedUsers />
+        <BoardAssignedUsers />
       </div>
-      <SearchTasks />
+      <BoardSearchTasks />
       <div className="flex h-full w-full overflow-hidden bg-[--color-text-lightest]">
         <div className=" flex-grow w-full px-4 py-6">
           <div className="bg-gray-200 flex flex-col w-fit p-4">

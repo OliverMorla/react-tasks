@@ -1,9 +1,11 @@
 import { faFlipboard } from "@fortawesome/free-brands-svg-icons";
+
 import {
   faCalendar,
   faClipboard,
   faMessage,
 } from "@fortawesome/free-regular-svg-icons";
+
 import {
   faDiagramProject,
   faLayerGroup,
@@ -43,6 +45,10 @@ const sidebarMenuLinks = [
       {
         title: "Shared",
         pathUrl: "/projects?category=shared",
+      },
+      {
+        title: "Private",
+        pathUrl: "/projects?category=private",
       },
     ],
   },

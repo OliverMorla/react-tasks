@@ -1,6 +1,6 @@
 import { usersAssigned } from "@/constants";
 
-const AssignedUsers = () => {
+const BoardAssignedUsers = () => {
   return (
     <div className="flex">
       {usersAssigned.map((user, index) => {
@@ -36,4 +36,4 @@ const AssignedUsers = () => {
   );
 };
 
-export default AssignedUsers;
+export default BoardAssignedUsers;

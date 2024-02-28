@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-const NavLink = ({
+const FooterNavLink = ({
   title,
   fontAwesomeIconUrl,
   pathUrl,
@@ -15,11 +15,13 @@ const NavLink = ({
       }}
     >
       <Link to={pathUrl} className="flex gap-2 items-center">
-        {fontAwesomeIconUrl && <FontAwesomeIcon icon={fontAwesomeIconUrl} />}
-        <span>{title}</span>
+        {fontAwesomeIconUrl && (
+          <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
+        )}
+        {title}
       </Link>
     </motion.li>
   );
 };
 
-export default NavLink;
+export default FooterNavLink;

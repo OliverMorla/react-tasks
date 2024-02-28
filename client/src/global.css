@@ -1,15 +1,16 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --color-primary: #3069FE;
-  --color-accent: #F8C51B;
-  --color-text-darker: #252C32;
-  --color-text-dark: #373E44;
+  --color-primary: #3069fe;
+  --color-accent: #f8c51b;
+  --color-text-darker: #252c32;
+  --color-text-dark: #373e44;
   --color-text-light: #787878;
-  --color-text-lighter: #989B9E;
-  --color-text-lightest: #DDE2E4;
+  --color-text-lighter: #989b9e;
+  --color-text-lightest: #dde2e4;
 }
 
 /* Global Styles */
@@ -25,17 +26,19 @@ html {
   display: flex;
   flex-direction: column;
   scroll-behavior: smooth;
-  height: 100%;
+  font-family: "Inter", sans-serif;
+  height: 100vh;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  height: 100vh;
 }
 
-#root{
+#root {
   display: flex;
   width: 100%;
-  flex-grow: 1;
+  height: 100vh;
+  overflow: hidden;
 }

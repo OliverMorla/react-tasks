@@ -1,4 +1,4 @@
-import { usersAssigned } from "@/constants";
+import { usersAssigned } from "@/entities";
 
 const BoardAssignedUsers = () => {
   return (

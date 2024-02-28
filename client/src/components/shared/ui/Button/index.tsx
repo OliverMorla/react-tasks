@@ -5,14 +5,14 @@ const Button = ({
   title,
   fontAwesomeIconUrl,
   pathUrl,
-  action,
+  onClick,
   className,
 }: ButtonProps) => {
   return (
     <>
       {pathUrl ? (
         <Link to={pathUrl}>
-          <button onClick={action} className={className}>
+          <button onClick={onClick} className={className}>
             {fontAwesomeIconUrl && (
               <FontAwesomeIcon
                 icon={fontAwesomeIconUrl}
@@ -24,7 +24,7 @@ const Button = ({
           </button>
         </Link>
       ) : (
-        <button onClick={action} className={className}>
+        <button onClick={onClick} className={className}>
           {fontAwesomeIconUrl && (
             <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
           )}

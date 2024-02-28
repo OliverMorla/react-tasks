@@ -29,14 +29,14 @@ const BoardSearchTasks = () => {
             <Button
               fontAwesomeIconUrl={faArrowUpWideShort}
               className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
-              action={() => {}}
+              onClick={() => {}}
             />
           </li>
           <li>
             <Button
               fontAwesomeIconUrl={faArrowDownWideShort}
               className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
-              action={() => {}}
+              onClick={() => {}}
             />
           </li>
         </ul>

@@ -1,9 +1,10 @@
-import { sidebarMenuLinks } from "@/constants";
+import { sidebarMenuLinks } from "@/entities";
+
 import SidebarTitle from "@/components/ui/Sidebar/Title";
 import SidebarLink from "@/components/ui/Sidebar/Link";
 import SidebarUserBar from "@/components/ui/Sidebar/UserBar";
 import SidebarThemeToggle from "@/components/ui/Sidebar/ThemeToggle";
-import SidebarLinkWithMenu from "./LinkWithMenu";
+import SidebarLinkWithMenu from "@/components/ui/Sidebar/LinkWithMenu";
 
 const Sidebar = () => {
   return (

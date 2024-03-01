@@ -188,6 +188,45 @@ const listOfAvailableUsers = [
   },
 ];
 
+const listOfPrices = [
+  {
+    title: "Basic",
+    subText: "A Basic/Free Plan with Limited Features",
+    price: 0,
+    description: {
+      pros: ["5 Free Tasks", "5 Free Projects"],
+      cons: [
+        "Limited Resources",
+        "Priority Updates",
+        "Priority Customer Support",
+      ],
+    },
+  },
+  {
+    title: "Premium",
+    subText: "Good enough! Just almost everything you need!",
+    price: 49,
+    description: {
+      pros: ["20 Free Tasks", "10 Free Projects", "Priority Updates"],
+      cons: ["Limited Resources", "Priority Customer Support"],
+    },
+  },
+  {
+    title: "CEO",
+    subText: "The Power is on your hands, manage large project fast and easily!",
+    price: 99,
+    description: {
+      pros: [
+        "Unlimited Tasks",
+        "Unlimited Projects",
+        "Priority Updates",
+        "Priority Customer Support",
+        "Access to Messages",
+      ],
+    },
+  },
+];
+
 export {
   navPrimaryLinks,
   sidebarMenuLinks,
@@ -196,4 +235,5 @@ export {
   listOfAvailableUsers,
   userSession,
   adminSession,
+  listOfPrices,
 };

@@ -5,6 +5,7 @@ import SidebarLink from "@/components/ui/Sidebar/Link";
 import SidebarUserBar from "@/components/ui/Sidebar/UserBar";
 import SidebarThemeToggle from "@/components/ui/Sidebar/ThemeToggle";
 import SidebarLinkWithMenu from "@/components/ui/Sidebar/LinkWithMenu";
+import SidebarUpgradeLink from "./UpgradeLink";
 
 const Sidebar = () => {
   return (
@@ -13,7 +14,7 @@ const Sidebar = () => {
       <div>
         <ul className="p-8 flex flex-col gap-6">
           {sidebarMenuLinks.map((item, index) => {
-            if (!item.subMenu) {
+            if (!item.subMenu && item.title.toLowerCase() !== "upgrade"){
               return (
                 <SidebarLink
                   key={index}
@@ -21,6 +22,16 @@ const Sidebar = () => {
                   title={item.title}
                   pathUrl={item.pathUrl}
                   fontAwesomeIconUrl={item.fontAwesomeIconUrl}
+                />
+              );
+            } else if (item.title.toLowerCase() === "upgrade") {
+              return (
+                <SidebarUpgradeLink
+                  title={item.title}
+                  fontAwesomeIconUrl={item.fontAwesomeIconUrl}
+                  transitionDelay={index}
+                  pathUrl={item.pathUrl}
+                  key={index}
                 />
               );
             } else {

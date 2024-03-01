@@ -5,7 +5,7 @@ interface SidebarLinkWithMenuProps {
   transitionDelay: number;
   pathUrl: string;
   iconUrl?: URL;
-  subMenu: any[];
+  subMenu?: any[];
 }
 
 interface SidebarLinkProps {

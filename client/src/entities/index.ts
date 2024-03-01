@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 import {
+  faCartShopping,
   faDiagramProject,
   faLayerGroup,
   faList,
@@ -66,6 +67,11 @@ const sidebarMenuLinks = [
     title: "Users",
     pathUrl: "/users",
     fontAwesomeIconUrl: faUserGroup,
+  },
+  {
+    title: "Upgrade",
+    pathUrl: "/upgrade",
+    fontAwesomeIconUrl: faCartShopping,
   },
 ];
 

@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { it, expect, describe, beforeAll } from "vitest";
-// import { render, screen } from "@testing-library/react";
-// import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom/vitest";
 
 describe("Mock DOM structure", () => {

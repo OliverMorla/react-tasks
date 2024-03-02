@@ -1,11 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { AnimationProps, Variants } from "framer-motion";
+import type { Variants } from "framer-motion";
 
-type Props = {
-  hidden: AnimationProps["initial"];
-  visible: AnimationProps["animate"];
-};
-const pageLoadVariant: Props = {
+const pageLoadVariant: Variants = {
   hidden: {
     opacity: 0,
   },
@@ -13,6 +8,7 @@ const pageLoadVariant: Props = {
     opacity: 1,
     transition: {
       duration: 1,
+      delay: 0.2,
     },
   },
 };

@@ -191,9 +191,10 @@ const listOfAvailableUsers = [
 const listOfPrices = [
   {
     title: "Basic",
-    subText: "A Basic/Free Plan with Limited Features",
+    tagline: "A Basic/Free Plan with Limited Features",
     price: 0,
-    description: {
+    discountedPrice: 0,
+    features: {
       pros: ["5 Free Tasks", "5 Free Projects"],
       cons: [
         "Limited Resources",
@@ -204,18 +205,20 @@ const listOfPrices = [
   },
   {
     title: "Premium",
-    subText: "Good enough! Just almost everything you need!",
+    tagline: "Good enough! Just almost everything you need!",
     price: 49,
-    description: {
+    discountedPrice: 59,
+    features: {
       pros: ["20 Free Tasks", "10 Free Projects", "Priority Updates"],
       cons: ["Limited Resources", "Priority Customer Support"],
     },
   },
   {
     title: "CEO",
-    subText: "The Power is on your hands, manage large project fast and easily!",
+    tagline: "The Power is on your hands!",
     price: 99,
-    description: {
+    discountedPrice: 129,
+    features: {
       pros: [
         "Unlimited Tasks",
         "Unlimited Projects",

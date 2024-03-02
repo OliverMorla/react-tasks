@@ -20,9 +20,7 @@ const Board = () => {
           <div className="flex text-xs gap-4">
             <p className="opacity-60">Projects</p>
             <span>{">"}</span>
-            <p className="opacity-60">International</p>
-            <span>{">"}</span>
-            <p className="font-bold">Product Web</p>
+            <p className="font-bold">Personal</p>
           </div>
           <BoardNewTaskToggles
             showNewTaskModal={showNewTaskModal}

@@ -1,7 +1,9 @@
+import NotFound from "@/components/containers/NotFound";
+
 const List = () => {
   return (
-    <section>
-      <h1>List</h1>
+    <section className="flex flex-col justify-center items-center w-full h-full">
+      <NotFound />
     </section>
   );
 };

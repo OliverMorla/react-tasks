@@ -1,12 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+// Components (UI)
 import Header from "@/components/ui/Header";
 import Sidebar from "@/components/ui/Sidebar";
 
+// Containers (Pages)
 import Board from "@/components/containers/Board";
 import List from "@/components/containers/List";
 import Calendar from "@/components/containers/Calendar";
-import Upgrade from "./components/containers/Upgrade";
+import Upgrade from "@/components/containers/Upgrade";
 
 const App = () => {
   return (

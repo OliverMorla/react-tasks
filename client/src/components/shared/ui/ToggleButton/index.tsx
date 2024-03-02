@@ -18,8 +18,8 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
       >
         <FontAwesomeIcon
           icon={fontAwesomeIconUrl}
-          width={iconSettings?.width}
-          height={iconSettings?.height}
+          width={iconSettings?.width || 25}
+          height={iconSettings?.height || 25}
         />
         {children && children}
       </button>

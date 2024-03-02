@@ -1,12 +1,17 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDownWideShort,
   faArrowUpWideShort,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import Button from "@/components/shared/ui/Button";
+import ToggleButton from "@/components/shared/ui/ToggleButton";
 
 const BoardSearchTasks = () => {
+  const [searchInput, setSearchInput] = useState<string>("");
+
+  const handleSearch = () => {}
+
   return (
     <div className="flex justify-between py-4 px-8 border-b-[--color-text-lightest] border-b-[1px] items-center">
       <div className="relative flex items-center">
@@ -14,6 +19,7 @@ const BoardSearchTasks = () => {
           type="text"
           name="search"
           placeholder="Search"
+          onChange={(e) => setSearchInput(e.target.value)}
           className="outline-[--color-text-lightest] border-[--color-text-lightest] border-[1px] py-2 px-10 rounded-lg"
         />
         <FontAwesomeIcon
@@ -26,16 +32,14 @@ const BoardSearchTasks = () => {
       <div>
         <ul className="flex gap-2">
           <li>
-            <Button
+            <ToggleButton
               fontAwesomeIconUrl={faArrowUpWideShort}
-              className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
               onClick={() => {}}
             />
           </li>
           <li>
-            <Button
+            <ToggleButton
               fontAwesomeIconUrl={faArrowDownWideShort}
-              className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
               onClick={() => {}}
             />
           </li>

@@ -16,7 +16,6 @@ const BoardNewTaskToggles = ({ setShowNewTaskModal }: NewTaskTogglesProps) => {
           width: 25,
         }}
       />
-
       <Button
         fontAwesomeIconUrl={faPlus}
         title="New Task"

@@ -96,10 +96,17 @@ const listOfTasks = [
     title: "Improve cards readability",
     desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
     users: [
-      "/assets/images/users/dummy-1.png",
-      "/assets/images/users/dummy-2.png",
+      {
+        photo: "/assets/images/users/dummy-1.png",
+        userName: "John Doe",
+      },
+      {
+        photo: "/assets/images/users/dummy-2.png",
+        userName: "Jane Doe",
+      },
     ],
     comments: "3",
+    priority: "High",
     createdAt: "21/03/22",
     status: "In Progress",
   },
@@ -109,16 +116,17 @@ const listOfTasks = [
     desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
     users: [
       {
-        userPhoto: "/assets/images/users/dummy-1.png",
+        photo: "/assets/images/users/dummy-1.png",
         userName: "John Doe",
       },
       {
-        userPhoto: "/assets/images/users/dummy-2.png",
+        photo: "/assets/images/users/dummy-2.png",
         userName: "Jane Doe",
       },
     ],
     comments: "3",
     createdAt: "21/03/22",
+    priority: "High",
     status: "In Progress",
   },
   {
@@ -127,11 +135,12 @@ const listOfTasks = [
     desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
     users: [
       {
-        userPhoto: "/assets/images/users/dummy-1.png",
+        photo: "/assets/images/users/dummy-1.png",
         userName: "John Doe",
       },
     ],
     comments: "3",
+    priority: "High",
     createdAt: "21/03/22",
     status: "To do",
   },
@@ -141,11 +150,12 @@ const listOfTasks = [
     desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
     users: [
       {
-        userPhoto: "/assets/images/users/dummy-1.png",
+        photo: "/assets/images/users/dummy-1.png",
         userName: "John Doe",
       },
     ],
     comments: "3",
+    priority: "High",
     createdAt: "21/03/22",
     status: "Backlog",
   },

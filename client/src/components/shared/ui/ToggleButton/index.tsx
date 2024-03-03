@@ -12,7 +12,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
       <button
         {...buttonProps}
         className={cn(
-          `border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out hover:border-[--color-primary] hover:scale-105`,
+          `border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out hover:border-[--color-primary] hover:scale-105 flex items-center justify-center`,
           buttonProps.className
         )}
       >

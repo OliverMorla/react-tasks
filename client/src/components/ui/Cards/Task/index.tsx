@@ -1,11 +1,26 @@
-import Button from "@/components/shared/ui/Button";
 import { faFlag } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsis, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import TaskTagCard from "../TaskTag";
+import ToggleButton from "@/components/shared/ui/ToggleButton";
 
-const TaskCard = () => {
+const TaskCard = ({
+  title,
+  desc,
+  users,
+  // comments,
+  tags,
+  // dueDate,
+  // priority,
+  // status,
+  createdAt,
+  // updatedAt,
+  // createdBy,
+  // updatedBy,
+  // assignedTo,
+  // assignedBy,
+}: TaskCardProps) => {
   return (
     <motion.div
       className="w-full flex flex-col h-auto bg-white p-4 rounded-md gap-4 cursor-pointer"
@@ -22,48 +37,53 @@ const TaskCard = () => {
       }}
     >
       <div className="flex gap-2 text-sm">
-        <TaskTagCard
-          title="Feeback"
-          backgroundColor="bg-red-200"
-          textColor="text-red-600"
-        />
-        <TaskTagCard
-          title="Bug"
-          backgroundColor="bg-green-200"
-          textColor="text-green-600"
-        />
+        {tags.map((tag, index) => (
+          <TaskTagCard
+            key={index}
+            title={tag}
+            backgroundColor={tag !== "Bug" ? "bg-green-200" : "bg-red-200"}
+            textColor={tag !== "Bug" ? "text-green-600" : "text-red-600"}
+          />
+        ))}
       </div>
       <div className="flex justify-between w-full items-center">
-        <h1 className="font-bold text-2xl">Task Title</h1>
-        <Button
+        <h1 className="font-bold text-2xl">{title}</h1>
+        <ToggleButton
           fontAwesomeIconUrl={faEllipsis}
-          className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
+          className="min-w-[35px] min-h-[35px]"
         />
       </div>
       <div>
         <p className="opacity-60">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi
-          cupiditate porro quasi mollitia alias reprehenderit totam eligendi
-          dicta maiores magnam. Quibusdam at quis optio. At eaque delectus
-          repellat atque praesentium?
+          {desc.length > 100 ? desc.slice(0, 100) + "..." : desc}
         </p>
       </div>
       <div className="flex justify-between w-full items-center opacity-60">
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faFlag} width={25} height={25} />
-          <p>21/03/22</p>
+          <p>{createdAt}</p>
         </div>
         <span>
           <p>D-18</p>
         </span>
       </div>
-      <div className="flex justify-between w-full items-center">
-        <img
-          src="/assets/images/users/dummy-1.png"
-          alt="user"
-          width={25}
-          height={25}
-        />
+      <div className="flex w-full items-center">
+        {users?.map((user, index) => (
+          <>
+            <img
+              src={user?.photo}
+              alt="user"
+              width={25}
+              height={25}
+              className="w-10 h-10 rounded-full overflow-hidden border-slate-500 border-[.5px]"
+              style={{
+                zIndex: users.length - index,
+                transform: `translateX(-${index * 10}px)`,
+              }}
+            />
+          </>
+        ))}
+
         <div className="flex items-center opacity-60 gap-2">
           <FontAwesomeIcon icon={faMessage} width={25} height={25} />
           <p className="flex gap-1">

@@ -9,12 +9,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import Button from "@/components/shared/ui/Button";
 import TaskCard from "@/components/ui/Cards/Task";
 import NewTaskModal from "@/components/ui/Modals/NewTask";
+import { listOfTasks } from "@/entities";
 
 const Board = () => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
 
   return (
-    <section className="relative flex flex-col w-full h-full">
+    <section className="relative flex flex-col w-full">
       <div className="flex gap-2 flex-col border-b-[--color-text-lightest] border-b-[1px] p-8">
         <div className="flex justify-between flex-wrap max-md:gap-4">
           <div className="flex text-xs gap-4">
@@ -31,9 +32,10 @@ const Board = () => {
         <BoardAssignedUsers />
       </div>
       <BoardSearchTasks />
-      <div className="flex flew-grow w-full bg-[--color-text-lightest] overflow-y-scroll">
-        <div className=" flex-grow w-full px-4 py-6">
-          <div className="bg-gray-200 flex flex-col w-fit p-4">
+      
+      <div className="flex w-full h-full bg-[--color-text-lightest]">
+        <div className="flex flex-col h-full w-full">
+          <div className="bg-gray-200 flex flex-col w-full p-4 h-fit">
             <div className="flex justify-between items-center">
               <h1 className="font-bold text-lg text-[--color-text-light]">
                 Backlog
@@ -49,14 +51,26 @@ const Board = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-4 mt-4">
-              <TaskCard />
-              <TaskCard />
-              <TaskCard />
+
+            <div className="flex flex-col">
+              {listOfTasks.map((task, index) => (
+                <TaskCard
+                  key={index}
+                  title={task.title}
+                  desc={task.desc}
+                  tags={task.tags}
+                  status={task.status as TaskCardStatus}
+                  priority={task.priority as TaskCardPriority}
+                  createdAt={task.createdAt}
+                  users={task.users}
+                  comments={task.comments}
+                />
+              ))}
             </div>
           </div>
         </div>
-        <div className=" flex-grow w-full px-4 py-6">
+
+        {/* <div className=" flex-grow w-full px-4 py-6">
           <div className="bg-gray-200 flex flex-col w-fit p-4">
             <div className="flex justify-between items-center">
               <h1 className="font-bold text-lg text-[--color-text-light]">
@@ -103,7 +117,7 @@ const Board = () => {
               <TaskCard />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <AnimatePresence>
         {showNewTaskModal && (

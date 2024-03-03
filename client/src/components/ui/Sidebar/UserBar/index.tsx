@@ -1,22 +1,23 @@
-import Button from "@/components/shared/ui/Button";
+import ToggleButton from "@/components/shared/ui/ToggleButton";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
 const SidebarUserBar = () => {
   return (
-    <div className="flex items-center justify-center gap-4 pb-8 pt-4 border-t-[--color-text-lightest] border-t-[1px]">
+    <div className="flex items-center justify-center gap-3 border-t-[--color-text-lightest] border-t-[1px] p-4">
       <img
-        src="/assets/icons/user.svg"
-        width={50}
-        height={50}
+        src="/assets/images/users/dummy-2.png"
+        width={35}
+        height={35}
         className="opacity-60"
       />
-      <div className="flex flex-col text-sm">
-        <h1 className="font-bold">Donye</h1>
-        <p className="opacity-60">collins@brees.com</p>
+      <div className="flex flex-col text-xs">
+        <h1 className="font-bold">John</h1>
+        <p className="opacity-60">johndoe@tasks.com</p>
       </div>
-      <Button
+      <ToggleButton
         fontAwesomeIconUrl={faEllipsis}
-        className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
+        className="min-w-[35px] min-h-[35px]"
+        onClick={() => console.log("clicked")}
       />
     </div>
   );

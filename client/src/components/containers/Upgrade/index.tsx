@@ -15,7 +15,7 @@ const Upgrade = () => {
       <h1 className="text-6xl font-bold text-center text-[var(--color-primary)]">
         Choose the <u> plan </u> that's right for you
       </h1>
-      <div className="flex gap-10 w-full max-lg:flex-col max-lg:items-center max-lg:mt-4">
+      <div className="flex gap-10 justify-center w-full max-lg:flex-col max-lg:items-center max-lg:mt-4">
         {listOfPrices.map((item, index) => (
           <PriceCard
             key={index}

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp } from "@fortawesome/free-solid-svg-icons";
@@ -10,21 +10,22 @@ const SidebarLinkWithMenu = ({
   fontAwesomeIconUrl,
   transitionDelay,
   pathUrl,
+  subMenu,
 }: SidebarLinkWithMenuProps) => {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false);
   return (
     <motion.li
-      className="transition-all cursor-pointer w-full relative"
-      whileHover={{
-        opacity: 1,
-      }}
+      className="transition-all cursor-pointer relative"
       initial={{
         x: -100,
         opacity: 0,
       }}
+      whileHover={{
+        opacity: 1,
+      }}
       animate={{
         x: 0,
-        opacity: 1,
+        opacity: .6,
         transition: {
           delay: transitionDelay * 0.1,
           duration: 0.8,
@@ -40,23 +41,26 @@ const SidebarLinkWithMenu = ({
           {fontAwesomeIconUrl && (
             <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
           )}
-          {title}
+          <span className="max-sm:hidden">{title}</span>
         </div>
         <motion.div
           onHoverStart={() => {
             setIsSubMenuOpen(true);
           }}
-          className={`transition-all ${isSubMenuOpen ? "rotate-180" : ""}`}
+          className={`max-sm:hidden transition-all ${isSubMenuOpen ? "rotate-90" : ""}`}
         >
           <FontAwesomeIcon icon={faCaretUp} width={25} height={25} />
         </motion.div>
       </Link>
-      {isSubMenuOpen && (
-        <ProjectsModal
-          setIsSubMenuOpen={setIsSubMenuOpen}
-          isSubMenuOpen={isSubMenuOpen}
-        />
-      )}
+      <AnimatePresence>
+        {isSubMenuOpen && (
+          <ProjectsModal
+            subMenu={subMenu}
+            setIsSubMenuOpen={setIsSubMenuOpen}
+            isSubMenuOpen={isSubMenuOpen}
+          />
+        )}
+      </AnimatePresence>
     </motion.li>
   );
 };

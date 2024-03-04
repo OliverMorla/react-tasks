@@ -8,7 +8,7 @@ import ToggleButton from "@/components/shared/ui/ToggleButton";
 const TaskCard = ({
   title,
   desc,
-  users,
+  assignedTo,
   // comments,
   tags,
   // dueDate,
@@ -68,7 +68,7 @@ const TaskCard = ({
         </span>
       </div>
       <div className="flex w-full items-center">
-        {users?.map((user, index) => (
+        {assignedTo?.map((user, index) => (
           <>
             <img
               src={user?.photo}
@@ -77,7 +77,7 @@ const TaskCard = ({
               height={25}
               className="w-10 h-10 rounded-full overflow-hidden border-slate-500 border-[.5px]"
               style={{
-                zIndex: users.length - index,
+                zIndex: assignedTo.length - index,
                 transform: `translateX(-${index * 10}px)`,
               }}
             />

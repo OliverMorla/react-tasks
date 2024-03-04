@@ -1,6 +1,6 @@
 import { usersAssigned } from "@/entities";
 
-const BoardAssignedUsers = () => {
+const DashboardAssignedUsers = () => {
   return (
     <div className="flex">
       {usersAssigned.map((user, index) => {
@@ -36,4 +36,4 @@ const BoardAssignedUsers = () => {
   );
 };
 
-export default BoardAssignedUsers;
+export default DashboardAssignedUsers;

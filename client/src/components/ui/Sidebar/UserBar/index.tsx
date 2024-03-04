@@ -10,7 +10,7 @@ const SidebarUserBar = () => {
         height={35}
         className="opacity-60"
       />
-      <div className="flex flex-col text-xs">
+      <div className="flex flex-col text-xs max-sm:hidden">
         <h1 className="font-bold">John</h1>
         <p className="opacity-60">johndoe@tasks.com</p>
       </div>

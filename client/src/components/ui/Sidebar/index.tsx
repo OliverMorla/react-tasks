@@ -8,11 +8,11 @@ import SidebarUpgradeLink from "@/components/ui/Sidebar/UpgradeLink";
 
 const Sidebar = () => {
   return (
-    <aside className="max-w-[240px] w-full flex-grow flex flex-col justify-between border-r-[1px] border-r-[--color-text-lightest]">
+    <aside className="max-w-[240px] max-sm:max-w-[175px] max-sm:min-w-[145px] w-full flex-grow h-full flex flex-col justify-between border-r-[1px] border-r-[--color-text-lightest]">
       <div>
         <SidebarTitle />
         <div>
-          <ul className="p-8 flex flex-col gap-6">
+          <ul className="p-8 flex flex-col gap-6 max-sm:items-center max-sm:text-xl">
             {sidebarMenuLinks.map((item, index) => {
               if (!item.subMenu && item.title.toLowerCase() !== "upgrade") {
                 return (
@@ -50,7 +50,7 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-      <div className="relative flex flex-col">
+      <div className="relative flex flex-col max-sm:items-center">
         <SidebarThemeToggle />
         <SidebarUserBar />
       </div>

@@ -11,8 +11,8 @@ const Header = () => {
       className="max-h-[65px] min-h-[65px] h-full border-b-[--color-text-lightest] border-b-[1px] flex justify-center items-center"
       role="heading"
     >
-      <nav className="flex justify-between items-center w-full">
-        <ul className="list-none flex gap-8 px-4">
+      <nav className="flex justify-between items-center w-full max-sm:justify-center max-sm:gap-1 max-sm:p-2">
+        <ul className="list-none flex gap-8 px-4 max-sm:gap-2 max-sm:px-0">
           {navPrimaryLinks.map((item, index) => (
             <HeaderNavLink
               key={index}
@@ -23,7 +23,7 @@ const Header = () => {
           ))}
         </ul>
 
-        <div className="flex items-center px-4 gap-4">
+        <div className="flex items-center px-4 gap-4 max-sm:px-0">
           <div className="relative flex items-center justify-center max-lg:hidden">
             <input
               type="text"
@@ -38,7 +38,7 @@ const Header = () => {
               className="absolute left-2 opacity-60"
             />
           </div>
-          <ul className="flex gap-2">
+          <ul className="flex gap-4 max-sm:gap-2">
             <li>
               <Button
                 fontAwesomeIconUrl={faBell}

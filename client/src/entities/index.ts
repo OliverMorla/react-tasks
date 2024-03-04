@@ -1,5 +1,3 @@
-import { faFlipboard } from "@fortawesome/free-brands-svg-icons";
-
 import {
   faCalendar,
   faClipboard,
@@ -16,18 +14,13 @@ import {
 
 const navPrimaryLinks = [
   {
-    title: "Board",
-    pathUrl: "/",
-    fontAwesomeIconUrl: faFlipboard,
-  },
-  {
     title: "List",
-    pathUrl: "/tab/list",
+    pathUrl: "/list",
     fontAwesomeIconUrl: faList,
   },
   {
     title: "Calendar",
-    pathUrl: "/tab/calendar",
+    pathUrl: "/calendar",
     fontAwesomeIconUrl: faCalendar,
   },
 ];
@@ -48,8 +41,12 @@ const sidebarMenuLinks = [
         pathUrl: "/projects?category=shared",
       },
       {
-        title: "Private",
-        pathUrl: "/projects?category=private",
+        title: "Personal",
+        pathUrl: "/projects?category=archived",
+      },
+      {
+        title: "Archived",
+        pathUrl: "/projects?category=archived",
       },
     ],
   },
@@ -108,6 +105,8 @@ const listOfTasks = [
     comments: "3",
     priority: "High",
     createdAt: "21/03/22",
+    updatedAt: "21/03/22",
+    dueDate: "21/03/22",
     status: "In Progress",
   },
   {
@@ -126,6 +125,8 @@ const listOfTasks = [
     ],
     comments: "3",
     createdAt: "21/03/22",
+    updatedAt: "21/03/22",
+    dueDate: "21/03/22",
     priority: "High",
     status: "In Progress",
   },
@@ -142,6 +143,8 @@ const listOfTasks = [
     comments: "3",
     priority: "High",
     createdAt: "21/03/22",
+    updatedAt: "21/03/22",
+    dueDate: "21/03/22",
     status: "To do",
   },
   {
@@ -157,7 +160,161 @@ const listOfTasks = [
     comments: "3",
     priority: "High",
     createdAt: "21/03/22",
+    updatedAt: "21/03/22",
+    dueDate: "21/03/22",
     status: "Backlog",
+  },
+];
+
+const listOfProjects = [
+  {
+    name: "Product Red",
+    createdBy: "John Doe",
+    assignedTo: [
+      {
+        name: "John Doe",
+        email: "johndoe@reacttasks.com",
+        photo: "/assets/images/users/dummy-1.png",
+      },
+      {
+        name: "Jane Doe",
+        email: "janedoe@reacttasks.com",
+        photo: "/assets/images/users/dummy-2.png",
+      },
+      {
+        name: "Frank Doe",
+        email: "frankdoe@reacttasks.com",
+        photo: "/assets/images/users/dummy-3.png",
+      },
+      {
+        name: "Jenny Doe",
+        email: "jennydoe@reacttasks.com",
+        photo: "/assets/images/users/dummy-4.png",
+      },
+    ],
+    tasks: [
+      {
+        tags: ["Feedback", "Bug", "Improvement"],
+        title: "Improve cards readability",
+        desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
+        assignedTo: [
+          {
+            photo: "/assets/images/users/dummy-1.png",
+            userName: "John Doe",
+          },
+          {
+            photo: "/assets/images/users/dummy-2.png",
+            userName: "Jane Doe",
+          },
+        ],
+        comments: [
+          {
+            user: {
+              name: "John Doe",
+              email: "johndoe@reacttasks.com",
+              photo: "/assets/images/users/dummy-1.png",
+            },
+            comment: "This task seems funny!",
+            createdAt: "9:05 AM",
+          },
+        ],
+        priority: "High",
+        createdAt: "21/03/22",
+        dueDate: "21/03/22",
+        status: "In Progress",
+      },
+      {
+        tags: ["Feedback", "Bug"],
+        title: "Improve cards readability",
+        desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
+        assignedTo: [
+          {
+            photo: "/assets/images/users/dummy-1.png",
+            userName: "John Doe",
+          },
+          {
+            photo: "/assets/images/users/dummy-2.png",
+            userName: "Jane Doe",
+          },
+        ],
+        comments: [
+          {
+            user: {
+              name: "John Doe",
+              email: "johndoe@reacttasks.com",
+              photo: "/assets/images/users/dummy-1.png",
+            },
+            comment: "This task seems funny!",
+            createdAt: "9:05 AM",
+          },
+        ],
+        createdAt: "21/03/22",
+        dueDate: "21/03/22",
+        priority: "High",
+        status: "In Progress",
+      },
+      {
+        tags: ["Improvement"],
+        title: "Improve cards readability",
+        desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
+        assignedTo: [
+          {
+            photo: "/assets/images/users/dummy-1.png",
+            userName: "John Doe",
+          },
+        ],
+        comments: [
+          {
+            user: {
+              name: "John Doe",
+              email: "johndoe@reacttasks.com",
+              photo: "/assets/images/users/dummy-1.png",
+            },
+            comment: "This task seems funny!",
+            createdAt: "9:05 AM",
+          },
+        ],
+        priority: "High",
+        createdAt: "21/03/22",
+        dueDate: "21/03/22",
+        status: "To do",
+      },
+      {
+        tags: ["Improvement"],
+        title: "Improve cards readability",
+        desc: "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
+        assignedTo: [
+          {
+            photo: "/assets/images/users/dummy-1.png",
+            userName: "John Doe",
+          },
+        ],
+        comments: [
+          {
+            user: {
+              name: "John Doe",
+              email: "johndoe@reacttasks.com",
+              photo: "/assets/images/users/dummy-1.png",
+            },
+            comment: "This task seems funny!",
+            createdAt: "9:05 AM",
+          },
+          {
+            user: {
+              name: "James Doe",
+              email: "jamesdoe@reacttasks.com",
+              photo: "/assets/images/users/dummy-4.png",
+            },
+            comment: "Mhmm!",
+            createdAt: "9:10 AM",
+          },
+        ], 
+        priority: "High",
+        createdAt: "21/03/22",
+        dueDate: "21/03/22",
+        status: "Backlog",
+      },
+    ],
   },
 ];
 
@@ -178,22 +335,22 @@ const adminSession = {
 const listOfAvailableUsers = [
   {
     name: "John Doe",
-    email: "johndoe@realtasks.com",
+    email: "johndoe@reacttasks.com",
     photo: "/assets/images/users/dummy-1.png",
   },
   {
     name: "Jane Doe",
-    email: "",
+    email: "janedoe@reacttasks.com",
     photo: "/assets/images/users/dummy-2.png",
   },
   {
     name: "Frank Doe",
-    email: "",
+    email: "frankdoe@reacttasks.com",
     photo: "/assets/images/users/dummy-3.png",
   },
   {
     name: "Jenny Doe",
-    email: "",
+    email: "jennydoe@reacttasks.com",
     photo: "/assets/images/users/dummy-4.png",
   },
 ];
@@ -245,8 +402,9 @@ export {
   sidebarMenuLinks,
   usersAssigned,
   listOfTasks,
+  listOfPrices,
   listOfAvailableUsers,
+  listOfProjects,
   userSession,
   adminSession,
-  listOfPrices,
 };

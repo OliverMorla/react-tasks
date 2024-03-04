@@ -9,7 +9,7 @@ const HeaderNavLink = ({
 }: HeaderNavLinkProps) => {
   return (
     <motion.li
-      className="transition-all cursor-pointer opacity-60 w-fit"
+      className="transition-all cursor-pointer opacity-60 w-fit max-sm:border-[1px] max-sm:border-[--color-text-lightest] max-sm:p-2 max-sm:rounded-md max-sm:hover:opacity-100 duration-300 ease-in-out max-sm:hover:bg-[--color-text-dark] max-sm:hover:text-[--color-text-lightest] flex justify-center items-center"
       whileHover={{
         fontWeight: "bold",
       }}
@@ -18,7 +18,7 @@ const HeaderNavLink = ({
         {fontAwesomeIconUrl && (
           <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
         )}
-        {title}
+        <span className="max-sm:hidden">{title}</span>
       </Link>
     </motion.li>
   );

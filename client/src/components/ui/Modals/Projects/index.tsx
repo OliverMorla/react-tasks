@@ -2,20 +2,29 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 const ProjectsModal = ({
   setIsSubMenuOpen,
+  subMenu,
 }: {
+  subMenu: SidebarLinkWithMenuProps["subMenu"];
   isSubMenuOpen: boolean;
   setIsSubMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
     <motion.div
-      className="bg-[--color-text-lightest] absolute top-6 z-10 -right-9 text-center rounded-lg"
+      className="bg-[--color-text-darker] absolute -top-14 z-50 -right-36 text-center rounded-lg text-white"
       initial={{
-        y: 40,
+        x: 40,
         opacity: 0,
       }}
       animate={{
-        y: 0,
+        x: 0,
         opacity: 1,
+        transition: {
+          duration: 0.4,
+        },
+      }}
+      exit={{
+        x: 40,
+        opacity: 0,
         transition: {
           duration: 0.4,
         },
@@ -25,12 +34,14 @@ const ProjectsModal = ({
       }}
     >
       <ul className="flex flex-col items-center">
-        <li className="p-4 transition-all hover:bg-[--color-primary] w-full border-b-slate-400 border-b-[1px] rounded-t-lg">
-          <Link to={"/"}>Personal</Link>
-        </li>
-        <li className="p-4 transition-all hover:bg-[--color-primary] w-full rounded-b-lg">
-          <Link to={"/"}>Shared</Link>
-        </li>
+        {subMenu?.map((item, index) => (
+          <li
+            className={`p-4 transition-all hover:bg-[--color-primary] w-full border-b-[--color-primary] border-b-[1px] ${index === subMenu.length - 1 ? "rounded-b-lg" : ""} ${index === 0 ? "rounded-t-lg" : ""}`}
+            key={index}
+          >
+            <Link to={item.pathUrl}>{item.title}</Link>
+          </li>
+        ))}
       </ul>
     </motion.div>
   );

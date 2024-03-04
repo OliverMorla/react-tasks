@@ -10,7 +10,7 @@ const SidebarLink = ({
 }: SidebarLinkProps) => {
   return (
     <motion.li
-      className="transition-all duration-75 cursor-pointer w-fit"
+      className="transition-all duration-75 cursor-pointer"
       whileHover={{
         opacity: 1,
       }}
@@ -35,7 +35,7 @@ const SidebarLink = ({
         {fontAwesomeIconUrl && (
           <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
         )}
-        {title}
+        <span className="max-sm:hidden">{title}</span>
       </Link>
     </motion.li>
   );

@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 
 const SidebarUpgradeLink = ({
   title,
@@ -10,7 +10,7 @@ const SidebarUpgradeLink = ({
 }: SidebarLinkProps) => {
   return (
     <motion.li
-      className="transition-all duration-75 cursor-pointer w-full bg-[--color-primary] text-[--color-text-lightest] rounded-md p-3 hover:bg-[--color-text-dark] hover:text-[--color-text-lightest] flex justify-center items-center"
+      className="transition-all cursor-pointer bg-[--color-primary] text-[--color-text-lightest] rounded-md p-3 hover:bg-[--color-text-dark] hover:text-[--color-text-lightest] flex justify-center items-center"
       whileHover={{
         opacity: 1,
       }}
@@ -35,7 +35,7 @@ const SidebarUpgradeLink = ({
         {fontAwesomeIconUrl && (
           <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
         )}
-        {title}
+        <span className="max-sm:hidden">{title}</span>
       </Link>
     </motion.li>
   );

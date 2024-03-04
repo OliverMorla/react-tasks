@@ -16,7 +16,7 @@ const PriceCard = ({
 }: PriceCardProps) => {
   return (
     <motion.div
-      className="max-w-[425px] max-h-[600px] h-full w-full flex flex-col gap-4 p-4 rounded-lg bg-white shadow-lg text-[var(--color-text-darker)]"
+      className="max-w-[425px] max-h-[600px] max:sm:max-w-[375px] h-full w-full flex flex-col gap-4 p-4 rounded-lg bg-white shadow-lg text-[var(--color-text-darker)]"
       style={{
         boxShadow: "0 0 5px 0 rgba(0,0,0,0.1)",
       }}

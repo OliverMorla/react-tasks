@@ -1,5 +1,5 @@
-// import { useState } from "react";
-// import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 // import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,19 +11,77 @@
 // import Button from "@/components/shared/ui/Button";
 // import TaskCard from "@/components/ui/Cards/Task";
 // import NewTaskModal from "@/components/ui/Modals/NewTask";
-import NotFound from "@/components/containers/NotFound";
+// import NotFound from "@/components/containers/NotFound";
 
 const Dashboard = () => {
-  // const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+  const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+
+  const [selectedProject, setSelectedProject] = useState<null | ProjectProps>(
+    null
+  );
+
+  const handleSelectedProject = () => {
+    setSelectedProject(null);
+  };
+
   return (
     <section className=" flex flex-col w-full flex-grow items-center justify-center">
-      <NotFound />
-      {/* <div className="flex gap-2 flex-col border-b-[--color-text-lightest] border-b-[1px] p-8">
+      
+      <div className="flex flex-col gap-4">
+        <h1 className="font-bold text-4xl">Welcome to your dashboard!</h1>
+        <p className="opacity-60 text-lg">
+          Get started by selecting a project or creating a new one.
+        </p>
+      </div>
+      <div className="flex flex-col gap-4">
+        <button
+          onClick={() => handleSelectedProject()}
+          className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
+        >
+          <p className="font-bold">Create a new project</p>
+        </button>
+        <button
+          onClick={() => handleSelectedProject()}
+          className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
+        >
+          <p className="font-bold">Select an existing project</p>
+        </button>
+      </div>
+      <div className="flex flex-col gap-4">
+        <h1 className="font-bold text-2xl">Your projects</h1>
+        <div className="flex gap-4">
+          <button
+            onClick={() => handleSelectedProject()}
+            className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
+          >
+            <p className="font-bold">Project 1</p>
+          </button>
+          <button
+            onClick={() => handleSelectedProject()}
+            className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
+          >
+            <p className="font-bold">Project 2</p>
+          </button>
+          <button
+            onClick={() => handleSelectedProject()}
+            className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
+          >
+            <p className="font-bold">Project 3</p>
+          </button>
+        </div>
+      </div>
+
+     {/* <div className="flex flex-col gap-4">
+        <h1 className="font-bold text-2xl">Quick access</h1>
+        <div className="flex gap-4">
+          <button
+            onClick={() => handleSelectedProject()}
+            className="flex gap-2 items-center p-2 border-[--{/* <div className="flex gap-2 flex-col border-b-[--color-text-lightest] border-b-[1px] p-8">
         <div className="flex justify-between flex-wrap max-md:gap-4">
           <div className="flex text-xs gap-4">
             <p className="opacity-60">Projects</p>
             <span>{">"}</span>
-            <p className="opacity-60">Personal</p>
+            <p cl assName="opacity-60">Personal</p>
             <span>{">"}</span>
             <p className="font-bold">Personal</p>
           </div>
@@ -34,10 +92,12 @@ const Dashboard = () => {
         </div>
         <h1 className="font-bold text-4xl">My Tasks</h1>
         <DashboardAssignedUsers />
-      </div>
-      <DashboardSearchTasks />
+      </div> */}
+      {/* <DashboardSearchTasks /> */}
+  
 
-      <div className="flex w-full h-full bg-[--color-text-lightest] p-4">
+
+      {/* <div className="flex w-full h-full bg-[--color-text-lightest] p-4">
         <div className="flex flex-col h-full w-full">
           <div className="bg-gray-200 flex flex-col w-full p-4 h-fit">
             <div className="flex justify-between items-center">
@@ -124,8 +184,9 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <AnimatePresence>
+
         {showNewTaskModal && (
           <div className="absolute h-full w-full z-10 flex justify-center items-center">
             <motion.div
@@ -146,7 +207,7 @@ const Dashboard = () => {
             />
           </div>
         )}
-      </AnimatePresence> */}
+      </AnimatePresence>
     </section>
   );
 };

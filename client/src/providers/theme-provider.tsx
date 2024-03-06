@@ -15,7 +15,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     }),
     [theme]
   );
-  
+
   return (
     <ThemeContext.Provider value={contextValue}>
       {children}

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { createPortal } from "react-dom";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 // import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -10,32 +12,36 @@ import { AnimatePresence, motion } from "framer-motion";
 // import { listOfTasks } from "@/entities";
 // import Button from "@/components/shared/ui/Button";
 // import TaskCard from "@/components/ui/Cards/Task";
-// import NewTaskModal from "@/components/ui/Modals/NewTask";
+import NewProjectModal from "@/components/ui/Modals/NewProject";
+import DashboardSelectedProject from "./SelectedProject";
 // import NotFound from "@/components/containers/NotFound";
 
 const Dashboard = () => {
-  const [showNewTaskModal, setShowNewTaskModal] = useState(false);
-
   const [selectedProject, setSelectedProject] = useState<null | ProjectProps>(
     null
   );
 
+  const [showNewProjectModal, setShowNewProjectModal] =
+    useState<boolean>(false);
   const handleSelectedProject = () => {
     setSelectedProject(null);
   };
 
   return (
-    <section className=" flex flex-col w-full flex-grow items-center justify-center">
-      
-      <div className="flex flex-col gap-4">
-        <h1 className="font-bold text-4xl">Welcome to your dashboard!</h1>
-        <p className="opacity-60 text-lg">
+    <section className="flex flex-col w-full flex-1 items-center justify-center gap-8 p-10">
+      <div className="flex flex-col gap-2 items-center justify-center">
+        <h1 className="font-bold text-6xl flex items-center justify-center gap-2 flex-wrap max-md:text-center">
+          Welcome to your
+          <span className="text-[var(--color-primary)]">dashboard!</span>
+        </h1>
+        <p className="opacity-60 text-lg text-center">
           Get started by selecting a project or creating a new one.
         </p>
       </div>
+
       <div className="flex flex-col gap-4">
         <button
-          onClick={() => handleSelectedProject()}
+          onClick={() => setShowNewProjectModal(!showNewProjectModal)}
           className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
         >
           <p className="font-bold">Create a new project</p>
@@ -47,6 +53,7 @@ const Dashboard = () => {
           <p className="font-bold">Select an existing project</p>
         </button>
       </div>
+
       <div className="flex flex-col gap-4">
         <h1 className="font-bold text-2xl">Your projects</h1>
         <div className="flex gap-4">
@@ -71,124 +78,11 @@ const Dashboard = () => {
         </div>
       </div>
 
-     {/* <div className="flex flex-col gap-4">
-        <h1 className="font-bold text-2xl">Quick access</h1>
-        <div className="flex gap-4">
-          <button
-            onClick={() => handleSelectedProject()}
-            className="flex gap-2 items-center p-2 border-[--{/* <div className="flex gap-2 flex-col border-b-[--color-text-lightest] border-b-[1px] p-8">
-        <div className="flex justify-between flex-wrap max-md:gap-4">
-          <div className="flex text-xs gap-4">
-            <p className="opacity-60">Projects</p>
-            <span>{">"}</span>
-            <p cl assName="opacity-60">Personal</p>
-            <span>{">"}</span>
-            <p className="font-bold">Personal</p>
-          </div>
-          <DashboardNewTaskToggles
-            showNewTaskModal={showNewTaskModal}
-            setShowNewTaskModal={setShowNewTaskModal}
-          />
-        </div>
-        <h1 className="font-bold text-4xl">My Tasks</h1>
-        <DashboardAssignedUsers />
-      </div> */}
-      {/* <DashboardSearchTasks /> */}
-  
+      {selectedProject && <DashboardSelectedProject />}
 
-
-      {/* <div className="flex w-full h-full bg-[--color-text-lightest] p-4">
-        <div className="flex flex-col h-full w-full">
-          <div className="bg-gray-200 flex flex-col w-full p-4 h-fit">
-            <div className="flex justify-between items-center">
-              <h1 className="font-bold text-lg text-[--color-text-light]">
-                Backlog
-              </h1>
-              <div className="flex">
-                <Button
-                  fontAwesomeIconUrl={faPlus}
-                  className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
-                />
-                <Button
-                  fontAwesomeIconUrl={faEllipsis}
-                  className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col">
-              {listOfTasks.map((task, index) => (
-                <TaskCard
-                  key={index}
-                  title={task.title}
-                  desc={task.desc}
-                  tags={task.tags}
-                  status={task.status as TaskCardStatus}
-                  priority={task.priority as TaskCardPriority}
-                  createdAt={task.createdAt}
-                  assignedTo={task.users}
-                  comments={task.comments}
-                  dueDate={task.dueDate}
-                  updatedAt={task.updatedAt}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className=" flex-grow w-full px-4 py-6">
-          <div className="bg-gray-200 flex flex-col w-fit p-4">
-            <div className="flex justify-between items-center">
-              <h1 className="font-bold text-lg text-[--color-text-light]">
-                To Do (4)
-              </h1>
-              <div className="flex">
-                <Button
-                  fontAwesomeIconUrl={faPlus}
-                  className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
-                />
-                <Button
-                  fontAwesomeIconUrl={faEllipsis}
-                  className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 mt-4">
-              <TaskCard />
-              <TaskCard />
-              <TaskCard />
-            </div>
-          </div>
-        </div>
-        <div className=" flex-grow w-full px-4 py-6">
-          <div className="bg-gray-200 flex flex-col w-fit p-4">
-            <div className="flex justify-between items-center">
-              <h1 className="font-bold text-lg text-[--color-text-light]">
-                In Progress (3)
-              </h1>
-              <div className="flex">
-                <Button
-                  fontAwesomeIconUrl={faPlus}
-                  className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
-                />
-                <Button
-                  fontAwesomeIconUrl={faEllipsis}
-                  className="border-[--color-text-lightest] border-[1px] p-1 rounded-lg opacity-60 hover:opacity-100 transition-all duration-300 ease-in-out"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 mt-4">
-              <TaskCard />
-              <TaskCard />
-              <TaskCard />
-            </div>
-          </div>
-        </div>
-      </div> */}
-      <AnimatePresence>
-
-        {showNewTaskModal && (
-          <div className="absolute h-full w-full z-10 flex justify-center items-center">
+      {createPortal(
+        showNewProjectModal && (
+          <div className="absolute h-full w-full z-10 flex justify-center items-center p-10">
             <motion.div
               className="absolute h-full w-full z-0 bg-[--color-text-lightest]"
               initial={{
@@ -201,13 +95,14 @@ const Dashboard = () => {
                 opacity: 0,
               }}
             ></motion.div>
-            <NewTaskModal
-              showNewTaskModal={showNewTaskModal}
-              setShowNewTaskModal={setShowNewTaskModal}
+            <NewProjectModal
+              showNewProjectModal={showNewProjectModal}
+              setShowNewProjectModal={setShowNewProjectModal}
             />
           </div>
-        )}
-      </AnimatePresence>
+        ),
+        document.getElementById("root") as HTMLElement
+      )}
     </section>
   );
 };

@@ -9,9 +9,9 @@ const NewTaskModal = ({
   return (
     <motion.div
       className="bg-gray-100 w-[500px] h-auto flex flex-col p-4 gap-4 rounded-lg"
-      initial={{ opacity: 0, y: 0 }}
-      animate={{ opacity: 1, y: -192, zIndex: 1000 }}
-      exit={{ opacity: 0, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, zIndex: 1000 }}
+      exit={{ opacity: 0 }}
     >
       <div className="flex justify-center items-center">
         <h1 className="ml-auto font-bold">New Task</h1>

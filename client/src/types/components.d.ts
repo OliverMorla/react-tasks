@@ -90,4 +90,11 @@ interface NewTaskModalProps {
   setShowNewTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface NewProjectModalProps {
+  showNewProjectModal: boolean;
+  setShowNewProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 interface NewTaskTogglesProps extends NewTaskModalProps {}
+
+interface ProjectProps {}

@@ -46,7 +46,7 @@ const TaskCard = ({
           />
         ))}
       </div>
-      <div className="flex justify-between w-full items-center">
+      <div className="flex justify-between w-full items-center transit`">
         <h1 className="font-bold text-2xl">{title}</h1>
         <ToggleButton
           fontAwesomeIconUrl={faEllipsis}

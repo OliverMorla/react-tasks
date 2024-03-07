@@ -1,25 +1,32 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { createPortal } from "react-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
 
-// import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
-
-// import DashboardAssignedUsers from "@/components/ui/Dashboard/AssignedUsers";
-// import DashboardSearchTasks from "@/components/ui/Dashboard/SearchTasks";
-// import DashboardNewTaskToggles from "@/components/ui/Dashboard/NewTaskToggles";
-
-// import { listOfTasks } from "@/entities";
-// import Button from "@/components/shared/ui/Button";
-// import TaskCard from "@/components/ui/Cards/Task";
+// UI Components
 import NewProjectModal from "@/components/ui/Modals/NewProject";
-import DashboardSelectedProject from "./SelectedProject";
-// import NotFound from "@/components/containers/NotFound";
+import DashboardSelectedProject from "@/components/ui/Dashboard/SelectedProject";
+import { listOfProjects } from "@/entities";
+import ProjectCard from "@/components/ui/Cards/Project";
+import Modal from "@/components/shared/ui/Modal";
+import { useSelector } from "react-redux";
+import { setProjects } from "@/redux/slices/project-slice";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  dispatch(setProjects(listOfProjects));
   const [selectedProject, setSelectedProject] = useState<null | ProjectProps>(
     null
   );
+
+
+  
+  const projects = useSelector((state: any) => state.projectReducer.projects)
+  
+
+
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const [showNewProjectModal, setShowNewProjectModal] =
     useState<boolean>(false);
@@ -27,57 +34,51 @@ const Dashboard = () => {
     setSelectedProject(null);
   };
 
+  console.log(projects)
+  console.log(handleSelectedProject)
   return (
-    <section className="flex flex-col w-full flex-1 items-center justify-center gap-8 p-10">
-      <div className="flex flex-col gap-2 items-center justify-center">
-        <h1 className="font-bold text-6xl flex items-center justify-center gap-2 flex-wrap max-md:text-center">
-          Welcome to your
-          <span className="text-[var(--color-primary)]">dashboard!</span>
-        </h1>
-        <p className="opacity-60 text-lg text-center">
-          Get started by selecting a project or creating a new one.
-        </p>
-      </div>
+    <section className="flex flex-col w-full flex-1 items-center justify-center p-10">
+      {!selectedProject && (
+        <div className="flex flex-col w-full flex-1 items-center justify-center gap-4">
+          <div className="flex flex-col gap-2 items-center justify-center">
+            <h1 className="font-bold text-6xl flex items-center justify-center gap-2 flex-wrap max-lg:text-center">
+              Welcome to your
+              <span className="text-[var(--color-primary)]">dashboard!</span>
+            </h1>
+            <p className="opacity-60 text-lg text-center">
+              Get started by selecting a project or creating a new one.
+            </p>
+          </div>
 
-      <div className="flex flex-col gap-4">
-        <button
-          onClick={() => setShowNewProjectModal(!showNewProjectModal)}
-          className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
-        >
-          <p className="font-bold">Create a new project</p>
-        </button>
-        <button
-          onClick={() => handleSelectedProject()}
-          className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
-        >
-          <p className="font-bold">Select an existing project</p>
-        </button>
-      </div>
+          <div className="flex flex-col ">
+            <button
+              onClick={() => setShowNewProjectModal(!showNewProjectModal)}
+              className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
+            >
+              <p className="font-bold">Create a new project</p>
+            </button>
+          </div>
 
-      <div className="flex flex-col gap-4">
-        <h1 className="font-bold text-2xl">Your projects</h1>
-        <div className="flex gap-4">
-          <button
-            onClick={() => handleSelectedProject()}
-            className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
-          >
-            <p className="font-bold">Project 1</p>
-          </button>
-          <button
-            onClick={() => handleSelectedProject()}
-            className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
-          >
-            <p className="font-bold">Project 2</p>
-          </button>
-          <button
-            onClick={() => handleSelectedProject()}
-            className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
-          >
-            <p className="font-bold">Project 3</p>
-          </button>
+          <div className="flex flex-col gap-4 w-[90%]">
+            <h1 className="font-bold text-2xl">Your projects</h1>
+            <div className="flex gap-4 w-full overflow-x-scroll p-4">
+              {listOfProjects.map((project, index) => (
+                <ProjectCard key={index} title={project.title} assignedTo={project.assignedTo} desc=""/>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
+      {showModal && (
+        <Modal
+          title="Message"
+          desc="hasdsad"
+          type="info"
+          setShowModal={setShowModal}
+          showModal={showModal}
+        />
+      )}
       {selectedProject && <DashboardSelectedProject />}
 
       {createPortal(

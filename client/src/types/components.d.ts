@@ -1,12 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 /* ======== UI Shared Components Interfaces/Types ======== */
-interface ButtonProps {
-  title?: string;
-  fontAwesomeIconUrl: any;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  readonly title?: string;
+  fontAwesomeIconUrl?: any;
   pathUrl?: string;
-  className?: string;
-  onClick?: () => any;
+  variant?: "transparent" | "color";
+}
+
+interface ModalProps {
+  readonly showModal: boolean;
+  readonly setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  title: string;
+  desc: string;
+  type: "success" | "error" | "warning" | "info";
 }
 
 interface ToggleButtonProps
@@ -85,6 +92,7 @@ interface TaskTagsProps {
   textColor: string;
 }
 
+// Modal Components
 interface NewTaskModalProps {
   showNewTaskModal: boolean;
   setShowNewTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -98,3 +106,15 @@ interface NewProjectModalProps {
 interface NewTaskTogglesProps extends NewTaskModalProps {}
 
 interface ProjectProps {}
+
+interface ProjectCardProps {
+  readonly title: string;
+  readonly desc: string;
+  readonly assignedTo: AssignedUserProps[];
+}
+
+interface AssignedUserProps {
+  photo: string;
+  name: string;
+  email: string;
+}

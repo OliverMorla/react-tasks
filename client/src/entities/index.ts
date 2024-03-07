@@ -6,9 +6,13 @@ import {
 
 import {
   faCartShopping,
+  faCheck,
+  faCircleInfo,
   faDiagramProject,
   faLayerGroup,
   faList,
+  faStopCircle,
+  faTriangleExclamation,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -168,7 +172,7 @@ const listOfTasks = [
 
 const listOfProjects = [
   {
-    name: "Product Red",
+    title: "Product Red",
     createdBy: "John Doe",
     type: "Shared",
     assignedTo: [
@@ -318,7 +322,7 @@ const listOfProjects = [
     ],
   },
   {
-    name: "Product Blue",
+    title: "Product Blue",
     type: "Personal",
     createdBy: "John Doe",
     assignedTo: [
@@ -548,6 +552,13 @@ const listOfPrices = [
   },
 ];
 
+const messageIcons = {
+  error: faStopCircle,
+  success: faCheck,
+  warning: faTriangleExclamation,
+  info: faCircleInfo,
+};
+
 export {
   navPrimaryLinks,
   sidebarMenuLinks,
@@ -558,4 +569,5 @@ export {
   listOfProjects,
   userSession,
   adminSession,
+  messageIcons
 };

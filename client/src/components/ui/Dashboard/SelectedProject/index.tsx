@@ -12,13 +12,12 @@ import { motion } from "framer-motion";
 
 const DashboardSelectedProject = () => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
-  
+
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="font-bold text-2xl">Quick access</h1>
-      <div className="flex gap-4">
+    <div className="flex flex-col w-full gap-4">
+      <div className="flex flex-col border-b-[var(--color-text-lightest)] border-b-[1px] gap-4 p-10">
         <div className="flex justify-between flex-wrap max-md:gap-4">
-          <div className="flex text-xs gap-4">
+          <div className="flex items-center text-xs gap-4">
             <p className="opacity-60">Projects</p>
             <span>{">"}</span>
             <p className="opacity-60">Personal</p>

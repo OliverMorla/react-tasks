@@ -6,6 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   fontAwesomeIconUrl?: any;
   pathUrl?: string;
   variant?: "transparent" | "color";
+  presetIcon?: "close"
 }
 
 interface ModalProps {
@@ -117,4 +118,8 @@ interface AssignedUserProps {
   photo: string;
   name: string;
   email: string;
+}
+
+interface AnimatedDivProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
 }

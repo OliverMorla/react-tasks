@@ -6,7 +6,7 @@ const useAuth = () => {
   if (!context) {
     console.error("=> Failed to read AuthContext");
   }
-  return context;
+  return context as AuthContextProps;
 };
 
 export default useAuth;

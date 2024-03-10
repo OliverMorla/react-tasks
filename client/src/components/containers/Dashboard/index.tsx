@@ -1,45 +1,74 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
 
 // UI Components
 import NewProjectModal from "@/components/ui/Modals/NewProject";
 import DashboardSelectedProject from "@/components/ui/Dashboard/SelectedProject";
-import { listOfProjects } from "@/entities";
+import AnimatedDiv from "@/components/helpers/AnimatedDiv";
 import ProjectCard from "@/components/ui/Cards/Project";
 import Modal from "@/components/shared/ui/Modal";
-import { useSelector } from "react-redux";
+
+// Actions
+import { getProjectsFromUser } from "@/actions/project-actions";
 import { setProjects } from "@/redux/slices/project-slice";
 
+// Hooks
+import { useSelector, useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "@/hooks/useAuth";
+
 const Dashboard = () => {
+  // Redux Dispatch Hook
   const dispatch = useDispatch();
-  dispatch(setProjects(listOfProjects));
+
+  // Session User
+  const { user } = useAuth();
+
+  const { isPending, error, data, isLoading } = useQuery({
+    queryKey: ["projects"],
+    queryFn: () => getProjectsFromUser(user.id),
+  });
+
+  // // Set Projects to Redux when component mounts
+  useEffect(() => {
+    if (data) {
+      dispatch(setProjects(data));
+    }
+  }, [isLoading]);
+
+  // Retrieve Projects from Redux
+  const projects = useSelector((state: any) => state.projectReducer.projects);
+
+  // Selected Project State
   const [selectedProject, setSelectedProject] = useState<null | ProjectProps>(
     null
   );
 
-
-  
-  const projects = useSelector((state: any) => state.projectReducer.projects)
-  
-
-
+  // Modals States
   const [showModal, setShowModal] = useState<boolean>(false);
-
   const [showNewProjectModal, setShowNewProjectModal] =
     useState<boolean>(false);
+
+  // Handlers
   const handleSelectedProject = () => {
     setSelectedProject(null);
   };
 
-  console.log(projects)
-  console.log(handleSelectedProject)
+  console.log({
+    isPending,
+    error,
+    data,
+    projects,
+    handleSelectedProject,
+  });
+
   return (
     <section className="flex flex-col w-full flex-1 items-center justify-center p-10">
       {!selectedProject && (
-        <div className="flex flex-col w-full flex-1 items-center justify-center gap-4">
+        <AnimatedDiv className="flex flex-col w-full flex-1 items-center justify-center gap-4">
           <div className="flex flex-col gap-2 items-center justify-center">
             <h1 className="font-bold text-6xl flex items-center justify-center gap-2 flex-wrap max-lg:text-center">
               Welcome to your
@@ -62,12 +91,17 @@ const Dashboard = () => {
           <div className="flex flex-col gap-4 w-[90%]">
             <h1 className="font-bold text-2xl">Your projects</h1>
             <div className="flex gap-4 w-full overflow-x-scroll p-4">
-              {listOfProjects.map((project, index) => (
-                <ProjectCard key={index} title={project.title} assignedTo={project.assignedTo} desc=""/>
+              {projects.map((project: any, index: number) => (
+                <ProjectCard
+                  key={index}
+                  title={project.title}
+                  assignedTo={project.assignedTo}
+                  desc=""
+                />
               ))}
             </div>
           </div>
-        </div>
+        </AnimatedDiv>
       )}
 
       {showModal && (
@@ -79,29 +113,35 @@ const Dashboard = () => {
           showModal={showModal}
         />
       )}
+
       {selectedProject && <DashboardSelectedProject />}
 
       {createPortal(
-        showNewProjectModal && (
-          <div className="absolute h-full w-full z-10 flex justify-center items-center p-10">
+        <AnimatePresence>
+          {showNewProjectModal && (
             <motion.div
-              className="absolute h-full w-full z-0 bg-[--color-text-lightest]"
+              className="absolute h-full w-full z-10 flex justify-center items-center p-10"
               initial={{
                 opacity: 0,
               }}
               animate={{
-                opacity: 0.8,
+                opacity: 1,
               }}
               exit={{
                 opacity: 0,
+                transition: {
+                  duration: 0.5,
+                },
               }}
-            ></motion.div>
-            <NewProjectModal
-              showNewProjectModal={showNewProjectModal}
-              setShowNewProjectModal={setShowNewProjectModal}
-            />
-          </div>
-        ),
+            >
+              <div className="absolute h-full w-full z-0 bg-[--color-text-lightest] opacity-80"></div>
+              <NewProjectModal
+                showNewProjectModal={showNewProjectModal}
+                setShowNewProjectModal={setShowNewProjectModal}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>,
         document.getElementById("root") as HTMLElement
       )}
     </section>

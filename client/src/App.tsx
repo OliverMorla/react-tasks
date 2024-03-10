@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 
 // Components (UI)
@@ -18,7 +19,6 @@ import Auth from "./components/containers/Auth";
 
 // Hooks
 import useAuth from "@/hooks/useAuth";
-import { Fragment } from "react";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -28,7 +28,7 @@ const App = () => {
   };
 
   if (isAuthenticated && pathname.includes("/auth")) {
-    return <Navigate to="/" />;
+    return <Navigate to="/dashboard" />;
   }
 
   if (!isAuthenticated && !pathname.includes("/auth")) {
@@ -54,7 +54,6 @@ const App = () => {
           <Sidebar />
           <main className="flex flex-col flex-grow w-full">
             <Header />
-
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/list" element={<List />} />

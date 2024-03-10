@@ -474,6 +474,7 @@ const listOfProjects = [
 ];
 
 const userSession = {
+  id: 1,
   name: "John Doe",
   email: "johndoe@reacttasks.com",
   photo: "/assets/images/users/dummy-1.png",
@@ -481,6 +482,7 @@ const userSession = {
 };
 
 const adminSession = {
+  id: 1,
   name: "Oliver Morla",
   email: "olivermorla@reacttasks.com",
   photo: "/assets/images/users/dummy-1.png",

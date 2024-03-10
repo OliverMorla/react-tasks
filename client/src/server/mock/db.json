@@ -1,0 +1,193 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "johndoe@reacttasks.com",
+      "password": "password",
+      "avatar": "https://randomuser.me/api/portraits/men/49.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Jane Doe",
+      "email": "janedoe@reacttasks.com",
+      "password": "password",
+      "avatar": "https://randomuser.me/api/portraits/women/64.jpg"
+    },
+    {
+      "id": 3,
+      "name": "James Doe",
+      "email": "jamesdoe@reacttasks.com",
+      "password": "password",
+      "avatar": "/assets/images/users/dummy-2.png"
+    },
+    {
+      "id": 4,
+      "name": "Jenny Doe",
+      "email": "jennydoe@reacttasks.com",
+      "password": "password",
+      "photo": "/assets/images/users/dummy-3.png"
+    },
+    {
+      "id": 5,
+      "name": "Frank Doe",
+      "email": "frankdoe@reacttasks.com",
+      "password": "password",
+      "photo": "/assets/images/users/dummy-4.png"
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "userId": "1",
+      "title": "Product Red",
+      "type": "Shared",
+      "createdAt": "21/03/22"
+    },
+    {
+      "id": 2,
+      "userId": "2",
+      "title": "Product Blue",
+      "type": "Personal",
+      "createdAt": "21/03/22"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "userId:": "1",
+      "projectId": "1",
+      "title": "Improve cards readability",
+      "desc": "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
+      "tags": ["Feedback", "Bug", "Improvement"],
+      "priority": "High",
+      "createdAt": "21/03/22",
+      "dueDate": "21/03/22",
+      "status": "In Progress"
+    },
+    {
+      "id": 2,
+      "userId": "1",
+      "projectId": "1",
+      "title": "Improve cards readability",
+      "desc": "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
+      "tags": ["Feedback", "Bug"],
+      "createdAt": "21/03/22",
+      "dueDate": "21/03/22",
+      "priority": "High",
+      "status": "In Progress"
+    },
+    {
+      "id": 3,
+      "userId": "2",
+      "projectId": "2",
+      "title": "Improve cards readability",
+      "desc": "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
+      "tags": ["Improvement"],
+      "priority": "High",
+      "createdAt": "21/03/22",
+      "dueDate": "21/03/22",
+      "status": "To do"
+    },
+    {
+      "id": 4,
+      "userId": "2",
+      "projectId": "2",
+      "title": "Improve cards readability",
+      "desc": "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
+      "tags": ["Improvement"],
+      "priority": "High",
+      "createdAt": "21/03/22",
+      "dueDate": "21/03/22",
+      "status": "Backlog"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "userId": "1",
+      "taskId": "4",
+      "comment": "This task seems funny!",
+      "createdAt": "9:05 AM"
+    },
+    {
+      "id": 2,
+      "userId": "3",
+      "taskId": "4",
+      "comment": "Mhmm!",
+      "createdAt": "9:10 AM"
+    },
+    {
+      "id": 3,
+      "userId": "1",
+      "taskId": "3",
+      "comment": "This task seems funny!",
+      "createdAt": "9:05 AM"
+    },
+    {
+      "id": 4,
+      "userId": "1",
+      "taskId": "2",
+      "comment": "This task seems funny!",
+      "createdAt": "9:05 AM"
+    },
+    {
+      "id": 5,
+      "userId": "1",
+      "taskId": "1",
+      "comment": "This task seems funny!",
+      "createdAt": "9:05 AM"
+    }
+  ],
+
+  "connections": [
+    {
+      "id": 1,
+      "userId": "2",
+      "projectId": "1",
+      "taskId": null
+    },
+    {
+      "id": 2,
+      "userId": "3",
+      "projectId": "1",
+      "taskId": null
+    },
+    {
+      "id": 3,
+      "userId": "4",
+      "projectId": "1",
+      "taskId": null
+    },
+    {
+      "id": 4,
+      "userId": 5,
+      "projectId": "1",
+      "taskId": null
+    },
+    {
+      "id": 5,
+      "userId": "1",
+      "projectId": "2",
+      "taskId": null
+    },
+    {
+      "id": 6,
+      "userId": "3",
+      "projectId": "2",
+      "taskId": null
+    },
+    {
+      "id": 7,
+      "userId": "4",
+      "projectId": "2",
+      "taskId": null
+    },
+    {
+      "id": 8,
+      "userId": "5",
+      "projectId": "2",
+      "taskId": null
+    }
+  ]
+}

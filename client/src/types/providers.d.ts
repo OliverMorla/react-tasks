@@ -1,5 +1,12 @@
 interface AuthContextProps {
   isAuthenticated: boolean;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    photo: string;
+    role: "User" | "Admin";
+  };
 }
 
 interface ThemeContextProps {

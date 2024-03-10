@@ -16,7 +16,7 @@ import "./global.css";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <AnimatePresence>
       <BrowserRouter>
         <ThemeProvider>
@@ -30,5 +30,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </ThemeProvider>
       </BrowserRouter>
     </AnimatePresence>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

@@ -5,35 +5,84 @@
       "name": "John Doe",
       "email": "johndoe@reacttasks.com",
       "password": "password",
-      "avatar": "https://randomuser.me/api/portraits/men/49.jpg"
+      "avatar": "/assets/images/users/dummy-1.png"
     },
     {
       "id": 2,
       "name": "Jane Doe",
       "email": "janedoe@reacttasks.com",
       "password": "password",
-      "avatar": "https://randomuser.me/api/portraits/women/64.jpg"
+      "avatar": "/assets/images/users/dummy-2.png"
     },
     {
       "id": 3,
       "name": "James Doe",
       "email": "jamesdoe@reacttasks.com",
       "password": "password",
-      "avatar": "/assets/images/users/dummy-2.png"
+      "avatar": "/assets/images/users/dummy-3.png"
     },
     {
       "id": 4,
       "name": "Jenny Doe",
       "email": "jennydoe@reacttasks.com",
       "password": "password",
-      "photo": "/assets/images/users/dummy-3.png"
+      "avatar": "/assets/images/users/dummy-4.png"
     },
     {
       "id": 5,
       "name": "Frank Doe",
       "email": "frankdoe@reacttasks.com",
       "password": "password",
-      "photo": "/assets/images/users/dummy-4.png"
+      "avatar": "/assets/images/users/dummy-5.png"
+    },
+    {
+      "id": 6,
+      "name": "Johhny Doe",
+      "email": "johhnydoe@reacttasks.com",
+      "password": "password",
+      "avatar": "/assets/images/users/dummy-6.png"
+    },
+    {
+      "id": 7,
+      "name": "Sam Doe",
+      "email": "",
+      "password": "password",
+      "avatar": "/assets/images/users/dummy-7.png"
+    },
+    {
+      "id": 8,
+      "name": "Chris Doe",
+      "email": "",
+      "password": "password",
+      "avatar": "/assets/images/users/dummy-8.png"
+    },
+    {
+      "id": 9,
+      "name": "William Doe",
+      "email": "",
+      "password": "password",
+      "avatar": "/assets/images/users/dummy-9.png"
+    },
+    {
+      "id": 10,
+      "name": "Stephan Doe",
+      "email": "",
+      "password": "password",
+      "avatar": "/assets/images/users/dummy-10.png"
+    },
+    {
+      "id": 11,
+      "name": "Kevin Doe",
+      "email": "",
+      "password": "password",
+      "avatar": "/assets/images/users/dummy-11.png"
+    },
+    {
+      "id": 12,
+      "name": "Luis Doe",
+      "email": "",
+      "password": "password",
+      "avatar": "/assets/images/users/dummy-12.png"
     }
   ],
   "projects": [

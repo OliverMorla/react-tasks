@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/utils/cn";
+import { presetIcons } from "@/entities";
 
 const Button: React.FC<ButtonProps> = ({
   name,
@@ -8,6 +9,7 @@ const Button: React.FC<ButtonProps> = ({
   pathUrl,
   variant = "transparent",
   children,
+  presetIcon,
   ...props
 }) => {
   const variants = {
@@ -15,7 +17,9 @@ const Button: React.FC<ButtonProps> = ({
       "border-[--color-text-lightest] border-[1px] p-1 rounded-lg transition-all ease-in-out hover:border-[--color-primary] hover:scale-105",
     color:
       "bg-[--color-primary] text-white p-1 rounded-lg transition-all ease-in-out hover:bg-[--color-primary-dark] hover:scale-105",
+    clear: "",
   };
+
   return (
     <>
       {pathUrl ? (
@@ -32,6 +36,13 @@ const Button: React.FC<ButtonProps> = ({
                 height={25}
               />
             )}
+            {presetIcon && (
+              <FontAwesomeIcon
+                icon={presetIcons[presetIcon]}
+                width={25}
+                height={25}
+              />
+            )}
             {children && children}
           </button>
         </Link>
@@ -41,9 +52,20 @@ const Button: React.FC<ButtonProps> = ({
           className={cn(variants[variant], props.className)}
           aria-label={name}
         >
-          {fontAwesomeIconUrl && (
-            <FontAwesomeIcon icon={fontAwesomeIconUrl} width={25} height={25} />
-          )}
+           {fontAwesomeIconUrl && (
+              <FontAwesomeIcon
+                icon={fontAwesomeIconUrl}
+                width={25}
+                height={25}
+              />
+            )}
+            {presetIcon && (
+              <FontAwesomeIcon
+                icon={presetIcons[presetIcon]}
+                width={25}
+                height={25}
+              />
+            )}
           {children && children}
         </button>
       )}

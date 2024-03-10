@@ -5,8 +5,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   readonly title?: string;
   fontAwesomeIconUrl?: any;
   pathUrl?: string;
-  variant?: "transparent" | "color";
-  presetIcon?: "close"
+  variant?: "transparent" | "color" | "clear";
+  presetIcon?: "close";
 }
 
 interface ModalProps {
@@ -67,6 +67,11 @@ interface SidebarLinkWithMenuProps {
   pathUrl: string;
   iconUrl?: URL;
   subMenu?: any[];
+}
+
+interface NewProjectModalUserCardProps {
+  name: string;
+  photoUrl: string;
 }
 
 interface SidebarLinkProps {

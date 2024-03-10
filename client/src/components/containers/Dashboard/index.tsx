@@ -39,6 +39,7 @@ const Dashboard = () => {
     }
   }, [isLoading]);
 
+
   // Retrieve Projects from Redux
   const projects = useSelector((state: any) => state.projectReducer.projects);
 

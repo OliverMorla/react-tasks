@@ -14,6 +14,7 @@ import {
   faStopCircle,
   faTriangleExclamation,
   faUserGroup,
+  faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 const navPrimaryLinks = [
@@ -561,9 +562,14 @@ const messageIcons = {
   info: faCircleInfo,
 };
 
+const presetIcons = {
+  close: faXmarkCircle,
+}
+
 export {
   navPrimaryLinks,
   sidebarMenuLinks,
+  presetIcons,
   usersAssigned,
   listOfTasks,
   listOfPrices,

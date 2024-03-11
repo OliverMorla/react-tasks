@@ -69,7 +69,7 @@ interface SidebarLinkWithMenuProps {
   subMenu?: any[];
 }
 
-interface NewProjectModalUserCardProps {
+interface NewProjectModalUserCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
   photoUrl: string;
 }

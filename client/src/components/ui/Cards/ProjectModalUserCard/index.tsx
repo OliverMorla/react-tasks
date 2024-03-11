@@ -1,9 +1,14 @@
 import Button from "@/components/shared/ui/Button";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
-const NewProjectModalUserCard = ({ name, photoUrl }: NewProjectModalUserCardProps) => {
+const NewProjectModalUserCard: React.FunctionComponent<
+  NewProjectModalUserCardProps
+> = ({ name, photoUrl, ...props }) => {
   return (
-    <div className="relative text-center flex flex-col items-center justify-center min-w-fit">
+    <div
+      className="relative text-center flex flex-col items-center justify-center min-w-fit"
+      {...props}
+    >
       <img
         src={photoUrl}
         alt={name}

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import { motion, scroll } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, scroll, useScroll, useMotionValueEvent } from "framer-motion";
 
 import useAuth from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
@@ -15,7 +15,17 @@ const NewProjectModal = ({
   showNewProjectModal,
   setShowNewProjectModal,
 }: NewProjectModalProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [usersData, setUsersData] = useState<any[]>([]);
+  const [input, setInput] = useState({
+    title: "",
+    type: "public",
+    connections: [],
+    createdBy: "",
+    createdAt: new Date().toLocaleString(),
+  });
+
   const { isAuthenticated, user } = useAuth();
   const {
     isPending,
@@ -28,48 +38,61 @@ const NewProjectModal = ({
     refetchInterval: 500,
   });
 
-  const [usersData, setUsersData] = useState<any[]>();
-  const [input, setInput] = useState({
-    title: "",
-    type: "public",
-    connections: [],
-    createdBy: user.name,
-    createdAt: new Date().toLocaleString(),
-  });
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>
   ) => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const scrollControls = () => {
-    scroll(
-      (progress) => {
-        if (progress === 1) {
-          setPageNumber((prev) => prev + 1);
-        }
-      },
-      {
-        source: document.getElementById("scroll-container")!,
-        axis: "x",
-      }
-    );
-  };
+  useEffect(() => {
+    if (users?.data) {
+      setUsersData((prevData) => [...prevData, ...users.data]);
+    }
+  }, [users?.data]);
 
   useEffect(() => {
-    if (users) {
-      setUsersData(users.data);
-    }
+    const scrollContainer = document.getElementById("scroll-container");
+    if (!scrollContainer) return;
 
-    scrollControls();
-    
-    console.log("useEffect Ran!");
+    const handleScroll = () => {
+      const isAtEnd =
+        scrollContainer.scrollWidth - scrollContainer.scrollLeft ===
+        scrollContainer.clientWidth;
 
-    return () => {
-      console.log("useEffect Cleaned!");
+      if (isAtEnd) {
+        setPageNumber((prevPage) => prevPage + 1);
+      }
     };
-  }, [isPending, users]);
+
+    scrollContainer.addEventListener("scroll", handleScroll);
+
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // useEffect(() => {
+  //   scroll(
+  //     (progress) => {
+  //       console.log(progress);
+  //     },
+  //     {
+  //       source: document.getElementById("scroll-container") as HTMLElement,
+  //       axis: "x",
+  //     }
+  //   );
+  // }, []);
+
+  useEffect(() => {
+
+  }, [input.connections])
+
+  const handleInputConnections = (user: any) => {
+    if(input.connections.includes(user)) {
+      setInput((prev) => ({
+        ...prev,
+        connections: prev.connections.filter((conn) => conn !== user),
+      }));
+    }
+  }
 
   if (!isAuthenticated && !user) {
     return null;
@@ -139,7 +162,7 @@ const NewProjectModal = ({
         <div className="flex flex-col gap-2 w-full">
           <label htmlFor="connections">Connections*</label>
           <div className="bg-transparent border-[1px] p-4 rounded-lg overflow-hidden">
-            {isLoading && !error ? (
+            {isLoading && !error && (
               <img
                 src="/assets/spinners/Loading-3.svg"
                 alt=""
@@ -147,22 +170,33 @@ const NewProjectModal = ({
                 height={50}
                 className="ml-auto mr-auto"
               />
-            ) : usersData && !error ? (
-              <div
-                className="max-w-[500px] flex gap-4 overflow-x-scroll"
-                id="scroll-container"
-              >
-                {usersData.map((user: any, index: number) => (
-                  <ProjectModalUserCard
-                    key={index}
-                    name={user.name}
-                    photoUrl={user.avatar}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p>{error?.message}</p>
             )}
+
+            <div
+              className="max-w-[500px] flex gap-4 overflow-x-scroll"
+              id="scroll-container"
+              ref={scrollRef}
+            >
+              {usersData && (
+                <div className="flex gap-4">
+                  {usersData.map((user: any, index: number) => (
+                    <ProjectModalUserCard
+                      key={index}
+                      name={user.name}
+                      photoUrl={user.avatar}
+                      onClick={() => {
+                        setInput((prev) => ({
+                          ...prev,
+                          connections: [...prev.connections, user],
+                        }));
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {error && <p>{error?.message}</p>}
           </div>
         </div>
         <div className="flex flex-col gap-2 w-full">

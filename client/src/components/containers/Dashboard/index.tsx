@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -39,9 +39,10 @@ const Dashboard = () => {
     }
   }, [isLoading]);
 
-
   // Retrieve Projects from Redux
-  const projects = useSelector((state: any) => state.projectReducer.projects);
+  const projects: ProjectProps[] = useSelector(
+    (state: any) => state.projectReducer.projects
+  );
 
   // Selected Project State
   const [selectedProject, setSelectedProject] = useState<null | ProjectProps>(
@@ -53,17 +54,12 @@ const Dashboard = () => {
   const [showNewProjectModal, setShowNewProjectModal] =
     useState<boolean>(false);
 
-  // Handlers
-  const handleSelectedProject = () => {
-    setSelectedProject(null);
-  };
-
+  // Testing Purposes
   console.log({
     isPending,
     error,
     data,
     projects,
-    handleSelectedProject,
   });
 
   return (
@@ -92,13 +88,23 @@ const Dashboard = () => {
           <div className="flex flex-col gap-4 w-[90%]">
             <h1 className="font-bold text-2xl">Your projects</h1>
             <div className="flex gap-4 w-full overflow-x-scroll p-4">
-              {projects.map((project: any, index: number) => (
-                <ProjectCard
-                  key={index}
-                  title={project.title}
-                  assignedTo={project.assignedTo}
-                  desc=""
-                />
+              {projects.map((project, index: number) => (
+                <Fragment key={index}>
+                  <ProjectCard
+                    id={project.id}
+                    title={project.title}
+                    connections={project.connections}
+                    type={project.type}
+                    desc={project.desc}
+                    dueDate={project.dueDate}
+                    createdAt={project.createdAt}
+                    priority={project.priority}
+                    tags={project.tags}
+                    privacy={project.privacy}
+                    status={project.status}
+                    onClick={() => setSelectedProject(project)}
+                  />
+                </Fragment>
               ))}
             </div>
           </div>
@@ -115,7 +121,22 @@ const Dashboard = () => {
         />
       )}
 
-      {selectedProject && <DashboardSelectedProject />}
+      {selectedProject && (
+        <DashboardSelectedProject
+          key={selectedProject.id}
+          id={selectedProject.id}
+          title={selectedProject.title}
+          status={selectedProject.status}
+          type={selectedProject.type}
+          desc={selectedProject.desc}
+          dueDate={selectedProject.dueDate}
+          priority={selectedProject.priority}
+          tags={selectedProject.tags}
+          createdAt={selectedProject.createdAt}
+          privacy={selectedProject.privacy}
+          connections={selectedProject.connections}
+        />
+      )}
 
       {createPortal(
         <AnimatePresence>

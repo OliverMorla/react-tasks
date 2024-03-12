@@ -1,6 +1,7 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { AnimatePresence } from "framer-motion";
+
+// Components
 import App from "./App";
 
 // Providers
@@ -17,18 +18,18 @@ const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
-    <AnimatePresence>
-      <BrowserRouter>
-        <ThemeProvider>
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <TaskProvider>
-                <App />
-              </TaskProvider>
-            </AuthProvider>
-          </QueryClientProvider>
-        </ThemeProvider>
-      </BrowserRouter>
-    </AnimatePresence>
+  <AnimatePresence>
+    <BrowserRouter>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <TaskProvider>
+              <App />
+            </TaskProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </BrowserRouter>
+  </AnimatePresence>
   // </React.StrictMode>
 );

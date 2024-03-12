@@ -6,28 +6,39 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   fontAwesomeIconUrl?: any;
   pathUrl?: string;
   variant?: "transparent" | "color" | "clear";
-  presetIcon?: "close";
+  presetIcon?:
+    | "close"
+    | "menu"
+    | "settings"
+    | "plus"
+    | "notification"
+    | "plusCircle";
+  iconDimensions?: {
+    width: number;
+    height: number;
+  };
 }
 
 interface ModalProps {
   readonly showModal: boolean;
   readonly setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  title: string;
-  desc: string;
+  readonly title: string;
+  readonly desc: string;
   type: "success" | "error" | "warning" | "info";
 }
 
-interface ToggleButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children?: React.ReactNode;
-  iconSettings?: {
-    width: number;
-    height: number;
-  };
-  fontAwesomeIconUrl?: any;
+interface AnimatedDivProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+interface AnimatedSectionProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
 }
 
 /* ======== UI Components Interfaces/Types ======== */
+
+/* ======== Cards ======== */
+
 interface PriceCardProps {
   title: string;
   tagline: string;
@@ -40,25 +51,49 @@ interface PriceCardProps {
   transitionDelay: number;
 }
 
-type TaskCardStatus = "In Progress" | "Backlog" | "To Do";
-type TaskCardPriority = "High" | "Medium" | "Low";
-type TaskCardUser = {
-  photo: string;
-  userName: string;
-};
-
 interface TaskCardProps {
-  title: string;
-  desc: string;
-  assignedTo: TaskCardUser[];
-  tags: string[];
-  dueDate: string;
-  status: TaskCardStatus;
-  priority: TaskCardPriority;
-  comments: string;
-  createdAt: string;
-  updatedAt: string;
+  readonly id: string | number;
+  readonly tags: ["Bug" | "Feedback"];
+  readonly title: string;
+
+  userId?: string | number;
+  user?: UserProps;
+
+  projectId?: string | number;
+  project?: ProjectProps;
+
+  readonly desc: string;
+  readonly priority: "High" | "Medium" | "Low";
+  readonly status: "In Progress" | "Backlog" | "To Do";
+  readonly createdAt: Date | string;
+  readonly dueDate: Date | string;
+  readonly comments?: CommentProps[];
 }
+
+interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  readonly id: string | number;
+  readonly tags: string[];
+  readonly status: "In Progress" | "Completed";
+  readonly title: string;
+
+  userId?: string | number;
+  user?: UserProps;
+
+  readonly desc: string;
+  readonly priority: "High" | "Medium" | "Low";
+  readonly type: "Personal" | "Shared";
+  readonly connections?: UserProps[];
+  readonly privacy: "Public" | "Private" | "Archived";
+  readonly createdAt: Date | string;
+  readonly dueDate: Date | string;
+}
+
+interface ProjectUserCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  name: string;
+  photoUrl: string;
+}
+
+/* ======== ====== ======== */
 
 interface SidebarLinkWithMenuProps {
   title: string;
@@ -67,11 +102,6 @@ interface SidebarLinkWithMenuProps {
   pathUrl: string;
   iconUrl?: URL;
   subMenu?: any[];
-}
-
-interface NewProjectModalUserCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  name: string;
-  photoUrl: string;
 }
 
 interface SidebarLinkProps {
@@ -98,7 +128,8 @@ interface TaskTagsProps {
   textColor: string;
 }
 
-// Modal Components
+/* ======== Modal ======== */
+
 interface NewTaskModalProps {
   showNewTaskModal: boolean;
   setShowNewTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -109,22 +140,77 @@ interface NewProjectModalProps {
   setShowNewProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface NewProjectModalInputProps {
+  title: string;
+  type: string;
+  connections: any[];
+  createdBy: string;
+  createdAt: string;
+}
+
+/* ======== ====== ======== */
+
 interface NewTaskTogglesProps extends NewTaskModalProps {}
 
-interface ProjectProps {}
-
-interface ProjectCardProps {
+interface ProjectProps {
+  readonly id: string | number;
+  readonly tags: string[];
+  readonly status: "In Progress" | "Completed";
   readonly title: string;
+
+  userId?: string | number;
+  user?: UserProps;
+
   readonly desc: string;
-  readonly assignedTo: AssignedUserProps[];
+  readonly priority: "High" | "Medium" | "Low";
+  readonly type: "Personal" | "Shared";
+  readonly privacy: "Public" | "Private" | "Archived";
+  readonly connections?: UserProps[];
+  readonly createdAt: Date | string;
+  readonly dueDate: Date | string;
+
+  tasks?: TaskProps[];
 }
 
-interface AssignedUserProps {
-  photo: string;
+interface TasksProps extends TaskCardProps {}
+
+interface UserProps {
+  readonly id: string | number;
   name: string;
   email: string;
+  password?: string;
+  avatar: string;
 }
 
-interface AnimatedDivProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
+interface CommentProps {
+  readonly id: string | number;
+
+  userId?: string | number;
+  user?: UserProps;
+
+  taskId?: string | number;
+  task?: Task;
+
+  readonly content: string;
+  readonly createdAt: Date | string;
+}
+
+interface ConnectionProps {
+  readonly id: string | number;
+
+  userId?: string | number;
+  user?: UserProps;
+
+  projectId?: string | number;
+  project?: ProjectProps;
+
+  readonly createdAt: Date | string;
+}
+
+interface UserSessionProps {
+  id: number;
+  name: string;
+  email: string;
+  photo: string;
+  role: "User" | "Admin";
 }

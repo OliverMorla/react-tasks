@@ -3,12 +3,28 @@ const apiUrl = import.meta.env.VITE_MOCK_API_URL;
 if (!apiUrl) {
   throw new Error("VITE_MOCK_API_URL is not defined");
 }
-const getProjectsFromUser = (userId: number) => {
-  return fetch(`${apiUrl}/projects?userId=${userId}`).then((res) => res.json());
+
+const getProjectsFromUser = async (userId: number) => {
+  try {
+    const res = await fetch(`${apiUrl}/projects?userId=${userId}`);
+    return res.json();
+  } catch (err) {
+    console.error(err instanceof Error ? `=>${err.message}` : "Internal error");
+  }
 };
 
-// const getProjectFromUser = (projectId: number) => {
-//     return fetch(`${apiUrl}`)
-// }
+const getAllPublicProjects = async () => {};
 
-export { getProjectsFromUser };
+const handleCreateProject = async () => {};
+
+const handleDeleteProject = async () => {};
+
+const handleUpdateProject = async () => {};
+
+export {
+  getProjectsFromUser,
+  handleCreateProject,
+  getAllPublicProjects,
+  handleDeleteProject,
+  handleUpdateProject,
+};

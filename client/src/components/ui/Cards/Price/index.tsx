@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Button from "@/components/shared/ui/Button";
 import {
   faCheckCircle,
   faXmarkCircle,
@@ -26,7 +27,7 @@ const PriceCard = ({
         y: 0,
         transition: {
           delay: transitionDelay * 0.6,
-          duration: 0.5,
+          duration: 0.4,
         },
       }}
       whileHover={{
@@ -43,17 +44,18 @@ const PriceCard = ({
         <span className="text-6xl">{price}</span>
         <span className="text-sm opacity-60 self-end">/ month</span>
       </div>
-      <button
-        aria-label="Get Started"
+      <Button
+        name="Get Started"
         className="bg-[var(--color-text-darker)] text-white py-4 hover:bg-[var(--color-text-dark)] transition-all duration-300 ease-in-out rounded-lg w-full"
+        variant="clear"
       >
         Get Started
-      </button>
+      </Button>
       <div className="flex flex-col">
         {features?.pros?.map((item, index) => (
           <div
             key={index}
-            className="text-green-500 py-4 border-t-[var(--color-text-lightest)] border-t-[1px]"
+            className="text-green-600 py-4 border-t-[var(--color-text-lightest)] border-t-[1px]"
           >
             <FontAwesomeIcon icon={faCheckCircle} width={25} height={25} />
             {item}
@@ -62,7 +64,7 @@ const PriceCard = ({
         {features?.cons?.map((item, index) => (
           <div
             key={index}
-            className="text-red-500 py-4 border-t-[var(--color-text-lightest)] border-t-[1px]"
+            className="text-red-600 py-4 border-t-[var(--color-text-lightest)] border-t-[1px]"
           >
             <FontAwesomeIcon icon={faXmarkCircle} width={25} height={25} />
             {item}

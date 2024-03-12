@@ -1,8 +1,14 @@
-import ToggleButton from "@/components/shared/ui/ToggleButton";
+import Button from "@/components/shared/ui/Button";
 
 const Login = () => {
-  // const handleSubmit = () => {};
-  // const handleInputChange = () => {};
+  const handleSubmit = () => {};
+  const handleInputChange = () => {};
+
+  console.log({
+    handleSubmit,
+    handleInputChange,
+  });
+
   return (
     <form className="flex flex-col gap-4 max-w-[500px] w-full">
       <input
@@ -17,13 +23,14 @@ const Login = () => {
         placeholder="Enter your password"
         className="flex-grow py-4 px-2 border-b-[1px] border-b-[--color-text-lighter]"
       />
-      <ToggleButton
+      <Button
         type="submit"
-        className="p-4 border-[--color-text-lighter]"
+        variant="transparent"
+        className="p-4"
         onClick={() => {}}
       >
         Login
-      </ToggleButton>
+      </Button>
     </form>
   );
 };

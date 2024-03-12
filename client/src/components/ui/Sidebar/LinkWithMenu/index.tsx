@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import ProjectsModal from "../../Modals/Projects";
+import SidebarProjectOverlay from "../../Overlays/SidebarProject";
 
 const SidebarLinkWithMenu = ({
   title,
@@ -54,7 +54,7 @@ const SidebarLinkWithMenu = ({
       </Link>
       <AnimatePresence>
         {isSubMenuOpen && (
-          <ProjectsModal
+          <SidebarProjectOverlay
             subMenu={subMenu}
             setIsSubMenuOpen={setIsSubMenuOpen}
             isSubMenuOpen={isSubMenuOpen}

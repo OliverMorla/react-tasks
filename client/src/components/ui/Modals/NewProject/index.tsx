@@ -1,24 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useRef } from "react";
-import { motion, scroll, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, scroll } from "framer-motion";
 
 import useAuth from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import ProjectModalUserCard from "@/components/ui/Cards/ProjectModalUserCard";
+import ProjectUserCard from "@/components/ui/Cards/Project/UserCard";
 
 import Button from "@/components/shared/ui/Button";
-import ToggleButton from "@/components/shared/ui/ToggleButton";
 import { getAvailableUsers } from "@/actions/users-actions";
 
 const NewProjectModal = ({
   showNewProjectModal,
   setShowNewProjectModal,
 }: NewProjectModalProps) => {
+  // this ref is used to get the scroll container element
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // this state is used to store the page number for the available users
   const [pageNumber, setPageNumber] = useState(1);
+
+  // this state is used to store the users data that are available for the project
   const [usersData, setUsersData] = useState<any[]>([]);
-  const [input, setInput] = useState({
+
+  // this state is used to store the input data for the new project
+  const [input, setInput] = useState<NewProjectModalInputProps>({
     title: "",
     type: "public",
     connections: [],
@@ -26,7 +32,10 @@ const NewProjectModal = ({
     createdAt: new Date().toLocaleString(),
   });
 
+  // this useAuth hook is used to get the user data and check if the user is authenticated
   const { isAuthenticated, user } = useAuth();
+
+  // this useQuery is used to fetch the available users for the project
   const {
     isPending,
     data: users,
@@ -35,21 +44,24 @@ const NewProjectModal = ({
   } = useQuery({
     queryKey: ["usersAvailable"],
     queryFn: () => getAvailableUsers(pageNumber),
-    refetchInterval: 500,
+    refetchInterval: 1000,
   });
 
+  // this function is used to handle the input changes on the form
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>
   ) => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // this useEffect is used to add the users to the usersData array when the users are fetched
   useEffect(() => {
     if (users?.data) {
       setUsersData((prevData) => [...prevData, ...users.data]);
     }
   }, [users?.data]);
 
+  // this useEffect is used to observe the scroll event on the scroll container and fetch the next page of users
   useEffect(() => {
     const scrollContainer = document.getElementById("scroll-container");
     if (!scrollContainer) return;
@@ -81,22 +93,19 @@ const NewProjectModal = ({
   //   );
   // }, []);
 
-  useEffect(() => {
-
-  }, [input.connections])
-
+  // this function is used to handle the connections that are added to the project and remove them from the available users
   const handleInputConnections = (user: any) => {
-    if(input.connections.includes(user)) {
-      setInput((prev) => ({
-        ...prev,
-        connections: prev.connections.filter((conn) => conn !== user),
-      }));
+    if (usersData.includes(user)) {
+      setUsersData((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
     }
-  }
+  };
 
+  // if the user is not authenticated and there is no user data, return null
   if (!isAuthenticated && !user) {
     return null;
   }
+
+  // testing purposes only
   console.log({
     isAuthenticated,
     isLoading,
@@ -107,6 +116,7 @@ const NewProjectModal = ({
     setPageNumber,
     input,
     usersData,
+    scroll,
   });
 
   return (
@@ -180,7 +190,7 @@ const NewProjectModal = ({
               {usersData && (
                 <div className="flex gap-4">
                   {usersData.map((user: any, index: number) => (
-                    <ProjectModalUserCard
+                    <ProjectUserCard
                       key={index}
                       name={user.name}
                       photoUrl={user.avatar}
@@ -189,6 +199,7 @@ const NewProjectModal = ({
                           ...prev,
                           connections: [...prev.connections, user],
                         }));
+                        handleInputConnections(user);
                       }}
                     />
                   ))}
@@ -220,9 +231,9 @@ const NewProjectModal = ({
           />
         </div>
 
-        <ToggleButton type="submit" className="self-center">
+        <Button type="submit" className="self-center">
           Create Project
-        </ToggleButton>
+        </Button>
       </form>
     </motion.div>
   );

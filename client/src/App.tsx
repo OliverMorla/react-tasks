@@ -55,13 +55,13 @@ const App = () => {
           <main className="flex flex-col flex-grow w-full">
             <Header />
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Dashboard key={1} />} />
               <Route path="/list" element={<List />} />
               <Route path="/calendar" element={<Calendar />} />
 
               <Route path="/messages" element={<Messages />} />
               <Route path="/users" element={<Users />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard key={2} />} />
               <Route path="/upgrade" element={<Upgrade />} />
               <Route path="/tasks" element={<Tasks />} />
 

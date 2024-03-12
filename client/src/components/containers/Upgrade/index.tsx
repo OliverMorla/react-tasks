@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { motion } from "framer-motion";
 import { listOfPrices } from "@/entities";
-import { pageLoadVariant } from "@/config/framer-variants";
 import PriceCard from "@/components/ui/Cards/Price";
+import AnimatedSection from "@/components/helpers/AnimatedSection";
 
 const Upgrade = () => {
   return (
-    <motion.section
-      className="flex items-center justify-center flex-grow gap-4 p-4 flex-col"
-      variants={pageLoadVariant}
-      initial={"hidden"}
-      animate={"visible"}
-    >
+    <AnimatedSection className="p-4 flex flex-col items-center justify-center flex-grow gap-10">
       <h1 className="text-6xl font-bold text-center text-[var(--color-primary)]">
         Choose the <u> plan </u> that's right for you
       </h1>
@@ -27,7 +21,7 @@ const Upgrade = () => {
           />
         ))}
       </div>
-    </motion.section>
+    </AnimatedSection>
   );
 };
 

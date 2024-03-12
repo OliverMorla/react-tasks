@@ -88,17 +88,83 @@
   "projects": [
     {
       "id": 1,
+      "tags": [
+        "React",
+        "Node",
+        "Express",
+        "MongoDB",
+        "JavaScript",
+        "HTML",
+        "CSS"
+      ],
       "userId": "1",
       "title": "Product Red",
+      "status": "Completed",
+      "desc": "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
       "type": "Shared",
-      "createdAt": "21/03/22"
+      "priority": "High",
+      "privacy": "Public",
+      "createdAt": "21/03/22",
+      "connections": [
+        {
+          "id": 1,
+          "name": "Jane Doe",
+          "email": "janedoe@reacttasks.com",
+          "password": "password",
+          "avatar": "/assets/images/users/dummy-2.png"
+        },
+        {
+          "id": 2,
+          "name": "Jane Doe",
+          "email": "janedoe@reacttasks.com",
+          "password": "password",
+          "avatar": "/assets/images/users/dummy-2.png"
+        },
+        {
+          "id": 3,
+          "name": "James Doe",
+          "email": "jamesdoe@reacttasks.com",
+          "password": "password",
+          "avatar": "/assets/images/users/dummy-3.png"
+        },
+        {
+          "id": 4,
+          "name": "Jenny Doe",
+          "email": "jennydoe@reacttasks.com",
+          "password": "password",
+          "avatar": "/assets/images/users/dummy-4.png"
+        }
+      ],
+      "dueDate": "21/03/22"
     },
     {
       "id": 2,
       "userId": "2",
+      "tags": ["React"],
+      "status": "In Progress",
       "title": "Product Blue",
+      "desc": "lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi cupiditate porro quasi mollitia alias reprehenderit totam eligendi dicta maiores magnam. Quibusdam at quis optio. At eaque delectus repellat atque praesentium",
       "type": "Personal",
-      "createdAt": "21/03/22"
+      "privacy": "Public",
+      "priority": "High",
+      "createdAt": "21/03/22",
+      "connections": [
+        {
+          "id": 1,
+          "name": "Jane Doe",
+          "email": "janedoe@reacttasks.com",
+          "password": "password",
+          "avatar": "/assets/images/users/dummy-2.png"
+        },
+        {
+          "id": 2,
+          "name": "Jane Doe",
+          "email": "janedoe@reacttasks.com",
+          "password": "password",
+          "avatar": "/assets/images/users/dummy-2.png"
+        }
+      ],
+      "dueDate": "21/03/22"
     }
   ],
   "tasks": [
@@ -193,50 +259,42 @@
     {
       "id": 1,
       "userId": "2",
-      "projectId": "1",
-      "taskId": null
+      "projectId": "1"
     },
     {
       "id": 2,
       "userId": "3",
-      "projectId": "1",
-      "taskId": null
+      "projectId": "1"
     },
     {
       "id": 3,
       "userId": "4",
-      "projectId": "1",
-      "taskId": null
+      "projectId": "1"
     },
     {
       "id": 4,
       "userId": 5,
-      "projectId": "1",
-      "taskId": null
+      "projectId": "1"
     },
     {
       "id": 5,
       "userId": "1",
-      "projectId": "2",
-      "taskId": null
+      "projectId": "2"
     },
     {
       "id": 6,
       "userId": "3",
-      "projectId": "2",
-      "taskId": null
+      "projectId": "2"
     },
     {
       "id": 7,
       "userId": "4",
-      "projectId": "2",
-      "taskId": null
+      "projectId": "2"
     },
     {
       "id": 8,
       "userId": "5",
-      "projectId": "2",
-      "taskId": null
+      "projectId": "2"
     }
   ]
 }

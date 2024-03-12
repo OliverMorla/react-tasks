@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-const ProjectsModal = ({
+const SidebarProjectOverlay = ({
   setIsSubMenuOpen,
   subMenu,
 }: {
@@ -47,4 +47,4 @@ const ProjectsModal = ({
   );
 };
 
-export default ProjectsModal;
+export default SidebarProjectOverlay;

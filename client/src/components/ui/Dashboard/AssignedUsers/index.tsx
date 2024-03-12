@@ -1,20 +1,23 @@
-import { usersAssigned } from "@/entities";
-
-const DashboardAssignedUsers = () => {
+interface DashboardAssignedUsersProps {
+  connections: UserProps[];
+}
+const DashboardAssignedUsers = ({
+  connections,
+}: DashboardAssignedUsersProps) => {
   return (
     <div className="flex">
-      {usersAssigned.map((user, index) => {
+      {connections.map((user, index) => {
         if (index < 3) {
           return (
             <div
               key={index}
               className="w-10 h-10 rounded-full overflow-hidden border-slate-500 border-[.5px]"
               style={{
-                zIndex: usersAssigned.length - index,
+                zIndex: connections.length - index,
                 transform: `translateX(-${index * 10}px)`,
               }}
             >
-              <img src={user.userPhoto} alt="User" />
+              <img src={user.avatar} alt="User" />
             </div>
           );
         } else {
@@ -23,11 +26,11 @@ const DashboardAssignedUsers = () => {
               key={index}
               className="w-10 h-10 rounded-full overflow-hidden border-slate-500 border-[.5px] flex items-center justify-center bg-slate-500 text-white font-bold"
               style={{
-                zIndex: usersAssigned.length - index,
+                zIndex: connections.length - index,
                 transform: `translateX(-${index * 10}px)`,
               }}
             >
-              +{usersAssigned.length - 3}
+              +{connections.length - 3}
             </div>
           );
         }

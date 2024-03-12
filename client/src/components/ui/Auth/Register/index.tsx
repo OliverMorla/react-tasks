@@ -1,8 +1,14 @@
-import ToggleButton from "@/components/shared/ui/ToggleButton";
+import Button from "@/components/shared/ui/Button";
 
 const Register = () => {
-  // const handleSubmit = () => {};
-  // const handleInputChange = () => {};
+  const handleSubmit = () => {};
+  const handleInputChange = () => {};
+
+  console.log({
+    handleSubmit,
+    handleInputChange,
+  });
+
   return (
     <section className="flex flex-col justify-center items-center">
       <form className="flex flex-col gap-4">
@@ -38,13 +44,14 @@ const Register = () => {
           placeholder="Confirm your password"
           className="flex-grow py-4 px-2 border-b-[1px] border-b-[--color-text-lighter] outline-[var(--color-primary)]"
         />
-        <ToggleButton
+        <Button
           type="submit"
-          className="p-4 border-[--color-text-lighter]"
+          variant="transparent"
+          className="p-4"
           onClick={() => {}}
         >
           Create the account
-        </ToggleButton>
+        </Button>
       </form>
     </section>
   );

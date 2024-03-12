@@ -1,6 +1,7 @@
 import { messageIcons } from "@/entities";
-import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "@/components/shared/ui/Button";
+
 const Modal = ({ title, desc, setShowModal, showModal, type }: ModalProps) => {
   return (
     <div className="absolute left-0 top-0 h-full w-full flex flex-col flex-1 items-center justify-center">
@@ -13,13 +14,12 @@ const Modal = ({ title, desc, setShowModal, showModal, type }: ModalProps) => {
         <div className="flex flex-col">
           <div className="flex justify-center items-center">
             <h1 className="mr-0">{title}</h1>
-            <button
-              aria-label="exit-modal-button"
+            <Button
+              name="exit-modal-button"
+              presetIcon="close"
               className="ml-auto"
               onClick={() => setShowModal(!showModal)}
-            >
-              <FontAwesomeIcon icon={faXmarkCircle} />
-            </button>
+            />
           </div>
           <p className="opacity-60">{desc}</p>
         </div>

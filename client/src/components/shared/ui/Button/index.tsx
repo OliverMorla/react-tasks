@@ -5,25 +5,24 @@ import { presetIcons } from "@/entities";
 
 const Button: React.FC<ButtonProps> = ({
   name,
-  fontAwesomeIconUrl,
   pathUrl,
-  variant = "transparent",
+  fontAwesomeIconUrl,
+  variant = "clear",
   children,
   presetIcon,
+  iconDimensions,
   ...props
 }) => {
   const variants = {
-    transparent:
-      "border-[--color-text-lightest] border-[1px] p-1 rounded-lg transition-all ease-in-out hover:border-[--color-primary] hover:scale-105",
-    color:
-      "bg-[--color-primary] text-white p-1 rounded-lg transition-all ease-in-out hover:bg-[--color-primary-dark] hover:scale-105",
     clear: "",
+    transparent: "border-[--color-text-lightest] border-[1px] p-1 rounded-lg transition-all ease-in-out hover:border-[--color-primary] hover:scale-105",
+    color: "bg-[--color-primary] text-[var(--color-text-lightest)] p-1 rounded-lg transition-all ease-in-out hover:bg-[--color-primary-dark] hover:scale-105",
   };
 
   return (
     <>
       {pathUrl ? (
-        <Link to={pathUrl}>
+        <Link to={pathUrl} aria-label={name}>
           <button
             {...props}
             className={cn(variants[variant], props.className)}
@@ -32,15 +31,15 @@ const Button: React.FC<ButtonProps> = ({
             {fontAwesomeIconUrl && (
               <FontAwesomeIcon
                 icon={fontAwesomeIconUrl}
-                width={25}
-                height={25}
+                width={iconDimensions?.width || 25}
+                height={iconDimensions?.height || 25}
               />
             )}
             {presetIcon && (
               <FontAwesomeIcon
                 icon={presetIcons[presetIcon]}
-                width={25}
-                height={25}
+                width={iconDimensions?.width || 25}
+                height={iconDimensions?.height || 25}
               />
             )}
             {children && children}
@@ -52,20 +51,20 @@ const Button: React.FC<ButtonProps> = ({
           className={cn(variants[variant], props.className)}
           aria-label={name}
         >
-           {fontAwesomeIconUrl && (
-              <FontAwesomeIcon
-                icon={fontAwesomeIconUrl}
-                width={25}
-                height={25}
-              />
-            )}
-            {presetIcon && (
-              <FontAwesomeIcon
-                icon={presetIcons[presetIcon]}
-                width={25}
-                height={25}
-              />
-            )}
+          {fontAwesomeIconUrl && (
+            <FontAwesomeIcon
+              icon={fontAwesomeIconUrl}
+              width={iconDimensions?.width || 25}
+              height={iconDimensions?.height || 25}
+            />
+          )}
+          {presetIcon && (
+            <FontAwesomeIcon
+              icon={presetIcons[presetIcon]}
+              width={iconDimensions?.width || 25}
+              height={iconDimensions?.height || 25}
+            />
+          )}
           {children && children}
         </button>
       )}

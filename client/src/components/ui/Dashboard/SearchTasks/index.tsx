@@ -5,7 +5,7 @@ import {
   faArrowUpWideShort,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import ToggleButton from "@/components/shared/ui/ToggleButton";
+import Button from "@/components/shared/ui/Button";
 
 const DashboardSearchTasks = () => {
   const [searchInput, setSearchInput] = useState<string>("");
@@ -35,14 +35,14 @@ const DashboardSearchTasks = () => {
       <div>
         <ul className="flex gap-2">
           <li>
-            <ToggleButton
+            <Button
               fontAwesomeIconUrl={faArrowUpWideShort}
               onClick={() => {}}
               className="min-w-[35px] min-h-[35px]"
             />
           </li>
           <li>
-            <ToggleButton
+            <Button
               fontAwesomeIconUrl={faArrowDownWideShort}
               onClick={() => {}}
               className="min-w-[35px] min-h-[35px]"

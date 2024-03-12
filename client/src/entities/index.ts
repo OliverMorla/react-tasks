@@ -5,12 +5,17 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 import {
+  faBell,
   faCartShopping,
   faCheck,
   faCircleInfo,
   faDiagramProject,
+  faEllipsis,
+  faGear,
   faLayerGroup,
   faList,
+  faPlus,
+  faPlusCircle,
   faStopCircle,
   faTriangleExclamation,
   faUserGroup,
@@ -474,7 +479,7 @@ const listOfProjects = [
   },
 ];
 
-const userSession = {
+const userSession: UserSessionProps = {
   id: 1,
   name: "John Doe",
   email: "johndoe@reacttasks.com",
@@ -564,7 +569,12 @@ const messageIcons = {
 
 const presetIcons = {
   close: faXmarkCircle,
-}
+  menu: faEllipsis,
+  settings: faGear,
+  plus: faPlus,
+  plusCircle: faPlusCircle,
+  notification: faBell,
+};
 
 export {
   navPrimaryLinks,
@@ -577,5 +587,5 @@ export {
   listOfProjects,
   userSession,
   adminSession,
-  messageIcons
+  messageIcons,
 };

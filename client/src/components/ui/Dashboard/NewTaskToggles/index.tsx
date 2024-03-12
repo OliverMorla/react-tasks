@@ -1,5 +1,4 @@
 import Button from "@/components/shared/ui/Button";
-import ToggleButton from "@/components/shared/ui/ToggleButton";
 import { faEllipsis, faGear, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const DashboardNewTaskToggles = ({
@@ -7,11 +6,11 @@ const DashboardNewTaskToggles = ({
 }: NewTaskTogglesProps) => {
   return (
     <div className="flex items-center gap-2">
-      <ToggleButton
+      <Button
         fontAwesomeIconUrl={faGear}
         className="min-w-[35px] min-h-[35px]"
       />
-      <ToggleButton
+      <Button
         fontAwesomeIconUrl={faEllipsis}
         className="min-w-[35px] min-h-[35px]"
       />

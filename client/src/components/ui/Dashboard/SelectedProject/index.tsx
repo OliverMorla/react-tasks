@@ -4,25 +4,69 @@ import DashboardAssignedUsers from "@/components/ui/Dashboard/AssignedUsers";
 import DashboardNewTaskToggles from "@/components/ui/Dashboard/NewTaskToggles";
 import DashboardSearchTasks from "@/components/ui/Dashboard/SearchTasks";
 import NewTaskModal from "@/components/ui/Modals/NewTask";
-import { listOfTasks } from "@/entities";
 import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
+import { pageLoadVariant } from "@/config/framer-variants";
+import { useQuery } from "@tanstack/react-query";
+import { getTasksFromProject } from "@/actions/tasks-actions";
 
-const DashboardSelectedProject = () => {
+const DashboardSelectedProject = ({
+  title,
+  privacy,
+  createdAt,
+  connections,
+  desc,
+  dueDate,
+  id,
+  priority,
+  tags,
+  type,
+}: // tasks,
+ProjectProps) => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
+  const { data, isPending, error, isLoading } = useQuery<{
+    tasks: TasksProps[];
+  }>({
+    queryKey: ["tasks"],
+    queryFn: () => getTasksFromProject(parseInt(id as string)),
+  });
+
+  const tasks = data?.tasks;
+
+  // testing purposes
+  console.log({
+    title,
+    privacy,
+    createdAt,
+    desc,
+    dueDate,
+    id,
+    priority,
+    tags,
+    type,
+    tasks,
+    isPending,
+    error,
+    isLoading,
+  });
 
   return (
-    <div className="flex flex-col w-full gap-4">
+    <motion.div
+      className="flex flex-col w-full gap-4"
+      variants={pageLoadVariant}
+      initial="hidden"
+      animate="visible"
+    >
       <div className="flex flex-col border-b-[var(--color-text-lightest)] border-b-[1px] gap-4 p-10">
         <div className="flex justify-between flex-wrap max-md:gap-4">
           <div className="flex items-center text-xs gap-4">
             <p className="opacity-60">Projects</p>
             <span>{">"}</span>
-            <p className="opacity-60">Personal</p>
+            <p className="opacity-60">{type}</p>
             <span>{">"}</span>
-            <p className="font-bold">Personal</p>
+            <p className="font-bold">{title}</p>
           </div>
           <DashboardNewTaskToggles
             showNewTaskModal={showNewTaskModal}
@@ -30,7 +74,7 @@ const DashboardSelectedProject = () => {
           />
         </div>
         <h1 className="font-bold text-4xl">My Tasks</h1>
-        <DashboardAssignedUsers />
+        <DashboardAssignedUsers connections={connections!} />
       </div>
       <DashboardSearchTasks />
 
@@ -54,19 +98,28 @@ const DashboardSelectedProject = () => {
             </div>
 
             <div className="flex flex-col">
-              {listOfTasks.map((task, index) => (
+              {isLoading && !error && (
+                <img
+                  src="/assets/spinners/Loading-3.svg"
+                  alt=""
+                  width={50}
+                  height={50}
+                  className="ml-auto mr-auto"
+                />
+              )}
+
+              {tasks?.map((task, index) => (
                 <TaskCard
-                  key={index}
                   title={task.title}
                   desc={task.desc}
                   tags={task.tags}
-                  status={task.status as TaskCardStatus}
-                  priority={task.priority as TaskCardPriority}
-                  createdAt={task.createdAt}
-                  assignedTo={task.users}
-                  comments={task.comments}
                   dueDate={task.dueDate}
-                  updatedAt={task.updatedAt}
+                  createdAt={task.createdAt}
+                  priority={task.priority}
+                  status={task.status}
+                  key={index}
+                  id={task.id.toString()}
+                  comments={task.comments}
                 />
               ))}
             </div>
@@ -91,9 +144,20 @@ const DashboardSelectedProject = () => {
               </div>
             </div>
             <div className="flex flex-col gap-4 mt-4">
-              {/* <TaskCard /> */}
-              {/* <TaskCard /> */}
-              {/* <TaskCard /> */}
+              {tasks?.map((task, index) => (
+                <TaskCard
+                  title={task.title}
+                  desc={task.desc}
+                  tags={task.tags}
+                  dueDate={task.dueDate}
+                  createdAt={task.createdAt}
+                  priority={task.priority}
+                  status={task.status}
+                  key={index}
+                  id={task.id.toString()}
+                  comments={task.comments}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -115,9 +179,20 @@ const DashboardSelectedProject = () => {
               </div>
             </div>
             <div className="flex flex-col gap-4 mt-4">
-              {/* <TaskCard /> */}
-              {/* <TaskCard /> */}
-              {/* <TaskCard /> */}
+              {tasks?.map((task, index) => (
+                <TaskCard
+                  title={task.title}
+                  desc={task.desc}
+                  tags={task.tags}
+                  dueDate={task.dueDate}
+                  createdAt={task.createdAt}
+                  priority={task.priority}
+                  status={task.status}
+                  key={index}
+                  id={task.id.toString()}
+                  comments={task.comments}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -145,7 +220,7 @@ const DashboardSelectedProject = () => {
         ),
         document.getElementById("root") as HTMLElement
       )}
-    </div>
+    </motion.div>
   );
 };
 

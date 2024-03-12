@@ -1,26 +1,32 @@
 import { faFlag } from "@fortawesome/free-regular-svg-icons";
-import { faEllipsis, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import TaskTagCard from "../TaskTag";
-import ToggleButton from "@/components/shared/ui/ToggleButton";
+import TaskTagCard from "./TaskTag";
+import Button from "@/components/shared/ui/Button";
 
 const TaskCard = ({
   title,
   desc,
-  assignedTo,
-  // comments,
-  tags,
-  // dueDate,
-  // priority,
-  // status,
   createdAt,
-  // updatedAt,
-  // createdBy,
-  // updatedBy,
-  // assignedTo,
-  // assignedBy,
+  dueDate,
+  id,
+  priority,
+  status,
+  tags,
+  comments,
 }: TaskCardProps) => {
+  console.log({
+    title,
+    desc,
+    createdAt,
+    dueDate,
+    id,
+    priority,
+    status,
+    tags,
+    comments,
+  });
   return (
     <motion.div
       className="w-full flex flex-col h-auto bg-white p-4 rounded-md gap-4 cursor-pointer"
@@ -48,9 +54,10 @@ const TaskCard = ({
       </div>
       <div className="flex justify-between w-full items-center transit`">
         <h1 className="font-bold text-2xl">{title}</h1>
-        <ToggleButton
-          fontAwesomeIconUrl={faEllipsis}
+        <Button
+          presetIcon="menu"
           className="min-w-[35px] min-h-[35px]"
+          variant="transparent"
         />
       </div>
       <div>
@@ -61,29 +68,15 @@ const TaskCard = ({
       <div className="flex justify-between w-full items-center opacity-60">
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faFlag} width={25} height={25} />
-          <p>{createdAt}</p>
+          <p>
+            {createdAt instanceof Date ? createdAt.toLocaleString() : createdAt}
+          </p>
         </div>
         <span>
           <p>D-18</p>
         </span>
       </div>
       <div className="flex w-full items-center">
-        {assignedTo?.map((user, index) => (
-          <>
-            <img
-              src={user?.photo}
-              alt="user"
-              width={25}
-              height={25}
-              className="w-10 h-10 rounded-full overflow-hidden border-slate-500 border-[.5px]"
-              style={{
-                zIndex: assignedTo.length - index,
-                transform: `translateX(-${index * 10}px)`,
-              }}
-            />
-          </>
-        ))}
-
         <div className="flex items-center opacity-60 gap-2">
           <FontAwesomeIcon icon={faMessage} width={25} height={25} />
           <p className="flex gap-1">

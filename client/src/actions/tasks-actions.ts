@@ -4,13 +4,13 @@ if (!apiUrl) {
   throw new Error("VITE_MOCK_API_URL is not defined");
 }
 
-const getAvailableUsers = async (pageNumber: number) => {
+const getTasksFromProject = async (projectId: number) => {
   try {
-    const res = await fetch(`${apiUrl}/users?_page=${pageNumber}`);
+    const res = await fetch(`${apiUrl}/projects/${projectId}?_embed=tasks`);
     return res.json();
   } catch (err) {
     console.error(err instanceof Error ? `=>${err.message}` : "Internal error");
   }
 };
 
-export { getAvailableUsers };
+export { getTasksFromProject };

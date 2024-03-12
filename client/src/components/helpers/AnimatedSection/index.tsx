@@ -1,7 +1,7 @@
-import { MotionProps, motion } from "framer-motion";
 import { pageLoadVariant } from "@/config/framer-variants";
+import { MotionProps, motion } from "framer-motion";
 
-const AnimatedDiv: React.FC<AnimatedDivProps & MotionProps> = ({
+const AnimatedSection: React.FC<AnimatedSectionProps & MotionProps> = ({
   children,
   ...props
 }) => {
@@ -17,4 +17,4 @@ const AnimatedDiv: React.FC<AnimatedDivProps & MotionProps> = ({
   );
 };
 
-export default AnimatedDiv;
+export default AnimatedSection;

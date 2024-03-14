@@ -15,7 +15,12 @@ import csurf from "csurf"; // For CSRF protection
 
 // Import routes
 import userRouter from "./routes/user.routes";
+import usersRouter from "./routes/users.routes";
 import projectRouter from "./routes/project.routes";
+import projectsRouter from "./routes/projects.routes";
+import commentsRouter from "./routes/comments.routes";
+import { isAuthenticated } from "./middleware";
+import connectionsRouter from "./routes/connections.routes";
 
 // Load environment variables from a .env file
 dotenv.config();
@@ -24,7 +29,7 @@ dotenv.config();
 const app = express();
 
 // Define the port number to listen on
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // Improve security by adding various HTTP headers
 // app.use(helmet());
@@ -62,15 +67,19 @@ app.use("/api", expressStatic("public/api", { extensions: ["json"] }));
 
 // Placeholder for authentication middleware
 // Implement JWT or session-based authentication here
-app.use((req, res, next) => {
-  // Your authentication logic goes here
-  next();
-});
+// app.use((req, res, next) => {
+// // Your authentication logic goes here
+//   next();
+// });
 
 // Define routes for your application
 // For example, user-related routes are managed by userRouter
-app.use("/api/user", userRouter);
-app.use("/api/project", projectRouter);
+app.use("/users", isAuthenticated, usersRouter); // Multiple User
+app.use("/user", isAuthenticated, userRouter); // Single User
+app.use("/projects", isAuthenticated, projectsRouter); // Multiple Projects
+app.use("/project", isAuthenticated, projectRouter); // Single Project
+app.use("/comments", isAuthenticated, commentsRouter);
+app.use("/connections", isAuthenticated, connectionsRouter);
 
 // Define a default route that returns a welcome message
 app.get("/", (req, res) => {
@@ -106,7 +115,25 @@ app.use(csurf());
 //   res.status(err.statusCode || 500).json({ message: err.message || "Internal Server Error" });
 // });
 
+const getAllRoutes = () => {
+  const routes = [];
+
+  app._router.stack.forEach((middleware: any) => {
+    if (middleware.route) {
+      console.log(middleware.route);
+    } else if (middleware.name === "router") {
+      middleware.handle.stack.forEach((handler: any) => {
+        console.log(handler.route);
+      });
+    }
+  });
+};
+
+// getAllRoutes();
+
 // Start the server and listen on the port specified in the .env file or port 3000
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
+
+export default app;

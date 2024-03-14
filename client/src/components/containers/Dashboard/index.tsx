@@ -9,7 +9,6 @@ import NewProjectModal from "@/components/ui/Modals/NewProject";
 import DashboardSelectedProject from "@/components/ui/Dashboard/SelectedProject";
 import AnimatedDiv from "@/components/helpers/AnimatedDiv";
 import ProjectCard from "@/components/ui/Cards/Project";
-import Modal from "@/components/shared/ui/Modal";
 
 // Actions
 import { getProjectsFromUser } from "@/actions/project-actions";
@@ -50,7 +49,6 @@ const Dashboard = () => {
   );
 
   // Modals States
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [showNewProjectModal, setShowNewProjectModal] =
     useState<boolean>(false);
 
@@ -63,7 +61,11 @@ const Dashboard = () => {
   });
 
   return (
-    <section className="flex flex-col w-full flex-1 items-center justify-center p-10">
+    <section
+      className={`flex flex-col w-full flex-1 items-center justify-center ${
+        selectedProject ? "" : "p-10"
+      }`}
+    >
       {!selectedProject && (
         <AnimatedDiv className="flex flex-col w-full flex-1 items-center justify-center gap-4">
           <div className="flex flex-col gap-2 items-center justify-center">
@@ -109,16 +111,6 @@ const Dashboard = () => {
             </div>
           </div>
         </AnimatedDiv>
-      )}
-
-      {showModal && (
-        <Modal
-          title="Message"
-          desc="hasdsad"
-          type="info"
-          setShowModal={setShowModal}
-          showModal={showModal}
-        />
       )}
 
       {selectedProject && (

@@ -4,11 +4,11 @@ import Button from "@/components/shared/ui/Button";
 const SidebarUserOverlay = () => {
   return (
     <motion.div
-      className="absolute bg-[var(--color-text-darker)] text-[var(--color-text-lightest)] left-0 bottom-0 rounded-lg"
+      className="absolute bg-[var(--color-text-darker)] text-[var(--color-text-lightest)] left-0 bottom-0 rounded-lg min-w-[95px]"
       initial={{
         opacity: 0,
         x: 40,
-        translateX: "80%",
+        translateX: "70%",
       }}
       animate={{
         opacity: 1,
@@ -22,17 +22,12 @@ const SidebarUserOverlay = () => {
       <ul className="flex flex-col items-center">
         <li className="p-2">
           <Button variant="clear" onClick={() => {}}>
-            Edit
+            Dashboard
           </Button>
         </li>
         <li className="p-2">
           <Button variant="clear" onClick={() => {}}>
-            Delete
-          </Button>
-        </li>
-        <li className="p-2">
-          <Button variant="clear" onClick={() => {}}>
-            Settings
+            Log Out
           </Button>
         </li>
       </ul>

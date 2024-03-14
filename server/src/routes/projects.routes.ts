@@ -17,10 +17,10 @@ dotenv.config({
 });
 
 // Create a router
-const projectRouter = express.Router();
+const projectsRouter = express.Router();
 
 // Define routes
-projectRouter.get("/:id", getProjectByID); // GET /project - Get a project by ID
+projectsRouter.get("/", getProjects); // GET /projects - Get all projects
 
 // Export the router
-export default projectRouter;
+export default projectsRouter;

@@ -3,7 +3,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 
 // Controllers
-import { getUserByID } from "../controllers/user.controller";
+import { getUsers } from "../controllers/user.controller";
 
 // Load environment variables
 dotenv.config({
@@ -11,11 +11,10 @@ dotenv.config({
 });
 
 // Create a router
-const userRouter = express.Router();
+const usersRouter = express.Router();
 
 // Define routes
-
-userRouter.get("/:id", getUserByID); // GET /user/:id - Get a user by ID
+usersRouter.get("/", getUsers); // GET /users - Get all users
 
 // Export the router
-export default userRouter;
+export default usersRouter;

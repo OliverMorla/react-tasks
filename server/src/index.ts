@@ -29,7 +29,7 @@ dotenv.config();
 const app = express();
 
 // Define the port number to listen on
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 // Improve security by adding various HTTP headers
 // app.use(helmet());

@@ -84,7 +84,7 @@ const createUser = async (req: Request, res: Response) => {
     },
   });
 };
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response) =>  {
   const { name, email, password, photoUrl } = req.body;
 
   return res.status(201).json({

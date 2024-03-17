@@ -21,6 +21,7 @@ const projectRouter = express.Router();
 
 // Define routes
 projectRouter.get("/:id", getProjectByID); // GET /project - Get a project by ID
+projectRouter.post("/");
 
 // Export the router
 export default projectRouter;

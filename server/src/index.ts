@@ -8,7 +8,6 @@ import path from "path";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 // import multer from "multer"; // For file uploads
-// import { body } from "express-validator"; // For data validation
 // import swaggerUi from "swagger-ui-express"; // For API documentation
 // import YAML from "yamljs"; // To load the Swagger definition file
 import csurf from "csurf"; // For CSRF protection

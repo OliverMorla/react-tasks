@@ -1,4 +1,4 @@
-const apiUrl = import.meta.env.VITE_MOCK_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 if (!apiUrl) {
   throw new Error("VITE_MOCK_API_URL is not defined");
@@ -6,8 +6,13 @@ if (!apiUrl) {
 
 const getProjectsFromUser = async (userId: number) => {
   try {
-    const res = await fetch(`${apiUrl}/projects?userId=${userId}`);
-    return res.json();
+    const res = await fetch(`${apiUrl}/projects/embed?userId=${userId}`);
+    const { data, ok, message } = await res.json();
+    console.log({
+      data,
+      ok,
+      message,
+    });
   } catch (err) {
     console.error(err instanceof Error ? `=>${err.message}` : "Internal error");
   }

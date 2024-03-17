@@ -29,20 +29,20 @@ const getTaskByID = async (req: Request, res: Response) => {
     });
 
     if (!task) {
-      res.status(200).json({
+      return res.status(200).json({
         ok: true,
         message: "Task not found",
         data: task,
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       ok: true,
       message: "User retrieved successfully",
       data: task,
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Error retrieving task",
       error: err instanceof Error ? err.message : null,
     });

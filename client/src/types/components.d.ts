@@ -51,7 +51,7 @@ interface PriceCardProps {
   transitionDelay: number;
 }
 
-interface TaskCardProps {
+interface TaskCardProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly id: string | number;
   readonly tags: ["Bug" | "Feedback"];
   readonly title: string;
@@ -64,7 +64,7 @@ interface TaskCardProps {
 
   readonly desc: string;
   readonly priority: "High" | "Medium" | "Low";
-  readonly status: "In Progress" | "Backlog" | "To Do";
+  readonly status: "InProgress" | "Backlog" | "ToDo";
   readonly createdAt: Date | string;
   readonly dueDate: Date | string;
   readonly comments?: CommentProps[];
@@ -140,6 +140,12 @@ interface NewProjectModalProps {
   setShowNewProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface TaskModalProps {
+  id: string | number;
+  showTaskModal: boolean;
+  setShowTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 interface NewProjectModalInputProps {
   title: string;
   type: string;
@@ -169,17 +175,19 @@ interface ProjectProps {
   readonly createdAt: Date | string;
   readonly dueDate: Date | string;
 
-  tasks?: TaskProps[];
+  tasks?: TasksProps[];
 }
 
 interface TasksProps extends TaskCardProps {}
 
 interface UserProps {
-  readonly id: string | number;
-  name: string;
-  email: string;
-  password?: string;
-  avatar: string;
+  User: {
+    readonly id: string | number;
+    name: string;
+    email: string;
+    password?: string;
+    photoUrl: string;
+  };
 }
 
 interface CommentProps {
@@ -208,7 +216,7 @@ interface ConnectionProps {
 }
 
 interface UserSessionProps {
-  id: number;
+  id: string;
   name: string;
   email: string;
   photo: string;

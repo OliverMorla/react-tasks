@@ -22,7 +22,7 @@ const projectsRouter = express.Router();
 
 // Define routes
 projectsRouter.get("/", getProjects); // GET /projects - Get all projects
-projectsRouter.get("/embed", getProjectsByEmbeddedQuery); // GET /projects?key=value - Get project by query
+projectsRouter.get("/query", getProjectsByEmbeddedQuery); // GET /projects/query?key=value - Get project by query
 
 // Export the router
 export default projectsRouter;

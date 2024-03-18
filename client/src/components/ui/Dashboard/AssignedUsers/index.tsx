@@ -17,7 +17,7 @@ const DashboardAssignedUsers = ({
                 transform: `translateX(-${index * 10}px)`,
               }}
             >
-              <img src={user.avatar} alt="User" />
+              <img src={user.User.photoUrl} alt="User" />
             </div>
           );
         } else {

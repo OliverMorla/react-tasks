@@ -16,3 +16,8 @@ interface GetUserByIDRequest {}
 interface GetUsersRequest {}
 interface UpdateUserRequest {}
 
+interface WhereFilterProps {
+  [key: string]: string | boolean | number | null | undefined;
+}
+
+export { WhereFilterProps };

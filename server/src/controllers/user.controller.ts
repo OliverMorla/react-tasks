@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import { validationResult } from "express-validator";
-import { stat } from "fs";
 
 // /api/users - GET - Get all users
 const getUsers = async (req: Request, res: Response) => {

@@ -20,6 +20,7 @@ import projectsRouter from "./routes/projects.routes";
 import commentsRouter from "./routes/comments.routes";
 import { isAuthenticated } from "./middleware";
 import connectionsRouter from "./routes/connections.routes";
+import tasksRouter from "./routes/tasks.routes";
 
 // Load environment variables from a .env file
 dotenv.config();
@@ -79,6 +80,7 @@ app.use("/projects", isAuthenticated, projectsRouter); // Multiple Projects
 app.use("/project", isAuthenticated, projectRouter); // Single Project
 app.use("/comments", isAuthenticated, commentsRouter);
 app.use("/connections", isAuthenticated, connectionsRouter);
+app.use("/tasks", isAuthenticated, tasksRouter)
 
 // Define a default route that returns a welcome message
 app.get("/", (req, res) => {

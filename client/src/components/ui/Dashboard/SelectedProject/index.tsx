@@ -10,6 +10,7 @@ import DashboardNewTaskToggles from "@/components/ui/Dashboard/NewTaskToggles";
 import { getTasksFromProject } from "@/actions/tasks-actions";
 import { pageLoadVariant } from "@/config/framer-variants";
 import { useQuery } from "@tanstack/react-query";
+import TaskModal from "../../Modals/Task";
 
 const DashboardSelectedProject = ({
   title,
@@ -20,19 +21,25 @@ const DashboardSelectedProject = ({
   dueDate,
   id,
   priority,
+  tasks,
   tags,
   type,
 }: // tasks,
 ProjectProps) => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
-  const { data, isPending, error, isLoading } = useQuery<{
-    tasks: TasksProps[];
-  }>({
-    queryKey: ["tasks"],
-    queryFn: () => getTasksFromProject(parseInt(id as string)),
-  });
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  // const [tasksFetched, setTasksFetched] = useState<TasksProps[] | undefined>(
+  //   []
+  // );
 
-  const tasks = data?.tasks;
+  // const { data, isPending, error, isLoading } = useQuery<TasksProps[]>({
+  //   queryKey: ["tasks"],
+  //   queryFn: () => getTasksFromProject(id as string),
+  // });
+
+  // useEffect(() => {
+  //   setTasksFetched(data);
+  // }, [isLoading, data]);
 
   useEffect(() => {
     if (showNewTaskModal) {
@@ -50,21 +57,22 @@ ProjectProps) => {
   }, [showNewTaskModal]);
 
   // testing purposes
-  console.log({
-    title,
-    privacy,
-    createdAt,
-    desc,
-    dueDate,
-    id,
-    priority,
-    tags,
-    type,
-    tasks,
-    isPending,
-    error,
-    isLoading,
-  });
+  // console.log({
+  //   title,
+  //   privacy,
+  //   createdAt,
+  //   tasks,
+  //   desc,
+  //   dueDate,
+  //   id,
+  //   priority,
+  //   tags,
+  //   type,
+  // isPending,
+  // error,
+  // isLoading,
+  // tasksFetched
+  // });
 
   return (
     <motion.div
@@ -96,8 +104,12 @@ ProjectProps) => {
         <div className="flex flex-col h-full w-full">
           <div className="p-4 bg-gray-100 flex flex-col w-full h-auto gap-4 rounded-lg">
             <div className="flex justify-between items-center">
-              <h1 className="text-lg text-[--color-text-light]">
-                Backlog ({tasks?.length})
+              <h1 className="text-lg text-[--color-text-light] flex gap-2 items-center">
+                Backlog
+                <span className="bg-gray-300 p-1 rounded-lg">
+                  ({tasks?.filter((tasks) => tasks.status === "Backlog").length}
+                  )
+                </span>
               </h1>
               <div className="flex items-center gap-2">
                 <Button
@@ -114,7 +126,7 @@ ProjectProps) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              {isLoading && !error && (
+              {/* {isLoading && !error && (
                 <img
                   src="/assets/spinners/Loading-3.svg"
                   alt=""
@@ -122,22 +134,24 @@ ProjectProps) => {
                   height={50}
                   className="ml-auto mr-auto"
                 />
-              )}
+              )} */}
 
-              {tasks?.map((task, index) => (
-                <TaskCard
-                  title={task.title}
-                  desc={task.desc}
-                  tags={task.tags}
-                  dueDate={task.dueDate}
-                  createdAt={task.createdAt}
-                  priority={task.priority}
-                  status={task.status}
-                  key={index}
-                  id={task.id.toString()}
-                  comments={task.comments}
-                />
-              ))}
+              {tasks
+                ?.filter((tasks) => tasks.status === "Backlog")
+                ?.map((task, index) => (
+                  <TaskCard
+                    title={task.title}
+                    desc={task.desc}
+                    tags={task.tags}
+                    dueDate={task.dueDate}
+                    createdAt={task.createdAt}
+                    priority={task.priority}
+                    status={task.status}
+                    key={index}
+                    id={task.id.toString()}
+                    comments={task.comments}
+                  />
+                ))}
             </div>
           </div>
         </div>
@@ -145,8 +159,11 @@ ProjectProps) => {
         <div className="flex flex-col h-full w-full">
           <div className="p-4 bg-gray-100 flex flex-col w-full h-auto gap-4 rounded-lg">
             <div className="flex justify-between items-center">
-              <h1 className="text-lg text-[--color-text-light]">
-                Backlog ({tasks?.length})
+              <h1 className="text-lg text-[--color-text-light] flex gap-2 items-center">
+                To do
+                <span className="bg-gray-300 p-1 rounded-lg">
+                  ({tasks?.filter((tasks) => tasks.status === "ToDo").length})
+                </span>
               </h1>
               <div className="flex items-center gap-2">
                 <Button
@@ -163,7 +180,7 @@ ProjectProps) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              {isLoading && !error && (
+              {/* {isLoading && !error && (
                 <img
                   src="/assets/spinners/Loading-3.svg"
                   alt=""
@@ -171,22 +188,25 @@ ProjectProps) => {
                   height={50}
                   className="ml-auto mr-auto"
                 />
-              )}
+              )} */}
 
-              {tasks?.map((task, index) => (
-                <TaskCard
-                  title={task.title}
-                  desc={task.desc}
-                  tags={task.tags}
-                  dueDate={task.dueDate}
-                  createdAt={task.createdAt}
-                  priority={task.priority}
-                  status={task.status}
-                  key={index}
-                  id={task.id.toString()}
-                  comments={task.comments}
-                />
-              ))}
+              {tasks
+                ?.filter((tasks) => tasks.status === "ToDo")
+                ?.map((task, index) => (
+                  <TaskCard
+                    onClick={() => setShowTaskModal(!showTaskModal)}
+                    title={task.title}
+                    desc={task.desc}
+                    tags={task.tags}
+                    dueDate={task.dueDate}
+                    createdAt={task.createdAt}
+                    priority={task.priority}
+                    status={task.status}
+                    key={index}
+                    id={task.id.toString()}
+                    comments={task.comments}
+                  />
+                ))}
             </div>
           </div>
         </div>
@@ -194,8 +214,16 @@ ProjectProps) => {
         <div className="flex flex-col h-full w-full">
           <div className="p-4 bg-gray-100 flex flex-col w-full h-auto gap-4 rounded-lg">
             <div className="flex justify-between items-center">
-              <h1 className="text-lg text-[--color-text-light]">
-                Backlog ({tasks?.length})
+              <h1 className="text-lg text-[--color-text-light] flex gap-2 items-center">
+                In progress
+                <span className="bg-gray-300 p-1 rounded-lg">
+                  (
+                  {
+                    tasks?.filter((tasks) => tasks.status === "InProgress")
+                      .length
+                  }
+                  )
+                </span>
               </h1>
               <div className="flex items-center gap-2">
                 <Button
@@ -212,7 +240,7 @@ ProjectProps) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              {isLoading && !error && (
+              {/* {isLoading && !error && (
                 <img
                   src="/assets/spinners/Loading-3.svg"
                   alt=""
@@ -220,22 +248,24 @@ ProjectProps) => {
                   height={50}
                   className="ml-auto mr-auto"
                 />
-              )}
+              )} */}
 
-              {tasks?.map((task, index) => (
-                <TaskCard
-                  title={task.title}
-                  desc={task.desc}
-                  tags={task.tags}
-                  dueDate={task.dueDate}
-                  createdAt={task.createdAt}
-                  priority={task.priority}
-                  status={task.status}
-                  key={index}
-                  id={task.id.toString()}
-                  comments={task.comments}
-                />
-              ))}
+              {tasks
+                ?.filter((tasks) => tasks.status === "InProgress")
+                .map((task, index) => (
+                  <TaskCard
+                    title={task.title}
+                    desc={task.desc}
+                    tags={task.tags}
+                    dueDate={task.dueDate}
+                    createdAt={task.createdAt}
+                    priority={task.priority}
+                    status={task.status}
+                    key={index}
+                    id={task.id.toString()}
+                    comments={task.comments}
+                  />
+                ))}
             </div>
           </div>
         </div>
@@ -260,6 +290,32 @@ ProjectProps) => {
               <NewTaskModal
                 showNewTaskModal={showNewTaskModal}
                 setShowNewTaskModal={setShowNewTaskModal}
+              />
+            </div>
+          )}
+        </AnimatePresence>,
+        document.getElementById("root") as HTMLElement
+      )}
+
+      {createPortal(
+        <AnimatePresence>
+          {showTaskModal && (
+            <div className="absolute h-full w-full z-50 flex justify-center items-center">
+              <motion.div
+                className="absolute h-full w-full z-0 bg-[--color-text-lightest]"
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{
+                  opacity: 0.8,
+                }}
+                exit={{
+                  opacity: 0,
+                }}
+              ></motion.div>
+              <TaskModal
+                showTaskModal={showTaskModal}
+                setShowTaskModal={setShowTaskModal}
               />
             </div>
           )}

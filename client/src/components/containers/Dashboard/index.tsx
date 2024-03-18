@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -36,7 +36,8 @@ const Dashboard = () => {
     if (data) {
       dispatch(setProjects(data));
     }
-  }, [isLoading]);
+    console.log("useEffect dashboard ran!")
+  }, [data]);
 
   // Retrieve Projects from Redux
   const projects: ProjectProps[] = useSelector(
@@ -55,6 +56,7 @@ const Dashboard = () => {
   // Testing Purposes
   console.log({
     isPending,
+    isLoading,
     error,
     data,
     projects,
@@ -90,23 +92,22 @@ const Dashboard = () => {
           <div className="flex flex-col gap-4 w-[90%]">
             <h1 className="font-bold text-2xl">Your projects</h1>
             <div className="flex gap-4 w-full overflow-x-scroll p-4">
-              {projects.map((project, index: number) => (
-                <Fragment key={index}>
-                  <ProjectCard
-                    id={project.id}
-                    title={project.title}
-                    connections={project.connections}
-                    type={project.type}
-                    desc={project.desc}
-                    dueDate={project.dueDate}
-                    createdAt={project.createdAt}
-                    priority={project.priority}
-                    tags={project.tags}
-                    privacy={project.privacy}
-                    status={project.status}
-                    onClick={() => setSelectedProject(project)}
-                  />
-                </Fragment>
+              {projects?.map((project, index) => (
+                <ProjectCard
+                  key={index}
+                  id={project.id}
+                  title={project.title}
+                  connections={project.connections}
+                  type={project.type}
+                  desc={project.desc}
+                  dueDate={project.dueDate}
+                  createdAt={project.createdAt}
+                  priority={project.priority}
+                  tags={project.tags}
+                  privacy={project.privacy}
+                  status={project.status}
+                  onClick={() => setSelectedProject(project)}
+                />
               ))}
             </div>
           </div>
@@ -126,6 +127,7 @@ const Dashboard = () => {
           tags={selectedProject.tags}
           createdAt={selectedProject.createdAt}
           privacy={selectedProject.privacy}
+          tasks={selectedProject.tasks}
           connections={selectedProject.connections}
         />
       )}

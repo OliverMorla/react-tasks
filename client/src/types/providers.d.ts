@@ -1,7 +1,7 @@
 interface AuthContextProps {
   isAuthenticated: boolean;
   user: {
-    id: number;
+    id: string;
     name: string;
     email: string;
     photo: string;

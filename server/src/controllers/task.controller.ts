@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import type { WhereFilterProps } from "../types/controllers";
 import prisma from "../lib/prisma";
 
 const getTasks = async (req: Request, res: Response) => {
@@ -48,8 +49,63 @@ const getTaskByID = async (req: Request, res: Response) => {
     });
   }
 };
+
+const getTasksByEmbeddedQuery = async (req: Request, res: Response) => {
+  const query = req.query;
+
+  let whereFilter: WhereFilterProps = {};
+  for (const [key, value] of Object.entries(query)) {
+    whereFilter[key] = value as string | boolean | number | null | undefined;
+  }
+
+  try {
+    const tasks = await prisma.task.findMany({
+      where: Object.keys(query).length === 0 ? { id: null } : whereFilter,
+      include: {
+        User: {
+          select: {
+            name: true,
+            email: true,
+            photoUrl: true,
+            id: true,
+          },
+        },
+        Comment: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      },
+    });
+
+    if (!tasks) {
+      return res.status(404).json({
+        ok: false,
+        message: "Tasks not found",
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      message: "Tasks found",
+      data: tasks,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error retrieving tasks",
+      error: err instanceof Error ? err.message : null,
+    });
+  }
+};
 const createTask = async (req: Request, res: Response) => {};
 const updateTask = async (req: Request, res: Response) => {};
 const deleteTask = async (req: Request, res: Response) => {};
 
-export { getTasks, getTaskByID, createTask, updateTask, deleteTask };
+export {
+  getTasks,
+  getTasksByEmbeddedQuery,
+  getTaskByID,
+  createTask,
+  updateTask,
+  deleteTask,
+};

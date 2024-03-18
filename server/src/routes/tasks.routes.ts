@@ -3,7 +3,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 
 // Controllers
-import { getUsers } from "../controllers/user.controller";
+import { getTasks, getTasksByEmbeddedQuery } from "../controllers/task.controller";
 
 // Load environment variables
 dotenv.config({
@@ -14,7 +14,8 @@ dotenv.config({
 const tasksRouter = express.Router();
 
 // Define routes
-tasksRouter.get("/", getUsers); // GET /users - Get all users
+tasksRouter.get("/", getTasks); // GET /users - Get all users
+tasksRouter.get("/query", getTasksByEmbeddedQuery)
 
 // Export the router
 export default tasksRouter;

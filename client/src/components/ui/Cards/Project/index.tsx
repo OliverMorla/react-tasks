@@ -23,19 +23,19 @@ const ProjectCard: React.FunctionComponent<ProjectCardProps> = ({
   const [showProjectCardMenu, setShowProjectCardMenu] =
     useState<boolean>(false);
 
-  console.log({
-    title,
-    createdAt,
-    dueDate,
-    desc,
-    connections,
-    id,
-    priority,
-    privacy,
-    tags,
-    type,
-    status,
-  });
+  // console.log({
+  //   title,
+  //   createdAt,
+  //   dueDate,
+  //   desc,
+  //   connections,
+  //   id,
+  //   priority,
+  //   privacy,
+  //   tags,
+  //   type,
+  //   status,
+  // });
   return (
     <div
       className="flex flex-col h-auto bg-white p-4 rounded-md gap-4 cursor-pointer hover:scale-105 transition-all ease-in-out max-w-[400px] w-full z-0"
@@ -67,7 +67,7 @@ const ProjectCard: React.FunctionComponent<ProjectCardProps> = ({
       </div>
 
       <p className="text-sm opacity-60">
-        {desc.length > 100 ? desc.slice(0, 100) + "..." : desc}
+        {desc && desc.length > 100 ? desc.slice(0, 100) + "..." : desc}
       </p>
 
       <div className="flex gap-2 items-center justify-between opacity-60 text-sm">
@@ -91,7 +91,8 @@ const ProjectCard: React.FunctionComponent<ProjectCardProps> = ({
         <div className="flex items-center">
           {connections?.map((user, index) => (
             <img
-              src={user.avatar ?? "/assets/images/users/dummy-1.png"}
+              key={index}
+              src={user.User.photoUrl ?? "/assets/images/users/dummy-1.png"}
               alt="user"
               width={25}
               height={25}

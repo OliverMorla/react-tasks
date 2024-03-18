@@ -480,7 +480,7 @@ const listOfProjects = [
 ];
 
 const userSession: UserSessionProps = {
-  id: 1,
+  id: "6c49e654-ba05-4e94-bd33-6b97abf27861",
   name: "John Doe",
   email: "johndoe@reacttasks.com",
   photo: "/assets/images/users/dummy-1.png",

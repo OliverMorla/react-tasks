@@ -29,7 +29,7 @@ const TaskModal = ({ setShowTaskModal, showTaskModal, id }: TaskModalProps) => {
     overflowRemover(showTaskModal);
     // Cleanup function to ensure the style is reset when the component unmounts
     return () => {
-      overflowRemover(showTaskModal);
+      document.body.style.overflow = "auto";
     };
   }, [showTaskModal]);
 

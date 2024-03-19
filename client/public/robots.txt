@@ -1,7 +1,5 @@
 User-agent: Googlebot
 Disallow: /nogooglebot/
-
-    User-agent: *
-    Allow: /
-
-    Sitemap: https://react-tasks-ivory.vercel.app/sitemap.xml
+User-agent: *
+Allow: /
+Sitemap: https://react-tasks-ivory.vercel.app/sitemap.xml

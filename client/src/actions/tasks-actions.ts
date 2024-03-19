@@ -18,7 +18,7 @@ const getTasksByID = async (taskId: string) => {
   try {
     const res = await fetch(`${apiUrl}/tasks/query?id=${taskId}`);
     const { data } = await res.json();
-    return data;
+    return data[0];
   } catch (err) {
     console.error(err instanceof Error ? `=>${err.message}` : "Internal error");
   }

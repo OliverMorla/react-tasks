@@ -62,12 +62,12 @@ interface TaskCardProps extends React.HTMLAttributes<HTMLDivElement> {
   projectId?: string | number;
   project?: ProjectProps;
 
-  readonly desc: string;
+  readonly description: string;
   readonly priority: "High" | "Medium" | "Low";
   readonly status: "InProgress" | "Backlog" | "ToDo";
   readonly createdAt: Date | string;
   readonly dueDate: Date | string;
-  readonly comments?: CommentProps[];
+  readonly Comment?: CommentProps[];
 }
 
 interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -190,16 +190,24 @@ interface UserProps {
   };
 }
 
+interface CommentUserProps {
+  readonly id: string | number;
+  name: string;
+  email: string;
+  password?: string;
+  photoUrl: string;
+}
+
 interface CommentProps {
   readonly id: string | number;
 
   userId?: string | number;
-  user?: UserProps;
+  User?: CommentUserProps;
 
   taskId?: string | number;
   task?: Task;
 
-  readonly content: string;
+  readonly text: string;
   readonly createdAt: Date | string;
 }
 

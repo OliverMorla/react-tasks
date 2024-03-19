@@ -22,6 +22,7 @@ import { isAuthenticated } from "./middleware";
 import connectionsRouter from "./routes/connections.routes";
 import tasksRouter from "./routes/tasks.routes";
 
+
 // Load environment variables from a .env file
 dotenv.config();
 

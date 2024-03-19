@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { listOfPrices } from "@/entities";
 import PriceCard from "@/components/ui/Cards/Price";
 import AnimatedSection from "@/components/helpers/AnimatedSection";

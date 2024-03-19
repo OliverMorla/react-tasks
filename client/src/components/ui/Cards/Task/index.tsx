@@ -1,37 +1,33 @@
 import { faFlag } from "@fortawesome/free-regular-svg-icons";
 import { faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AnimatePresence, MotionProps, motion } from "framer-motion";
+import { MotionProps, motion } from "framer-motion";
 // import TaskTagCard from "./TaskTag";
 import Button from "@/components/shared/ui/Button";
-import { createPortal } from "react-dom";
-import { useState } from "react";
-import TaskModal from "@/components/ui/Modals/Task";
 
 const TaskCard = ({
   title,
-  desc,
+  description,
   createdAt,
   dueDate,
   id,
   priority,
   status,
   tags,
-  comments,
+  Comment,
   ...props
 }: TaskCardProps & MotionProps) => {
-  // console.log({
-  //   title,
-  //   desc,
-  //   createdAt,
-  //   dueDate,
-  //   id,
-  //   priority,
-  //   status,
-  //   tags,
-  //   comments,
-  // });
-  const [showTaskModal, setShowTaskModal] = useState(false);
+  console.log({
+    title,
+    description,
+    createdAt,
+    dueDate,
+    id,
+    priority,
+    status,
+    tags,
+    Comment,
+  });
   return (
     <motion.div
       className="w-full flex flex-col h-auto bg-white p-4 rounded-md gap-4 cursor-pointer"
@@ -72,7 +68,7 @@ const TaskCard = ({
       </div>
       <div>
         <p className="opacity-60">
-          {desc && desc.length > 100 ? desc.slice(0, 100) + "..." : desc}
+          {description && description.length > 100 ? description.slice(0, 100) + "..." : description}
         </p>
       </div>
       <div className="flex justify-between w-full items-center opacity-60">
@@ -95,32 +91,6 @@ const TaskCard = ({
           </p>
         </div>
       </div>
-
-      {createPortal(
-        <AnimatePresence>
-          {showTaskModal && (
-            <div className="absolute h-full w-full z-50 flex justify-center items-center">
-              <motion.div
-                className="absolute h-full w-full z-0 bg-[--color-text-lightest]"
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{
-                  opacity: 0.8,
-                }}
-                exit={{
-                  opacity: 0,
-                }}
-              ></motion.div>
-              <TaskModal
-                showTaskModal={showTaskModal}
-                setShowTaskModal={setShowTaskModal}
-              />
-            </div>
-          )}
-        </AnimatePresence>,
-        document.getElementById("root") as HTMLElement
-      )}
     </motion.div>
   );
 };

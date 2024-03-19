@@ -1,5 +1,4 @@
 import Button from "@/components/shared/ui/Button";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
 const NewTaskModal = ({
@@ -17,7 +16,7 @@ const NewTaskModal = ({
         <h1 className="ml-auto font-bold">New Task</h1>
         <Button
           onClick={() => setShowNewTaskModal(!showNewTaskModal)}
-          fontAwesomeIconUrl={faXmark}
+          presetIcon="close"
           className="ml-auto bg-red-500 p-2 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out text-white"
         />
       </div>

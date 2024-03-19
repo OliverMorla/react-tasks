@@ -7,10 +7,9 @@ import DashboardSearchTasks from "@/components/ui/Dashboard/SearchTasks";
 import NewTaskModal from "@/components/ui/Modals/NewTask";
 import DashboardAssignedUsers from "@/components/ui/Dashboard/AssignedUsers";
 import DashboardNewTaskToggles from "@/components/ui/Dashboard/NewTaskToggles";
-import { getTasksFromProject } from "@/actions/tasks-actions";
-import { pageLoadVariant } from "@/config/framer-variants";
-import { useQuery } from "@tanstack/react-query";
-import TaskModal from "../../Modals/Task";
+import TaskModal from "@/components/ui/Modals/Task";
+import overflowRemover from "@/utils/overflow";
+import AnimatedDiv from "@/components/helpers/AnimatedDiv";
 
 const DashboardSelectedProject = ({
   title,
@@ -28,59 +27,30 @@ const DashboardSelectedProject = ({
 ProjectProps) => {
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
-  // const [tasksFetched, setTasksFetched] = useState<TasksProps[] | undefined>(
-  //   []
-  // );
-
-  // const { data, isPending, error, isLoading } = useQuery<TasksProps[]>({
-  //   queryKey: ["tasks"],
-  //   queryFn: () => getTasksFromProject(id as string),
-  // });
-
-  // useEffect(() => {
-  //   setTasksFetched(data);
-  // }, [isLoading, data]);
+  const [currentTaskID, setCurrentTaskID] = useState<string | null>(null);
 
   useEffect(() => {
-    if (showNewTaskModal) {
-      // When the modal is shown, add overflow: hidden to the body
-      document.body.style.overflow = "hidden";
-    } else {
-      // When the modal is not shown, remove the style (or set it to 'auto', depending on your needs)
-      document.body.style.overflow = "auto";
-    }
-
+    overflowRemover(showNewTaskModal);
     // Cleanup function to ensure the style is reset when the component unmounts
     return () => {
-      document.body.style.overflow = "auto";
+      overflowRemover(showNewTaskModal);
     };
   }, [showNewTaskModal]);
-
-  // testing purposes
-  // console.log({
-  //   title,
-  //   privacy,
-  //   createdAt,
-  //   tasks,
-  //   desc,
-  //   dueDate,
-  //   id,
-  //   priority,
-  //   tags,
-  //   type,
-  // isPending,
-  // error,
-  // isLoading,
-  // tasksFetched
-  // });
-
+  console.log({
+    title,
+    privacy,
+    createdAt,
+    connections,
+    desc,
+    dueDate,
+    id,
+    priority,
+    tasks,
+    tags,
+    type,
+  });
   return (
-    <motion.div
-      className="flex flex-col w-full"
-      variants={pageLoadVariant}
-      initial="hidden"
-      animate="visible"
-    >
+    <AnimatedDiv className="flex flex-col w-full">
       <div className="flex flex-col border-b-[var(--color-text-lightest)] border-b-[1px] gap-4 p-10">
         <div className="flex justify-between flex-wrap max-md:gap-4">
           <div className="flex items-center text-xs gap-4">
@@ -140,8 +110,12 @@ ProjectProps) => {
                 ?.filter((tasks) => tasks.status === "Backlog")
                 ?.map((task, index) => (
                   <TaskCard
+                    onClick={() => {
+                      setCurrentTaskID(task.id as string);
+                      setShowTaskModal(!showTaskModal);
+                    }}
                     title={task.title}
-                    desc={task.desc}
+                    description={task.description}
                     tags={task.tags}
                     dueDate={task.dueDate}
                     createdAt={task.createdAt}
@@ -149,7 +123,7 @@ ProjectProps) => {
                     status={task.status}
                     key={index}
                     id={task.id.toString()}
-                    comments={task.comments}
+                    // comments={task.comments}
                   />
                 ))}
             </div>
@@ -194,9 +168,12 @@ ProjectProps) => {
                 ?.filter((tasks) => tasks.status === "ToDo")
                 ?.map((task, index) => (
                   <TaskCard
-                    onClick={() => setShowTaskModal(!showTaskModal)}
+                    onClick={() => {
+                      setCurrentTaskID(task.id as string);
+                      setShowTaskModal(!showTaskModal);
+                    }}
                     title={task.title}
-                    desc={task.desc}
+                    description={task.description}
                     tags={task.tags}
                     dueDate={task.dueDate}
                     createdAt={task.createdAt}
@@ -204,7 +181,7 @@ ProjectProps) => {
                     status={task.status}
                     key={index}
                     id={task.id.toString()}
-                    comments={task.comments}
+                    // comments={task.comments}
                   />
                 ))}
             </div>
@@ -254,8 +231,12 @@ ProjectProps) => {
                 ?.filter((tasks) => tasks.status === "InProgress")
                 .map((task, index) => (
                   <TaskCard
+                    onClick={() => {
+                      setCurrentTaskID(task.id as string);
+                      setShowTaskModal(!showTaskModal);
+                    }}
                     title={task.title}
-                    desc={task.desc}
+                    description={task.description}
                     tags={task.tags}
                     dueDate={task.dueDate}
                     createdAt={task.createdAt}
@@ -263,7 +244,7 @@ ProjectProps) => {
                     status={task.status}
                     key={index}
                     id={task.id.toString()}
-                    comments={task.comments}
+                    // comments={task.comments}
                   />
                 ))}
             </div>
@@ -274,9 +255,9 @@ ProjectProps) => {
       {createPortal(
         <AnimatePresence>
           {showNewTaskModal && (
-            <div className="absolute h-full w-full z-50 flex justify-center items-center">
+            <div className="fixed h-full w-full z-50 flex justify-center items-center">
               <motion.div
-                className="absolute h-full w-full z-0 bg-[--color-text-lightest]"
+                className="fixed h-full w-full z-0 bg-[--color-text-lightest]"
                 initial={{
                   opacity: 0,
                 }}
@@ -300,9 +281,9 @@ ProjectProps) => {
       {createPortal(
         <AnimatePresence>
           {showTaskModal && (
-            <div className="absolute h-full w-full z-50 flex justify-center items-center">
+            <div className="fixed h-full w-full z-50 flex justify-center items-center">
               <motion.div
-                className="absolute h-full w-full z-0 bg-[--color-text-lightest]"
+                className="fixed h-full w-full z-0 bg-[--color-text-lightest]"
                 initial={{
                   opacity: 0,
                 }}
@@ -314,6 +295,7 @@ ProjectProps) => {
                 }}
               ></motion.div>
               <TaskModal
+                id={currentTaskID as string}
                 showTaskModal={showTaskModal}
                 setShowTaskModal={setShowTaskModal}
               />
@@ -322,7 +304,7 @@ ProjectProps) => {
         </AnimatePresence>,
         document.getElementById("root") as HTMLElement
       )}
-    </motion.div>
+    </AnimatedDiv>
   );
 };
 

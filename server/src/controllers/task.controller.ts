@@ -71,6 +71,16 @@ const getTasksByEmbeddedQuery = async (req: Request, res: Response) => {
           },
         },
         Comment: {
+          include: {
+            User: {
+              select: {
+                name: true,
+                photoUrl: true,
+                id: true,
+                email: true,
+              },
+            },
+          },
           orderBy: {
             createdAt: "desc",
           },

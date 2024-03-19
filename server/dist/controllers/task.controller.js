@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTask = exports.updateTask = exports.createTask = exports.getTaskByID = exports.getTasks = void 0;
+exports.deleteTask = exports.updateTask = exports.createTask = exports.getTaskByID = exports.getTasksByEmbeddedQuery = exports.getTasks = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -41,26 +41,81 @@ const getTaskByID = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             },
         });
         if (!task) {
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 message: "Task not found",
                 data: task,
             });
         }
-        res.status(200).json({
+        return res.status(200).json({
             ok: true,
             message: "User retrieved successfully",
             data: task,
         });
     }
     catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Error retrieving task",
             error: err instanceof Error ? err.message : null,
         });
     }
 });
 exports.getTaskByID = getTaskByID;
+const getTasksByEmbeddedQuery = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const query = req.query;
+    let whereFilter = {};
+    for (const [key, value] of Object.entries(query)) {
+        whereFilter[key] = value;
+    }
+    try {
+        const tasks = yield prisma_1.default.task.findMany({
+            where: Object.keys(query).length === 0 ? { id: null } : whereFilter,
+            include: {
+                User: {
+                    select: {
+                        name: true,
+                        email: true,
+                        photoUrl: true,
+                        id: true,
+                    },
+                },
+                Comment: {
+                    include: {
+                        User: {
+                            select: {
+                                name: true,
+                                photoUrl: true,
+                                id: true,
+                                email: true,
+                            },
+                        },
+                    },
+                    orderBy: {
+                        createdAt: "desc",
+                    },
+                },
+            },
+        });
+        if (!tasks) {
+            return res.status(404).json({
+                ok: false,
+                message: "Tasks not found",
+            });
+        }
+        return res.status(200).json({
+            ok: true,
+            message: "Tasks found",
+            data: tasks,
+        });
+    }
+    catch (err) {
+        return res.status(500).json({
+            message: "Error retrieving tasks",
+            error: err instanceof Error ? err.message : null,
+        });
+    }
+});
+exports.getTasksByEmbeddedQuery = getTasksByEmbeddedQuery;
 const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.createTask = createTask;
 const updateTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });

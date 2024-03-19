@@ -30,7 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
 // Controllers
-const user_controller_1 = require("../controllers/user.controller");
+const task_controller_1 = require("../controllers/task.controller");
 // Load environment variables
 dotenv.config({
     path: ".env",
@@ -38,6 +38,7 @@ dotenv.config({
 // Create a router
 const tasksRouter = express_1.default.Router();
 // Define routes
-tasksRouter.get("/", user_controller_1.getUsers); // GET /users - Get all users
+tasksRouter.get("/", task_controller_1.getTasks); // GET /users - Get all users
+tasksRouter.get("/query", task_controller_1.getTasksByEmbeddedQuery);
 // Export the router
 exports.default = tasksRouter;

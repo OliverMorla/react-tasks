@@ -39,5 +39,6 @@ dotenv.config({
 const projectRouter = express_1.default.Router();
 // Define routes
 projectRouter.get("/:id", project_controller_1.getProjectByID); // GET /project - Get a project by ID
+projectRouter.post("/");
 // Export the router
 exports.default = projectRouter;

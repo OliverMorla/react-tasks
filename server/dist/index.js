@@ -30,25 +30,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importStar(require("express"));
 const dotenv = __importStar(require("dotenv"));
 const morgan_1 = __importDefault(require("morgan"));
-// import compression from "compression";
 const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
-// import helmet from "helmet";
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const express_session_1 = __importDefault(require("express-session"));
+const csurf_1 = __importDefault(require("csurf")); // For CSRF protection
+// import helmet from "helmet";
+// import compression from "compression";
 // import multer from "multer"; // For file uploads
-// import { body } from "express-validator"; // For data validation
 // import swaggerUi from "swagger-ui-express"; // For API documentation
 // import YAML from "yamljs"; // To load the Swagger definition file
-const csurf_1 = __importDefault(require("csurf")); // For CSRF protection
+// Import middleware
+const middleware_1 = require("./middleware");
 // Import routes
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const users_routes_1 = __importDefault(require("./routes/users.routes"));
 const project_routes_1 = __importDefault(require("./routes/project.routes"));
 const projects_routes_1 = __importDefault(require("./routes/projects.routes"));
 const comments_routes_1 = __importDefault(require("./routes/comments.routes"));
-const middleware_1 = require("./middleware");
 const connections_routes_1 = __importDefault(require("./routes/connections.routes"));
+const tasks_routes_1 = __importDefault(require("./routes/tasks.routes"));
 // Load environment variables from a .env file
 dotenv.config();
 // Create an Express application instance
@@ -61,7 +62,7 @@ const port = process.env.PORT || 3000;
 app.use((0, cors_1.default)({
     // Specify allowed origins for better security, use '*' for development only
     origin: "*",
-    methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
+    methods: ["GET,POST,PUT,DELETE"],
 }));
 // Log HTTP requests to the console for debugging
 app.use((0, morgan_1.default)("combined"));
@@ -94,6 +95,7 @@ app.use("/projects", middleware_1.isAuthenticated, projects_routes_1.default); /
 app.use("/project", middleware_1.isAuthenticated, project_routes_1.default); // Single Project
 app.use("/comments", middleware_1.isAuthenticated, comments_routes_1.default);
 app.use("/connections", middleware_1.isAuthenticated, connections_routes_1.default);
+app.use("/tasks", middleware_1.isAuthenticated, tasks_routes_1.default);
 // Define a default route that returns a welcome message
 app.get("/", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "templates", "server", "index.html"));
@@ -119,19 +121,18 @@ app.use((0, csurf_1.default)());
 //   console.error(err.stack); // Log error stack for debugging
 //   res.status(err.statusCode || 500).json({ message: err.message || "Internal Server Error" });
 // });
-const getAllRoutes = () => {
-    const routes = [];
-    app._router.stack.forEach((middleware) => {
-        if (middleware.route) {
-            console.log(middleware.route);
-        }
-        else if (middleware.name === "router") {
-            middleware.handle.stack.forEach((handler) => {
-                console.log(handler.route);
-            });
-        }
-    });
-};
+// const getAllRoutes = () => {
+//   const routes = [];
+//   app._router.stack.forEach((middleware: any) => {
+//     if (middleware.route) {
+//       console.log(middleware.route);
+//     } else if (middleware.name === "router") {
+//       middleware.handle.stack.forEach((handler: any) => {
+//         console.log(handler.route);
+//       });
+//     }
+//   });
+// };
 // getAllRoutes();
 // Start the server and listen on the port specified in the .env file or port 3000
 app.listen(port, () => {

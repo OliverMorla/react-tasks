@@ -1,16 +1,19 @@
 import express, { json, urlencoded, static as expressStatic } from "express";
 import * as dotenv from "dotenv";
 import morgan from "morgan";
-// import compression from "compression";
 import cors from "cors";
 import path from "path";
-// import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
+import csurf from "csurf"; // For CSRF protection
+// import helmet from "helmet";
+// import compression from "compression";
 // import multer from "multer"; // For file uploads
 // import swaggerUi from "swagger-ui-express"; // For API documentation
 // import YAML from "yamljs"; // To load the Swagger definition file
-import csurf from "csurf"; // For CSRF protection
+
+// Import middleware
+import { isAuthenticated } from "./middleware";
 
 // Import routes
 import userRouter from "./routes/user.routes";
@@ -18,10 +21,8 @@ import usersRouter from "./routes/users.routes";
 import projectRouter from "./routes/project.routes";
 import projectsRouter from "./routes/projects.routes";
 import commentsRouter from "./routes/comments.routes";
-import { isAuthenticated } from "./middleware";
 import connectionsRouter from "./routes/connections.routes";
 import tasksRouter from "./routes/tasks.routes";
-
 
 // Load environment variables from a .env file
 dotenv.config();
@@ -40,7 +41,7 @@ app.use(
   cors({
     // Specify allowed origins for better security, use '*' for development only
     origin: "*",
-    methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
+    methods: ["GET,POST,PUT,DELETE"],
   })
 );
 
@@ -81,7 +82,7 @@ app.use("/projects", isAuthenticated, projectsRouter); // Multiple Projects
 app.use("/project", isAuthenticated, projectRouter); // Single Project
 app.use("/comments", isAuthenticated, commentsRouter);
 app.use("/connections", isAuthenticated, connectionsRouter);
-app.use("/tasks", isAuthenticated, tasksRouter)
+app.use("/tasks", isAuthenticated, tasksRouter);
 
 // Define a default route that returns a welcome message
 app.get("/", (req, res) => {
@@ -117,19 +118,19 @@ app.use(csurf());
 //   res.status(err.statusCode || 500).json({ message: err.message || "Internal Server Error" });
 // });
 
-const getAllRoutes = () => {
-  const routes = [];
+// const getAllRoutes = () => {
+//   const routes = [];
 
-  app._router.stack.forEach((middleware: any) => {
-    if (middleware.route) {
-      console.log(middleware.route);
-    } else if (middleware.name === "router") {
-      middleware.handle.stack.forEach((handler: any) => {
-        console.log(handler.route);
-      });
-    }
-  });
-};
+//   app._router.stack.forEach((middleware: any) => {
+//     if (middleware.route) {
+//       console.log(middleware.route);
+//     } else if (middleware.name === "router") {
+//       middleware.handle.stack.forEach((handler: any) => {
+//         console.log(handler.route);
+//       });
+//     }
+//   });
+// };
 
 // getAllRoutes();
 

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.createUser = exports.getUserByID = exports.getUsers = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
+const express_validator_1 = require("express-validator");
 // /api/users - GET - Get all users
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -43,29 +44,98 @@ const getUserByID = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             },
         });
         if (!user) {
-            res.status(200).json({
+            return res.status(200).json({
                 ok: true,
                 message: "User not found",
                 data: user,
             });
         }
-        res.status(200).json({
+        return res.status(200).json({
             ok: true,
             message: "User retrieved successfully",
             data: user,
         });
     }
     catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
             message: "Error retrieving user",
             error: err instanceof Error ? err.message : null,
         });
     }
 });
 exports.getUserByID = getUserByID;
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            ok: false,
+            message: "Validation error",
+            errors: errors.array(),
+        });
+    }
+    const { name, email, password, photoUrl } = req.body;
+    if (!name || !email || !password || !photoUrl) {
+        return res.status(400).json({
+            ok: false,
+            message: "All fields are required",
+        });
+    }
+    return res.status(201).json({
+        ok: true,
+        message: "User created successfully",
+        data: {
+            name,
+            email,
+            password,
+            photoUrl,
+        },
+    });
+});
 exports.createUser = createUser;
-const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, email, password, photoUrl } = req.body;
+    return res.status(201).json({
+        ok: true,
+        message: "User created successfully",
+        data: {
+            name,
+            email,
+            password,
+            photoUrl,
+        },
+    });
+});
 exports.updateUser = updateUser;
-const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const doesUserExist = yield prisma_1.default.user.findUnique({
+            where: {
+                id: req.params.id,
+            },
+        });
+        if (!doesUserExist) {
+            return res.status(404).json({
+                ok: false,
+                message: "User not found",
+            });
+        }
+        const user = yield prisma_1.default.user.delete({
+            where: {
+                id: req.params.id,
+            },
+        });
+        if (user) {
+            return res.status(200).json({
+                ok: true,
+                message: "User deleted successfully",
+            });
+        }
+    }
+    catch (err) {
+        return res.status(500).json({
+            message: "Error retrieving user",
+            error: err instanceof Error ? err.message : null,
+        });
+    }
+});
 exports.deleteUser = deleteUser;

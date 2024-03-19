@@ -1,9 +1,0 @@
-User-agent: *
-Disallow: /auth
-Disallow: /upgrade
-Disallow: /users
-Disallow: /messages
-Disallow: /tasks
-Disallow: /projects/personal
-Disallow: /projects/shared
-Disallow: /projects/archived

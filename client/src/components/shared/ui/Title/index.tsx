@@ -7,6 +7,7 @@ const Title = () => {
           src="/assets/logo/r-key.png"
           width={85}
           height={85}
+          alt="r-key-logo"
         />
         <span>
           <span className="text-blue-700">R</span>

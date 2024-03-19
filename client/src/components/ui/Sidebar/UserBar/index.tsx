@@ -17,6 +17,7 @@ const SidebarUserBar = () => {
         width={35}
         height={35}
         className="opacity-60"
+        alt="user-photo"
       />
       <div className="flex flex-col text-xs max-sm:hidden">
         <h1 className="font-bold">{user.name}</h1>

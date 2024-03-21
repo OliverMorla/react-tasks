@@ -1,12 +1,10 @@
 interface AuthContextProps {
   isAuthenticated: boolean;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    photo: string;
-    role: "User" | "Admin";
-  };
+  user: UserProps | undefined;
+  signIn: (input: BodyInit | SignInInputProps) => Promise<void>;
+  signUp: (input: BodyInit) => Promise<void>;
+  signOut: () => Promise<void>;
+  checkSession: () => Promise<void>;
 }
 
 interface ThemeContextProps {

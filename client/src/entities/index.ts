@@ -483,7 +483,7 @@ const userSession: UserSessionProps = {
   id: "6c49e654-ba05-4e94-bd33-6b97abf27861",
   name: "John Doe",
   email: "johndoe@reacttasks.com",
-  photo: "/assets/images/users/dummy-1.png",
+  photo: "/assets/images/users/user-1.png",
   role: "User",
 };
 
@@ -491,7 +491,7 @@ const adminSession = {
   id: 1,
   name: "Oliver Morla",
   email: "olivermorla@reacttasks.com",
-  photo: "/assets/images/users/dummy-1.png",
+  photo: "/assets/images/users/user-1.png",
   role: "Admin",
 };
 
@@ -568,7 +568,7 @@ const messageIcons = {
 };
 
 const presetIcons = {
-  close: faXmarkCircle,
+  closeCircle: faXmarkCircle,
   menu: faEllipsis,
   settings: faGear,
   plus: faPlus,

@@ -1,20 +1,23 @@
-// Libraries
+// Importing necessary libraries
 import express from "express";
 import * as dotenv from "dotenv";
 
-// Controllers
+// Importing controller for handling user-related routes
 import { getUsers } from "../controllers/user.controller";
 
-// Load environment variables
+// Initializing environment variables from the .env file.
+// This enables the use of environmental variables throughout the application.
 dotenv.config({
-  path: ".env",
+  path: ".env", // Specifying the path to the .env file for clarity
 });
 
-// Create a router
+// Creating a router instance specific for user-related endpoints.
+// This approach modularizes routing and makes the application more maintainable.
 const usersRouter = express.Router();
 
 // Define routes
 usersRouter.get("/", getUsers); // GET /users - Get all users
 
-// Export the router
+// Exporting the usersRouter to be used in the application's main router.
+// This modularization enhances scalability and separation of concerns.
 export default usersRouter;

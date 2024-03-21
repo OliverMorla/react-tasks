@@ -26,22 +26,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// Libraries
+// Importing necessary libraries
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
-// Controllers
+// Importing controller for handling user-related routes
 const user_controller_1 = require("../controllers/user.controller");
+// Importing user validator for validating user data 
 const validators_1 = require("../utils/validators");
-// Load environment variables
+// Initializing environment variables from the .env file.
+// This enables the use of environmental variables throughout the application.
 dotenv.config({
-    path: ".env",
+    path: ".env", // Specifying the path to the .env file for clarity
 });
-// Create a router
+// Creating a router instance specific for user-related endpoints.
+// This approach modularizes routing and makes the application more maintainable.
 const userRouter = express_1.default.Router();
 // Define routes
 userRouter.get("/:id", user_controller_1.getUserByID); // GET /user/:id - Get a user by ID
 userRouter.delete("/:id", user_controller_1.deleteUser); //DELETE  /user/:id - Delete a user by ID
-userRouter.post("/", validators_1.createUserValidator, user_controller_1.createUser); // POST /user - Create a user
 userRouter.put("/:id", validators_1.createUserValidator, user_controller_1.updateUser); //PUT /user - Update a user
-// Export the router
+// Exporting the userRouter to be used in the application's main router.
+// This modularization enhances scalability and separation of concerns.
 exports.default = userRouter;

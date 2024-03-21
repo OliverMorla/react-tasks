@@ -78,7 +78,7 @@ const getProjectsByEmbeddedQuery = (req, res) => __awaiter(void 0, void 0, void 
                 tasks: true,
                 connections: {
                     include: {
-                        User: true,
+                        user: true,
                     },
                 },
             },
@@ -120,7 +120,7 @@ const getProjectsByQuery = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 tasks: true,
                 connections: {
                     include: {
-                        User: true,
+                        user: true,
                     },
                 },
             },

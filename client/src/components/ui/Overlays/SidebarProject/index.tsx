@@ -10,10 +10,11 @@ const SidebarProjectOverlay = ({
 }) => {
   return (
     <motion.div
-      className="bg-[--color-text-darker] absolute -top-14 z-50 -right-36 text-center rounded-lg text-white"
+      className="bg-[--color-text-darker] absolute -top-14 z-[1000] -right-36 text-center rounded-lg text-white"
       initial={{
         x: 40,
         opacity: 0,
+        zIndex: 1000,
       }}
       animate={{
         x: 0,
@@ -21,6 +22,7 @@ const SidebarProjectOverlay = ({
         transition: {
           duration: 0.4,
         },
+        zIndex: 1000,
       }}
       exit={{
         x: 40,
@@ -36,7 +38,7 @@ const SidebarProjectOverlay = ({
       <ul className="flex flex-col items-center">
         {subMenu?.map((item, index) => (
           <li
-            className={`p-4 transition-all hover:bg-[--color-primary] w-full border-b-[--color-primary] border-b-[1px] ${index === subMenu.length - 1 ? "rounded-b-lg" : ""} ${index === 0 ? "rounded-t-lg" : ""}`}
+            className={`p-4 transition-all hover:bg-[--color-primary] w-full border-b-[--color-primary] border-b-[1px] z-[1000] ${index === subMenu.length - 1 ? "rounded-b-lg" : ""} ${index === 0 ? "rounded-t-lg" : ""}`}
             key={index}
           >
             <Link to={item.pathUrl}>{item.title}</Link>

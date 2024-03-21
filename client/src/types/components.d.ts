@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   pathUrl?: string;
   variant?: "transparent" | "color" | "clear";
   presetIcon?:
-    | "close"
+    | "closeCircle"
     | "menu"
     | "settings"
     | "plus"
@@ -52,7 +52,7 @@ interface PriceCardProps {
 }
 
 interface TaskCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  readonly id: string | number;
+  readonly id: string;
   readonly tags: ["Bug" | "Feedback"];
   readonly title: string;
 
@@ -65,28 +65,14 @@ interface TaskCardProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly description: string;
   readonly priority: "High" | "Medium" | "Low";
   readonly status: "InProgress" | "Backlog" | "ToDo";
-  readonly createdAt: Date | string;
-  readonly dueDate: Date | string;
-  readonly Comment?: CommentProps[];
+  readonly createdAt: Date;
+  readonly dueDate: Date;
+  readonly comments?: CommentProps[];
 }
 
-interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  readonly id: string | number;
-  readonly tags: string[];
-  readonly status: "In Progress" | "Completed";
-  readonly title: string;
-
-  userId?: string | number;
-  user?: UserProps;
-
-  readonly desc: string;
-  readonly priority: "High" | "Medium" | "Low";
-  readonly type: "Personal" | "Shared";
-  readonly connections?: UserProps[];
-  readonly privacy: "Public" | "Private" | "Archived";
-  readonly createdAt: Date | string;
-  readonly dueDate: Date | string;
-}
+interface ProjectCardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    ProjectProps {}
 
 interface ProjectUserCardProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -158,57 +144,53 @@ interface NewProjectModalInputProps {
 
 interface NewTaskTogglesProps extends NewTaskModalProps {}
 
-interface ProjectProps {
-  readonly id: string | number;
-  readonly tags: string[];
-  readonly status: "In Progress" | "Completed";
-  readonly title: string;
-
-  userId?: string | number;
-  user?: UserProps;
-
-  readonly desc: string;
-  readonly priority: "High" | "Medium" | "Low";
-  readonly type: "Personal" | "Shared";
-  readonly privacy: "Public" | "Private" | "Archived";
-  readonly connections?: UserProps[];
-  readonly createdAt: Date | string;
-  readonly dueDate: Date | string;
-
-  tasks?: TasksProps[];
-}
-
 interface TasksProps extends TaskCardProps {}
 
 interface UserProps {
-  User: {
-    readonly id: string | number;
-    name: string;
-    email: string;
-    password?: string;
-    photoUrl: string;
-  };
-}
-
-interface CommentUserProps {
-  readonly id: string | number;
-  name: string;
-  email: string;
+  readonly id: string;
+  readonly name: string;
+  email?: string;
   password?: string;
-  photoUrl: string;
+  readonly photoUrl: string;
+  readonly role: "User" | "Admin";
+
+  projects?;
+  commnents?;
+  connections?;
+  tasks?;
 }
 
 interface CommentProps {
   readonly id: string | number;
 
   userId?: string | number;
-  User?: CommentUserProps;
+  user?: UserProps;
 
   taskId?: string | number;
   task?: Task;
 
   readonly text: string;
   readonly createdAt: Date | string;
+}
+
+interface ProjectProps {
+  readonly id: string;
+  title: string;
+  description?: string;
+  readonly status: "In Progress" | "Completed";
+  tags?: string[];
+
+  readonly userId?: string;
+  readonly user?: UserProps;
+
+  readonly priority: "High" | "Medium" | "Low";
+  readonly type: "Personal" | "Shared";
+  readonly privacy: "Public" | "Private" | "Archived";
+  readonly createdAt: Date;
+  readonly dueDate: Date;
+
+  readonly connections?: ConnectionProps[];
+  readonly tasks?: TasksProps[];
 }
 
 interface ConnectionProps {
@@ -229,4 +211,17 @@ interface UserSessionProps {
   email: string;
   photo: string;
   role: "User" | "Admin";
+}
+
+interface LoadingAnimationProps
+  extends React.ImgHTMLAttributes<HTMLImageElement> {
+  dimensions?: {
+    width: number;
+    height: number;
+  };
+}
+
+interface SignInInputProps {
+  email: string;
+  password: string;
 }

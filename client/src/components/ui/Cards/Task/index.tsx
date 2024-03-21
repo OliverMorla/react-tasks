@@ -1,9 +1,10 @@
-import { faFlag } from "@fortawesome/free-regular-svg-icons";
-import { faMessage } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MotionProps, motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMessage } from "@fortawesome/free-solid-svg-icons";
+import { faFlag } from "@fortawesome/free-regular-svg-icons";
 // import TaskTagCard from "./TaskTag";
 import Button from "@/components/shared/ui/Button";
+import CollidedUserCard from "../CollidedUserCard";
 
 const TaskCard = ({
   title,
@@ -14,7 +15,7 @@ const TaskCard = ({
   priority,
   status,
   tags,
-  Comment,
+  comments,
   ...props
 }: TaskCardProps & MotionProps) => {
   console.log({
@@ -26,7 +27,7 @@ const TaskCard = ({
     priority,
     status,
     tags,
-    Comment,
+    comments,
   });
   return (
     <motion.div
@@ -68,14 +69,17 @@ const TaskCard = ({
       </div>
       <div>
         <p className="opacity-60">
-          {description && description.length > 100 ? description.slice(0, 100) + "..." : description}
+          {description && description.length > 100
+            ? description.slice(0, 100) + "..."
+            : description}
         </p>
       </div>
       <div className="flex justify-between w-full items-center opacity-60">
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faFlag} width={25} height={25} />
           <p>
-            {createdAt instanceof Date ? createdAt.toLocaleString() : createdAt}
+            {new Date(createdAt).toLocaleDateString()} -{" "}
+            {new Date(dueDate).toLocaleDateString()}
           </p>
         </div>
         <span>
@@ -83,12 +87,21 @@ const TaskCard = ({
         </span>
       </div>
       <div className="flex w-full items-center">
-        <div className="flex items-center opacity-60 gap-2">
-          <FontAwesomeIcon icon={faMessage} width={25} height={25} />
-          <p className="flex gap-1">
-            <span>3</span>
-            <span>Comments</span>
-          </p>
+        <div className="flex items-center opacity-60 justify-between w-full">
+          <div className="flex items-center">
+            <FontAwesomeIcon icon={faMessage} width={25} height={25} />
+            <p className="flex gap-1">
+              <span>{comments?.length}</span>
+              <span>Comments</span>
+            </p>
+          </div>
+          <div>
+            {comments ? (
+              <CollidedUserCard connections={comments} />
+            ) : (
+              "No Users Assigned"
+            )}
+          </div>
         </div>
       </div>
     </motion.div>

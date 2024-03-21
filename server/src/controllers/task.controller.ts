@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { WhereFilterProps } from "../types/controllers";
+import { WhereFilterProps, WhereFilterValue } from "../types";
 import prisma from "../lib/prisma";
 
 const getTasks = async (req: Request, res: Response) => {
@@ -55,14 +55,14 @@ const getTasksByEmbeddedQuery = async (req: Request, res: Response) => {
 
   let whereFilter: WhereFilterProps = {};
   for (const [key, value] of Object.entries(query)) {
-    whereFilter[key] = value as string | boolean | number | null | undefined;
+    whereFilter[key] = value as WhereFilterValue;
   }
 
   try {
     const tasks = await prisma.task.findMany({
       where: Object.keys(query).length === 0 ? { id: null } : whereFilter,
       include: {
-        User: {
+        user: {
           select: {
             name: true,
             email: true,
@@ -70,9 +70,9 @@ const getTasksByEmbeddedQuery = async (req: Request, res: Response) => {
             id: true,
           },
         },
-        Comment: {
+        comments: {
           include: {
-            User: {
+            user: {
               select: {
                 name: true,
                 photoUrl: true,

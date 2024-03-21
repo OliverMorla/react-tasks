@@ -5,10 +5,12 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 // UI Components
+import AnimatedDiv from "@/components/helpers/AnimatedDiv";
 import NewProjectModal from "@/components/ui/Modals/NewProject";
 import DashboardSelectedProject from "@/components/ui/Dashboard/SelectedProject";
-import AnimatedDiv from "@/components/helpers/AnimatedDiv";
 import ProjectCard from "@/components/ui/Cards/Project";
+import LoadingAnimation from "@/components/ui/Loading";
+import Button from "@/components/shared/ui/Button";
 
 // Actions
 import { getProjectsFromUser } from "@/actions/project-actions";
@@ -20,15 +22,24 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "@/hooks/useAuth";
 
 const Dashboard = () => {
+  // Local State
+  const [selectedProject, setSelectedProject] = useState<null | ProjectProps>(
+    null
+  );
+  const [showNewProjectModal, setShowNewProjectModal] =
+    useState<boolean>(false);
+
   // Redux Dispatch Hook
   const dispatch = useDispatch();
 
   // Session User
   const { user } = useAuth();
 
-  const { isPending, error, data, isLoading } = useQuery({
+  // Fetch Projects from API using React Query
+  const { error, data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: () => getProjectsFromUser(user.id),
+    retry: 3
   });
 
   // // Set Projects to Redux when component mounts
@@ -36,31 +47,12 @@ const Dashboard = () => {
     if (data) {
       dispatch(setProjects(data));
     }
-    console.log("useEffect dashboard ran!")
   }, [data]);
 
   // Retrieve Projects from Redux
   const projects: ProjectProps[] = useSelector(
     (state: any) => state.projectReducer.projects
   );
-
-  // Selected Project State
-  const [selectedProject, setSelectedProject] = useState<null | ProjectProps>(
-    null
-  );
-
-  // Modals States
-  const [showNewProjectModal, setShowNewProjectModal] =
-    useState<boolean>(false);
-
-  // Testing Purposes
-  console.log({
-    isPending,
-    isLoading,
-    error,
-    data,
-    projects,
-  });
 
   return (
     <section
@@ -81,34 +73,38 @@ const Dashboard = () => {
           </div>
 
           <div className="flex flex-col ">
-            <button
+            <Button
               onClick={() => setShowNewProjectModal(!showNewProjectModal)}
-              className="flex gap-2 items-center p-2 border-[--color-text-lightest] border-[1px] rounded-lg"
+              variant="transparent"
+              className="p-2"
             >
               <p className="font-bold">Create a new project</p>
-            </button>
+            </Button>
           </div>
 
           <div className="flex flex-col gap-4 w-[90%]">
             <h1 className="font-bold text-2xl">Your projects</h1>
             <div className="flex gap-4 w-full overflow-x-scroll p-4">
-              {projects?.map((project, index) => (
-                <ProjectCard
-                  key={index}
-                  id={project.id}
-                  title={project.title}
-                  connections={project.connections}
-                  type={project.type}
-                  desc={project.desc}
-                  dueDate={project.dueDate}
-                  createdAt={project.createdAt}
-                  priority={project.priority}
-                  tags={project.tags}
-                  privacy={project.privacy}
-                  status={project.status}
-                  onClick={() => setSelectedProject(project)}
-                />
-              ))}
+              {isLoading && !error && <LoadingAnimation />}
+              {projects &&
+                projects.map((project, index) => (
+                  <ProjectCard
+                    key={index}
+                    id={project.id}
+                    title={project.title}
+                    tasks={project.tasks}
+                    connections={project.connections}
+                    type={project.type}
+                    description={project.description}
+                    dueDate={project.dueDate}
+                    createdAt={project.createdAt}
+                    priority={project.priority}
+                    tags={project.tags}
+                    privacy={project.privacy}
+                    status={project.status}
+                    onClick={() => setSelectedProject(project)}
+                  />
+                ))}
             </div>
           </div>
         </AnimatedDiv>
@@ -121,13 +117,13 @@ const Dashboard = () => {
           title={selectedProject.title}
           status={selectedProject.status}
           type={selectedProject.type}
-          desc={selectedProject.desc}
+          description={selectedProject.description}
           dueDate={selectedProject.dueDate}
           priority={selectedProject.priority}
           tags={selectedProject.tags}
           createdAt={selectedProject.createdAt}
           privacy={selectedProject.privacy}
-          tasks={selectedProject.tasks}
+          // tasks={selectedProject.tasks}
           connections={selectedProject.connections}
         />
       )}

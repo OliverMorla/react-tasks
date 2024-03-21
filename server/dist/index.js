@@ -32,7 +32,7 @@ const dotenv = __importStar(require("dotenv"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
-const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const express_session_1 = __importDefault(require("express-session"));
 const csurf_1 = __importDefault(require("csurf")); // For CSRF protection
 // import helmet from "helmet";
@@ -49,7 +49,10 @@ const project_routes_1 = __importDefault(require("./routes/project.routes"));
 const projects_routes_1 = __importDefault(require("./routes/projects.routes"));
 const comments_routes_1 = __importDefault(require("./routes/comments.routes"));
 const connections_routes_1 = __importDefault(require("./routes/connections.routes"));
+const connection_routes_1 = __importDefault(require("./routes/connection.routes"));
 const tasks_routes_1 = __importDefault(require("./routes/tasks.routes"));
+const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const task_routes_1 = __importDefault(require("./routes/task.routes"));
 // Load environment variables from a .env file
 dotenv.config();
 // Create an Express application instance
@@ -67,20 +70,20 @@ app.use((0, cors_1.default)({
 // Log HTTP requests to the console for debugging
 app.use((0, morgan_1.default)("combined"));
 // Apply rate limiting to all requests
-const limiter = (0, express_rate_limit_1.default)({
-    windowMs: 15 * 60 * 1000, // Time window in milliseconds
-    max: 100, // Limit each IP to 100 requests per window
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // Time window in milliseconds
+//   max: 100, // Limit each IP to 100 requests per window
+// });
+// app.use(limiter);
 // Parse incoming requests with JSON payloads
 app.use((0, express_1.json)());
+app.use((0, cookie_parser_1.default)());
 // Parse requests with URL-encoded payloads
 app.use((0, express_1.urlencoded)({ extended: true }));
 // Serve static files like images, CSS files, and JavaScript files
-app.use("/uploads", (0, express_1.static)("uploads"));
+app.use("/uploads", (0, express_1.static)("./src/uploads"));
 app.use("/public", (0, express_1.static)("./src/public"));
-// Serving API JSON files from 'public/api', with automatic .json extension resolution
-app.use("/api", (0, express_1.static)("public/api", { extensions: ["json"] }));
+app.use("/api", (0, express_1.static)("./src/public/api", { extensions: ["json"] })); // Serving API JSON files from 'public/api', with automatic .json extension resolution
 // Placeholder for authentication middleware
 // Implement JWT or session-based authentication here
 // app.use((req, res, next) => {
@@ -89,13 +92,17 @@ app.use("/api", (0, express_1.static)("public/api", { extensions: ["json"] }));
 // });
 // Define routes for your application
 // For example, user-related routes are managed by userRouter
-app.use("/users", middleware_1.isAuthenticated, users_routes_1.default); // Multiple User
 app.use("/user", middleware_1.isAuthenticated, user_routes_1.default); // Single User
-app.use("/projects", middleware_1.isAuthenticated, projects_routes_1.default); // Multiple Projects
+app.use("/users", middleware_1.isAuthenticated, users_routes_1.default); // Multiple User
 app.use("/project", middleware_1.isAuthenticated, project_routes_1.default); // Single Project
-app.use("/comments", middleware_1.isAuthenticated, comments_routes_1.default);
-app.use("/connections", middleware_1.isAuthenticated, connections_routes_1.default);
-app.use("/tasks", middleware_1.isAuthenticated, tasks_routes_1.default);
+app.use("/projects", middleware_1.isAuthenticated, projects_routes_1.default); // Multiple Projects
+app.use("/comment", middleware_1.isAuthenticated, comments_routes_1.default); // Single Comment
+app.use("/comments", middleware_1.isAuthenticated, comments_routes_1.default); // Multiple Comments
+app.use("/connection", middleware_1.isAuthenticated, connection_routes_1.default); // Single Connection
+app.use("/connections", middleware_1.isAuthenticated, connections_routes_1.default); // Multiple Connections
+app.use("/task", middleware_1.isAuthenticated, task_routes_1.default); // Single Task
+app.use("/tasks", middleware_1.isAuthenticated, tasks_routes_1.default); // Multiple Tasks
+app.use("/auth", auth_routes_1.default); // Authentication
 // Define a default route that returns a welcome message
 app.get("/", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "templates", "server", "index.html"));
@@ -121,19 +128,20 @@ app.use((0, csurf_1.default)());
 //   console.error(err.stack); // Log error stack for debugging
 //   res.status(err.statusCode || 500).json({ message: err.message || "Internal Server Error" });
 // });
-// const getAllRoutes = () => {
-//   const routes = [];
-//   app._router.stack.forEach((middleware: any) => {
-//     if (middleware.route) {
-//       console.log(middleware.route);
-//     } else if (middleware.name === "router") {
-//       middleware.handle.stack.forEach((handler: any) => {
-//         console.log(handler.route);
-//       });
-//     }
-//   });
-// };
-// getAllRoutes();
+// Checks the routes in the app
+const routesChecker = () => {
+    const routes = [];
+    app._router.stack.forEach((middleware) => {
+        if (middleware.route) {
+            routes.push(middleware.route);
+        }
+        else if (middleware.name === "router") {
+            middleware.handle.stack.forEach((handler) => {
+                routes.push(handler.route);
+            });
+        }
+    });
+};
 // Start the server and listen on the port specified in the .env file or port 3000
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

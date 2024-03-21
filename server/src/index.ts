@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
 import path from "path";
+import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import session from "express-session";
 import csurf from "csurf"; // For CSRF protection
@@ -22,7 +23,10 @@ import projectRouter from "./routes/project.routes";
 import projectsRouter from "./routes/projects.routes";
 import commentsRouter from "./routes/comments.routes";
 import connectionsRouter from "./routes/connections.routes";
+import connectionRouter from "./routes/connection.routes";
 import tasksRouter from "./routes/tasks.routes";
+import authRouter from "./routes/auth.routes";
+import taskRouter from "./routes/task.routes";
 
 // Load environment variables from a .env file
 dotenv.config();
@@ -49,23 +53,24 @@ app.use(
 app.use(morgan("combined"));
 
 // Apply rate limiting to all requests
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // Time window in milliseconds
-  max: 100, // Limit each IP to 100 requests per window
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // Time window in milliseconds
+//   max: 100, // Limit each IP to 100 requests per window
+// });
+// app.use(limiter);
 
 // Parse incoming requests with JSON payloads
 app.use(json());
+
+app.use(cookieParser())
 
 // Parse requests with URL-encoded payloads
 app.use(urlencoded({ extended: true }));
 
 // Serve static files like images, CSS files, and JavaScript files
-app.use("/uploads", expressStatic("uploads"));
+app.use("/uploads", expressStatic("./src/uploads"));
 app.use("/public", expressStatic("./src/public"));
-// Serving API JSON files from 'public/api', with automatic .json extension resolution
-app.use("/api", expressStatic("public/api", { extensions: ["json"] }));
+app.use("/api", expressStatic("./src/public/api", { extensions: ["json"] })); // Serving API JSON files from 'public/api', with automatic .json extension resolution
 
 // Placeholder for authentication middleware
 // Implement JWT or session-based authentication here
@@ -76,13 +81,17 @@ app.use("/api", expressStatic("public/api", { extensions: ["json"] }));
 
 // Define routes for your application
 // For example, user-related routes are managed by userRouter
-app.use("/users", isAuthenticated, usersRouter); // Multiple User
 app.use("/user", isAuthenticated, userRouter); // Single User
-app.use("/projects", isAuthenticated, projectsRouter); // Multiple Projects
+app.use("/users", isAuthenticated, usersRouter); // Multiple User
 app.use("/project", isAuthenticated, projectRouter); // Single Project
-app.use("/comments", isAuthenticated, commentsRouter);
-app.use("/connections", isAuthenticated, connectionsRouter);
-app.use("/tasks", isAuthenticated, tasksRouter);
+app.use("/projects", isAuthenticated, projectsRouter); // Multiple Projects
+app.use("/comment", isAuthenticated, commentsRouter); // Single Comment
+app.use("/comments", isAuthenticated, commentsRouter); // Multiple Comments
+app.use("/connection", isAuthenticated, connectionRouter); // Single Connection
+app.use("/connections", isAuthenticated, connectionsRouter); // Multiple Connections
+app.use("/task", isAuthenticated, taskRouter); // Single Task
+app.use("/tasks", isAuthenticated, tasksRouter); // Multiple Tasks
+app.use("/auth", authRouter); // Authentication
 
 // Define a default route that returns a welcome message
 app.get("/", (req, res) => {
@@ -118,21 +127,20 @@ app.use(csurf());
 //   res.status(err.statusCode || 500).json({ message: err.message || "Internal Server Error" });
 // });
 
-// const getAllRoutes = () => {
-//   const routes = [];
+// Checks the routes in the app
+const routesChecker = () => {
+  const routes = [];
 
-//   app._router.stack.forEach((middleware: any) => {
-//     if (middleware.route) {
-//       console.log(middleware.route);
-//     } else if (middleware.name === "router") {
-//       middleware.handle.stack.forEach((handler: any) => {
-//         console.log(handler.route);
-//       });
-//     }
-//   });
-// };
-
-// getAllRoutes();
+  app._router.stack.forEach((middleware: any) => {
+    if (middleware.route) {
+      routes.push(middleware.route);
+    } else if (middleware.name === "router") {
+      middleware.handle.stack.forEach((handler: any) => {
+        routes.push(handler.route);
+      });
+    }
+  });
+};
 
 // Start the server and listen on the port specified in the .env file or port 3000
 app.listen(port, () => {

@@ -71,7 +71,7 @@ const getTasksByEmbeddedQuery = (req, res) => __awaiter(void 0, void 0, void 0, 
         const tasks = yield prisma_1.default.task.findMany({
             where: Object.keys(query).length === 0 ? { id: null } : whereFilter,
             include: {
-                User: {
+                user: {
                     select: {
                         name: true,
                         email: true,
@@ -79,9 +79,9 @@ const getTasksByEmbeddedQuery = (req, res) => __awaiter(void 0, void 0, void 0, 
                         id: true,
                     },
                 },
-                Comment: {
+                comments: {
                     include: {
-                        User: {
+                        user: {
                             select: {
                                 name: true,
                                 photoUrl: true,

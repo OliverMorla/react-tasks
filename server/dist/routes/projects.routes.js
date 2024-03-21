@@ -26,19 +26,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// Libraries
+// Importing necessary libraries
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
-// Controllers
+// Importing controller for handling project-related routes
 const project_controller_1 = require("../controllers/project.controller");
-// Load environment variables
+// Initializing environment variables from the .env file.
+// This enables the use of environmental variables throughout the application.
 dotenv.config({
-    path: ".env",
+    path: ".env", // Specifying the path to the .env file for clarity
 });
-// Create a router
+// Creating a router instance specific for projects-related endpoints.
+// This approach modularizes routing and makes the application more maintainable.
 const projectsRouter = express_1.default.Router();
-// Define routes
+// Route definitions
 projectsRouter.get("/", project_controller_1.getProjects); // GET /projects - Get all projects
 projectsRouter.get("/query", project_controller_1.getProjectsByEmbeddedQuery); // GET /projects/query?key=value - Get project by query
-// Export the router
+// Exporting the projectsRouter to be used in the application's main router.
+// This modularization enhances scalability and separation of concerns.
 exports.default = projectsRouter;

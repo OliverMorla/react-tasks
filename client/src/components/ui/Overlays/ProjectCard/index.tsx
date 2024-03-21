@@ -1,6 +1,18 @@
 import { motion } from "framer-motion";
 import Button from "@/components/shared/ui/Button";
 
+const projectCardMenuItems = [
+  {
+    name: "Edit",
+  },
+  {
+    name: "Delete",
+  },
+  {
+    name: "Settings",
+  },
+];
+
 const ProjectCardOverlay = () => {
   return (
     <motion.div
@@ -20,21 +32,25 @@ const ProjectCardOverlay = () => {
       }}
     >
       <ul className="flex flex-col items-center">
-        <li className="p-2">
-          <Button variant="clear" onClick={() => {}}>
-            Edit
-          </Button>
-        </li>
-        <li className="p-2">
-          <Button variant="clear" onClick={() => {}}>
-            Delete
-          </Button>
-        </li>
-        <li className="p-2">
-          <Button variant="clear" onClick={() => {}}>
-            Settings
-          </Button>
-        </li>
+        {projectCardMenuItems.map((item, index) => (
+          <li key={index} className="h-full w-full">
+            <Button
+              variant="clear"
+              name={item.name}
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log(item.name);
+              }}
+              className={`transition-all hover:bg-[var(--color-primary)] p-2 w-full h-full ${
+                index === 0 ? "rounded-t-lg" : ""
+              } ${
+                index === projectCardMenuItems.length - 1 ? "rounded-b-lg" : ""
+              }`}
+            >
+              {item.name}
+            </Button>
+          </li>
+        ))}
       </ul>
     </motion.div>
   );

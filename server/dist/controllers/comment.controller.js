@@ -13,10 +13,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCommentByID = exports.getComments = void 0;
+const entities_1 = require("../entities");
 const prisma_1 = __importDefault(require("../lib/prisma"));
+/**
+ * Handles the retrieval of comments with optional filtering and pagination.
+ * Allows filtering by any model attribute not explicitly reserved in queryOptions.
+ *
+ * @param req Express request object, containing query parameters for filtering and options.
+ * @param res Express response object for sending back the comments or error messages.
+ */
 const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { page, limit, embed, include } = req.query;
+    let whereFilter = {};
+    // Build the filter object from query parameters, excluding reserved options.
+    Object.entries(req.query).forEach(([key, value]) => {
+        if (!entities_1.queryOptions.includes(key)) {
+            whereFilter[key] = value;
+        }
+    });
     try {
-        const comments = yield prisma_1.default.comment.findMany();
+        // Check if the include query parameter is set to "all" or a specific model.
+        const comments = yield prisma_1.default.comment.findMany({
+            where: Object.keys(whereFilter).length > 0 ? whereFilter : {},
+            include: {
+                user: (embed === "user" && !include) || include === "all"
+                    ? {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            photoUrl: true,
+                            role: true,
+                        },
+                    }
+                    : false,
+                task: (embed === "task" && !include) || include === "all",
+            },
+            skip: page ? parseInt(page) * 10 : 0, // Pagination offset calculation.
+            take: limit ? parseInt(limit) : 10, // Number of items to retrieve.
+        });
+        // Successful retrieval
         if (comments) {
             return res.status(200).json({
                 ok: true,
@@ -27,12 +63,18 @@ const getComments = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (err) {
         return res.status(500).json({
-            message: "Error retrieving comment",
+            message: "Error retrieving comments",
             error: err instanceof Error ? err.message : null,
         });
     }
 });
 exports.getComments = getComments;
+/**
+ * Retrieves a comment by its unique identifier.
+ *
+ * @param req Express request object, containing the comment ID.
+ * @param res Express response object for sending back the comment or error messages.
+ */
 const getCommentByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const comment = yield prisma_1.default.comment.findUnique({
@@ -47,6 +89,7 @@ const getCommentByID = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 data: comment,
             });
         }
+        // Successful retrieval
         return res.status(200).json({
             ok: true,
             message: "Comment found",

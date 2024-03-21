@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { getTasksByID } from "@/actions/tasks-actions";
 import Button from "@/components/shared/ui/Button";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getTasksByID } from "@/actions/tasks-actions";
+import CollidedUserCard from "@/components/ui/Cards/CollidedUserCard";
 import overflowRemover from "@/utils/overflow";
-// import DashboardAssignedUsers from "../../Dashboard/AssignedUsers";
+import LoadingAnimation from "../../Loading";
 
 const TaskModal = ({ setShowTaskModal, showTaskModal, id }: TaskModalProps) => {
   const queryClient = useQueryClient();
@@ -43,9 +44,8 @@ const TaskModal = ({ setShowTaskModal, showTaskModal, id }: TaskModalProps) => {
     isLoading,
     isPending,
     error,
+    newCommentInput,
   });
-
-  console.log(newCommentInput);
 
   return (
     <motion.div
@@ -54,22 +54,14 @@ const TaskModal = ({ setShowTaskModal, showTaskModal, id }: TaskModalProps) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {isLoading && !error && (
-        <img
-          src="/assets/spinners/Loading-3.svg"
-          alt="loading.gif"
-          width={50}
-          height={50}
-          className="ml-auto mr-auto"
-        />
-      )}
+      {isLoading && !error && <LoadingAnimation className="mr-auto ml-auto" />}
       {data ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <div className="flex justify-center items-center">
             <h1 className="font-bold">{data.title}</h1>
             <Button
               onClick={() => setShowTaskModal(!showTaskModal)}
-              presetIcon="close"
+              presetIcon="closeCircle"
               className="bg-red-500 p-2 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out text-white absolute right-0 mr-2"
             />
           </div>
@@ -106,21 +98,25 @@ const TaskModal = ({ setShowTaskModal, showTaskModal, id }: TaskModalProps) => {
             <div className="flex items-center justify-between border-b-[1px] border-b-gray-200 pb-2">
               <h1 className="font-bold">Comments</h1>
               <div>
-                {/* <DashboardAssignedUsers connections={data.Comment} /> */}
+                {data.comments ? (
+                  <CollidedUserCard connections={data.comments} />
+                ) : (
+                  "No Users Assigned"
+                )}
               </div>
             </div>
             <div className="max-h-[250px] overflow-y-scroll flex flex-col gap-4 p-2">
-              {data.Comment?.map((comment, index) => (
+              {data.comments?.map((comment, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex flex-col items-center justify-center">
                     <img
-                      src={comment.User?.photoUrl}
-                      alt={`${comment.User?.name}-photo`}
+                      src={comment.user?.photoUrl}
+                      alt={`${comment.user?.name}-photo`}
                       width={50}
                       height={50}
                     />
                     <span className="text-center text-sm">
-                      {comment.User?.name}
+                      {comment.user?.name}
                     </span>
                   </div>
                   <div className="flex flex-col bg-gray-200 rounded-lg px-4 py-2">

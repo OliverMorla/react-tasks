@@ -16,7 +16,7 @@ const createUserValidator = [
     })
         .withMessage("Password length should be more than 6 characters"),
     (0, express_validator_1.body)("name").notEmpty().withMessage("Name is required"),
-    (0, express_validator_1.body)("photoUrl").notEmpty().withMessage("Photo URL is required"),
+    (0, express_validator_1.body)("photoUrl").optional().isURL().withMessage("Invalid URL"),
 ];
 exports.createUserValidator = createUserValidator;
 const createProjectValidator = [

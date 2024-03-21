@@ -1,48 +1,45 @@
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
+
 import Button from "@/components/shared/ui/Button";
+import CollidedUserCard from "@/components/ui/Cards/CollidedUserCard";
 import ProjectCardOverlay from "@/components/ui/Overlays/ProjectCard";
+
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProjectCard: React.FunctionComponent<ProjectCardProps> = ({
   title,
-  createdAt,
   dueDate,
-  desc,
+  description,
   connections,
-  id,
   priority,
-  privacy,
-  tags,
-  type,
   status,
+  tasks,
+  createdAt,
+  privacy,
+  type,
   ...props
 }) => {
   // this state is used to toggle the project card menu
   const [showProjectCardMenu, setShowProjectCardMenu] =
     useState<boolean>(false);
 
-  console.log({
-    title,
+  const removeESLintError = {
     createdAt,
-    dueDate,
-    desc,
-    connections,
-    id,
-    priority,
     privacy,
-    tags,
     type,
-    status,
-  });
+  };
+
+  console.log(removeESLintError);
+
   return (
     <div
-      className="flex flex-col h-auto bg-white p-4 rounded-md gap-4 cursor-pointer hover:scale-105 transition-all ease-in-out max-w-[400px] w-full z-0"
+      {...props}
+      className="flex flex-col h-auto bg-gray-50 p-4 rounded-md gap-4 cursor-pointer hover:scale-105 transition-all ease-in-out max-w-[400px] w-full z-0"
       style={{
         boxShadow: "0px 0px 2px 0px var(--color-text-lighter)",
       }}
-      {...props}
     >
       <div className="flex justify-between items-center w-full">
         <h1 className="font-bold text-2xl">{title}</h1>
@@ -56,7 +53,8 @@ const ProjectCard: React.FunctionComponent<ProjectCardProps> = ({
             }`}
             variant="transparent"
             name="options-toggle"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setShowProjectCardMenu(!showProjectCardMenu);
             }}
           />
@@ -67,42 +65,37 @@ const ProjectCard: React.FunctionComponent<ProjectCardProps> = ({
       </div>
 
       <p className="text-sm opacity-60">
-        {desc && desc.length > 100 ? desc.slice(0, 100) + "..." : desc}
+        {description && description.length > 100
+          ? description.slice(0, 100) + "..."
+          : description}
       </p>
 
       <div className="flex gap-2 items-center justify-between opacity-60 text-sm">
         <div className="flex items-center">
           <FontAwesomeIcon icon={faClipboard} width={25} height={25} />
           <div className="flex items-center gap-1">
-            <span>3</span>
+            <span>{tasks?.length}</span>
             <span>Tasks</span>
           </div>
+        </div>
+        <div className="flex items-center gap-1">
+          <span>Priority:</span>
+          <span>{priority}</span>
         </div>
         <div className="flex items-center">
           <div className="flex flex-col items-center gap-1">
             <span className="font-bold">Due Date:</span>
-            <span>
-              {dueDate instanceof Date ? dueDate.toDateString() : dueDate}
-            </span>
+            <span>{new Date(dueDate).toLocaleDateString()}</span>
           </div>
         </div>
       </div>
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center">
-          {connections?.map((user, index) => (
-            <img
-              key={index}
-              src={user.User.photoUrl ?? "/assets/images/users/dummy-1.png"}
-              alt="user"
-              width={25}
-              height={25}
-              className="w-10 h-10 rounded-full overflow-hidden border-slate-500 border-[.5px]"
-              style={{
-                zIndex: connections.length - index,
-                transform: `translateX(-${index * 10}px)`,
-              }}
-            />
-          ))}
+          {connections ? (
+            <CollidedUserCard connections={connections} />
+          ) : (
+            "No Users Assigned"
+          )}
         </div>
         <div className="flex items-center opacity-60 gap-2">
           <ProjectCardStatus status={status} />

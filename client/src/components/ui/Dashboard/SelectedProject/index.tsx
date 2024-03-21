@@ -5,28 +5,30 @@ import Button from "@/components/shared/ui/Button";
 import TaskCard from "@/components/ui/Cards/Task";
 import DashboardSearchTasks from "@/components/ui/Dashboard/SearchTasks";
 import NewTaskModal from "@/components/ui/Modals/NewTask";
-import DashboardAssignedUsers from "@/components/ui/Dashboard/AssignedUsers";
 import DashboardNewTaskToggles from "@/components/ui/Dashboard/NewTaskToggles";
 import TaskModal from "@/components/ui/Modals/Task";
 import overflowRemover from "@/utils/overflow";
 import AnimatedDiv from "@/components/helpers/AnimatedDiv";
+import CollidedUserCard from "@/components/ui/Cards/CollidedUserCard";
+import { useQuery } from "@tanstack/react-query";
+import { getTasksFromProject } from "@/actions/tasks-actions";
 
 const DashboardSelectedProject = ({
   title,
   privacy,
   createdAt,
   connections,
-  desc,
+  description,
   dueDate,
   id,
   priority,
-  tasks,
   tags,
   type,
-}: // tasks,
-ProjectProps) => {
+}: ProjectProps) => {
+  // Local State
   const [showNewTaskModal, setShowNewTaskModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
+  const [tasks, setTasks] = useState<TasksProps[] | null>(null);
   const [currentTaskID, setCurrentTaskID] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,19 +38,34 @@ ProjectProps) => {
       overflowRemover(showNewTaskModal);
     };
   }, [showNewTaskModal]);
+
+  // Fetch Projects from API using React Query
+  const { error, data, isLoading } = useQuery({
+    queryKey: ["projects"],
+    queryFn: () => getTasksFromProject(id),
+  });
+  useEffect(() => {
+    if (data) {
+      setTasks(data);
+    }
+  }, [data]);
+
   console.log({
     title,
     privacy,
     createdAt,
     connections,
-    desc,
+    description,
     dueDate,
     id,
     priority,
     tasks,
     tags,
     type,
+    error,
+    isLoading,
   });
+
   return (
     <AnimatedDiv className="flex flex-col w-full">
       <div className="flex flex-col border-b-[var(--color-text-lightest)] border-b-[1px] gap-4 p-10">
@@ -66,7 +83,11 @@ ProjectProps) => {
           />
         </div>
         <h1 className="font-bold text-4xl">My Tasks</h1>
-        <DashboardAssignedUsers connections={connections!} />
+        {connections ? (
+          <CollidedUserCard connections={connections} />
+        ) : (
+          "No Users Assigned"
+        )}
       </div>
       <DashboardSearchTasks />
 
@@ -96,7 +117,7 @@ ProjectProps) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              {/* {isLoading && !error && (
+              {isLoading && !error && (
                 <img
                   src="/assets/spinners/Loading-3.svg"
                   alt=""
@@ -104,7 +125,7 @@ ProjectProps) => {
                   height={50}
                   className="ml-auto mr-auto"
                 />
-              )} */}
+              )}
 
               {tasks
                 ?.filter((tasks) => tasks.status === "Backlog")
@@ -123,7 +144,7 @@ ProjectProps) => {
                     status={task.status}
                     key={index}
                     id={task.id.toString()}
-                    // comments={task.comments}
+                    comments={task.comments}
                   />
                 ))}
             </div>
@@ -154,7 +175,7 @@ ProjectProps) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              {/* {isLoading && !error && (
+              {isLoading && !error && (
                 <img
                   src="/assets/spinners/Loading-3.svg"
                   alt=""
@@ -162,7 +183,7 @@ ProjectProps) => {
                   height={50}
                   className="ml-auto mr-auto"
                 />
-              )} */}
+              )}
 
               {tasks
                 ?.filter((tasks) => tasks.status === "ToDo")
@@ -181,7 +202,7 @@ ProjectProps) => {
                     status={task.status}
                     key={index}
                     id={task.id.toString()}
-                    // comments={task.comments}
+                    comments={task.comments}
                   />
                 ))}
             </div>
@@ -217,7 +238,7 @@ ProjectProps) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              {/* {isLoading && !error && (
+              {isLoading && !error && (
                 <img
                   src="/assets/spinners/Loading-3.svg"
                   alt=""
@@ -225,7 +246,7 @@ ProjectProps) => {
                   height={50}
                   className="ml-auto mr-auto"
                 />
-              )} */}
+              )}
 
               {tasks
                 ?.filter((tasks) => tasks.status === "InProgress")
@@ -244,7 +265,7 @@ ProjectProps) => {
                     status={task.status}
                     key={index}
                     id={task.id.toString()}
-                    // comments={task.comments}
+                    comments={task.comments}
                   />
                 ))}
             </div>

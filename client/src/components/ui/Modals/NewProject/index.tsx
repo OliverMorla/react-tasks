@@ -8,7 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import ProjectUserCard from "@/components/ui/Cards/Project/UserCard";
 
 import Button from "@/components/shared/ui/Button";
-import { getAvailableUsers } from "@/actions/users-actions";
+import { getUsers } from "@/actions/users-actions";
+import LoadingAnimation from "@/components/ui/Loading";
 
 const NewProjectModal = ({
   showNewProjectModal,
@@ -21,7 +22,7 @@ const NewProjectModal = ({
   const [pageNumber, setPageNumber] = useState(1);
 
   // this state is used to store the users data that are available for the project
-  const [usersData, setUsersData] = useState<any[]>([]);
+  const [users, setUsers] = useState<UserProps[]>([]);
 
   // this state is used to store the input data for the new project
   const [input, setInput] = useState<NewProjectModalInputProps>({
@@ -36,14 +37,9 @@ const NewProjectModal = ({
   const { isAuthenticated, user } = useAuth();
 
   // this useQuery is used to fetch the available users for the project
-  const {
-    isPending,
-    data: users,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["usersAvailable"],
-    queryFn: () => getAvailableUsers(pageNumber),
+  const { isPending, data, error, isLoading } = useQuery<UserProps[]>({
+    queryKey: ["users"],
+    queryFn: () => getUsers(pageNumber),
     refetchInterval: 1000,
   });
 
@@ -54,32 +50,32 @@ const NewProjectModal = ({
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // this useEffect is used to add the users to the usersData array when the users are fetched
+  // this useEffect is used to add the users to the users array when the users are fetched
   useEffect(() => {
-    if (users?.data) {
-      setUsersData((prevData) => [...prevData, ...users.data]);
+    if (data) {
+      setUsers((prevData) => [...prevData, ...data]);
     }
-  }, [users?.data]);
+  }, [data]);
 
   // this useEffect is used to observe the scroll event on the scroll container and fetch the next page of users
-  useEffect(() => {
-    const scrollContainer = document.getElementById("scroll-container");
-    if (!scrollContainer) return;
+  // useEffect(() => {
+  //   const scrollContainer = document.getElementById("scroll-container");
+  //   if (!scrollContainer) return;
 
-    const handleScroll = () => {
-      const isAtEnd =
-        scrollContainer.scrollWidth - scrollContainer.scrollLeft ===
-        scrollContainer.clientWidth;
+  //   const handleScroll = () => {
+  //     const isAtEnd =
+  //       scrollContainer.scrollWidth - scrollContainer.scrollLeft ===
+  //       scrollContainer.clientWidth;
 
-      if (isAtEnd) {
-        setPageNumber((prevPage) => prevPage + 1);
-      }
-    };
+  //     if (isAtEnd) {
+  //       setPageNumber((prevPage) => prevPage + 1);
+  //     }
+  //   };
 
-    scrollContainer.addEventListener("scroll", handleScroll);
+  //   scrollContainer.addEventListener("scroll", handleScroll);
 
-    return () => scrollContainer.removeEventListener("scroll", handleScroll);
-  }, []);
+  //   return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   // useEffect(() => {
   //   scroll(
@@ -94,11 +90,11 @@ const NewProjectModal = ({
   // }, []);
 
   // this function is used to handle the connections that are added to the project and remove them from the available users
-  const handleInputConnections = (user: any) => {
-    if (usersData.includes(user)) {
-      setUsersData((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
-    }
-  };
+  // const handleInputConnections = (user: any) => {
+  //   if (users.includes(user)) {
+  //     setusers((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
+  //   }
+  // };
 
   // if the user is not authenticated and there is no user data, return null
   if (!isAuthenticated && !user) {
@@ -110,12 +106,12 @@ const NewProjectModal = ({
     isAuthenticated,
     isLoading,
     isPending,
-    users,
+    data,
     error,
     pageNumber,
     setPageNumber,
     input,
-    usersData,
+    users,
     scroll,
   });
 
@@ -138,7 +134,7 @@ const NewProjectModal = ({
       <div className="flex justify-center items-center w-full">
         <h1 className="font-bold text-2xl ml-auto">New Project</h1>
         <Button
-          presetIcon="close"
+          presetIcon="closeCircle"
           className="ml-auto"
           onClick={() => setShowNewProjectModal(!showNewProjectModal)}
         />
@@ -173,13 +169,7 @@ const NewProjectModal = ({
           <label htmlFor="connections">Connections*</label>
           <div className="bg-transparent border-[1px] p-4 rounded-lg overflow-hidden">
             {isLoading && !error && (
-              <img
-                src="/assets/spinners/Loading-3.svg"
-                alt=""
-                width={50}
-                height={50}
-                className="ml-auto mr-auto"
-              />
+              <LoadingAnimation className="ml-auto mr-auto" />
             )}
 
             <div
@@ -187,19 +177,19 @@ const NewProjectModal = ({
               id="scroll-container"
               ref={scrollRef}
             >
-              {usersData && (
+              {users && (
                 <div className="flex gap-4">
-                  {usersData.map((user: any, index: number) => (
+                  {users.map((user: any, index: number) => (
                     <ProjectUserCard
                       key={index}
                       name={user.name}
-                      photoUrl={user.avatar}
+                      photoUrl={user.photoUrl}
                       onClick={() => {
                         setInput((prev) => ({
                           ...prev,
                           connections: [...prev.connections, user],
                         }));
-                        handleInputConnections(user);
+                        // handleInputConnections(user);
                       }}
                     />
                   ))}
@@ -231,7 +221,7 @@ const NewProjectModal = ({
           />
         </div>
 
-        <Button type="submit" className="self-center">
+        <Button type="submit" className="self-center" variant="transparent">
           Create Project
         </Button>
       </form>

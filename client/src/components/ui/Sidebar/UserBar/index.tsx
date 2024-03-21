@@ -13,7 +13,7 @@ const SidebarUserBar = () => {
   return (
     <div className="flex items-center justify-center gap-3 border-t-[--color-text-lightest] border-t-[1px] p-4">
       <img
-        src="/assets/images/users/dummy-2.png"
+        src="/assets/images/users/default.png"
         width={35}
         height={35}
         className="opacity-60"

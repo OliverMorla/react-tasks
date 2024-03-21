@@ -15,8 +15,10 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   const variants = {
     clear: "",
-    transparent: "border-[--color-text-lightest] border-[1px] p-1 rounded-lg transition-all ease-in-out hover:border-[--color-primary] hover:scale-105",
-    color: "bg-[--color-primary] text-[var(--color-text-lightest)] p-1 rounded-lg transition-all ease-in-out hover:bg-[--color-primary-dark] hover:scale-105",
+    transparent:
+      "border-[--color-text-lightest] border-[1px] p-1 rounded-lg transition-all ease-in-out hover:border-[--color-primary] hover:scale-105",
+    color:
+      "bg-[--color-primary] text-[var(--color-text-lightest)] p-1 rounded-lg transition-all ease-in-out hover:bg-[--color-primary-dark] hover:scale-105",
   };
 
   return (
@@ -26,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
           <button
             {...props}
             className={cn(variants[variant], props.className)}
-            aria-label={name}
+            aria-label={name || "button"}
           >
             {fontAwesomeIconUrl && (
               <FontAwesomeIcon
@@ -49,7 +51,7 @@ const Button: React.FC<ButtonProps> = ({
         <button
           {...props}
           className={cn(variants[variant], props.className)}
-          aria-label={name}
+          aria-label={name || "button"}
         >
           {fontAwesomeIconUrl && (
             <FontAwesomeIcon

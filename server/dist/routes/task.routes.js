@@ -26,18 +26,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// Libraries
+// Importing necessary libraries
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
-// Controllers
+// Importing controller for handling task-related routes
 const task_controller_1 = require("../controllers/task.controller");
-// Load environment variables
+// Initializing environment variables from the .env file.
+// This enables the use of environmental variables throughout the application.
 dotenv.config({
-    path: ".env",
+    path: ".env", // Specifying the path to the .env file for clarity
 });
-// Create a router
+// Creating a router instance specific for task-related endpoints.
+// This approach modularizes routing and makes the application more maintainable.
 const taskRouter = express_1.default.Router();
-// Define routes
-taskRouter.get("/:id", task_controller_1.getTaskByID); // GET /users - Get all users
-// Export the router
+// Route definitions
+taskRouter.get("/:id", task_controller_1.getTaskByID); // GET /task/:id - Get a single task by ID
+// Exporting the taskRouter to be used in the application's main router.
+// This modularization enhances scalability and separation of concerns.
 exports.default = taskRouter;

@@ -69,7 +69,7 @@ const getProjectsByEmbeddedQuery = async (req: Request, res: Response) => {
         tasks: true,
         connections: {
           include: {
-            User: true,
+            user: true,
           },
         },
       },
@@ -115,7 +115,7 @@ const getProjectsByQuery = async (req: Request, res: Response) => {
         tasks: true,
         connections: {
           include: {
-            User: true,
+            user: true,
           },
         },
       },

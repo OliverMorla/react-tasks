@@ -1,13 +1,21 @@
 import Button from "@/components/shared/ui/Button";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const NewTaskModal = ({
   showNewTaskModal,
   setShowNewTaskModal,
 }: NewTaskModalProps) => {
+  const [newTaskInput, setTaskInput] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+    projectId: "",
+    createdAt: new Date().toUTCString(),
+  });
   return (
     <motion.div
-      className="bg-gray-100 w-[500px] h-auto flex flex-col p-4 gap-4 rounded-lg"
+      className="bg-[var(--color-text-darker)] w-[500px] h-auto flex flex-col p-4 gap-4 rounded-lg text-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, zIndex: 1000 }}
       exit={{ opacity: 0 }}
@@ -16,17 +24,40 @@ const NewTaskModal = ({
         <h1 className="ml-auto font-bold">New Task</h1>
         <Button
           onClick={() => setShowNewTaskModal(!showNewTaskModal)}
-          presetIcon="close"
+          presetIcon="closeCircle"
           className="ml-auto bg-red-500 p-2 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out text-white"
         />
       </div>
-      <div className="flex items-center justify-center">
-        <input
-          type="text"
-          name="new-task"
-          placeholder="Enter Task Title"
-          className="px-6 py-2 rounded-lg w-full outline-[--color-primary]"
-        />
+      <div className="flex items-center justify-center flex-col gap-4">
+        <div className="flex flex-col gap-1 w-full">
+          <label htmlFor="dueDate" className="font-bold">
+            Title:
+          </label>
+          <input
+            type="text"
+            name="new-task"
+            placeholder="Enter Task Title"
+            className="px-6 py-2 rounded-lg w-full outline-[--color-primary]"
+          />
+        </div>
+        <div className="flex flex-col gap-1 w-full">
+          <label htmlFor="dueDate" className="font-bold">
+            Description:
+          </label>
+          <textarea
+            placeholder="Enter the task description"
+            rows={5}
+            className="w-full px-4 py-2"
+          />
+        </div>
+        <div className="flex flex-col gap-1 w-full">
+          <label htmlFor="dueDate" className="font-bold">Due Date:</label>
+          <input
+            type="datetime-local"
+            name="dueDate"
+            className="w-full text-black p-2 rounded-lg border-[var(--color-primary)] border-[1px]"
+          />
+        </div>
       </div>
     </motion.div>
   );

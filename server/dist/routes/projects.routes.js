@@ -41,7 +41,6 @@ dotenv.config({
 const projectsRouter = express_1.default.Router();
 // Route definitions
 projectsRouter.get("/", project_controller_1.getProjects); // GET /projects - Get all projects
-projectsRouter.get("/query", project_controller_1.getProjectsByEmbeddedQuery); // GET /projects/query?key=value - Get project by query
 // Exporting the projectsRouter to be used in the application's main router.
 // This modularization enhances scalability and separation of concerns.
 exports.default = projectsRouter;

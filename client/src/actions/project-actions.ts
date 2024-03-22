@@ -6,11 +6,11 @@ if (!apiUrl) {
 
 const getProjectsFromUser = async (userId: string) => {
   try {
-    const res = await fetch(`${apiUrl}/projects/query?userId=${userId}`);
+    const res = await fetch(`${apiUrl}/projects?userId=${userId}`);
     const { data } = await res.json();
     return data;
   } catch (err) {
-    console.error(err instanceof Error ? `=>${err.message}` : "Internal error");
+    console.error(err instanceof Error ? `=> ${err.message}` : "Internal error");
   }
 };
 

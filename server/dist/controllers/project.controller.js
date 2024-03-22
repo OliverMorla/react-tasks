@@ -12,11 +12,60 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProject = exports.updateProject = exports.createProject = exports.getProjectsByEmbeddedQuery = exports.getProjectsByQuery = exports.getProjectByID = exports.getProjects = void 0;
+exports.deleteProject = exports.updateProject = exports.createProject = exports.getProjectByID = exports.getProjects = void 0;
+const entities_1 = require("../entities");
 const prisma_1 = __importDefault(require("../lib/prisma"));
+/**
+ * Handles the retrieval of projects with optional filtering, embedding, and pagination.
+ * Allows filtering by any model attribute not explicitly reserved in queryOptions.
+ * Supports embedding related models for richer data retrieval.
+ *
+ * @param req Express request object, containing query parameters for filtering and options.
+ * @param res Express response object for sending back the projects or error messages.
+ */
 const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { page, limit, embed, include } = req.query;
+    let whereFilter = {};
+    // Build the filter object from query parameters, excluding reserved options.
+    Object.entries(req.query).forEach(([key, value]) => {
+        if (!entities_1.queryOptions.includes(key)) {
+            whereFilter[key] = value;
+        }
+    });
     try {
-        const projects = yield prisma_1.default.project.findMany();
+        const projects = yield prisma_1.default.project.findMany({
+            where: Object.keys(whereFilter).length > 0 ? whereFilter : {},
+            include: {
+                tasks: (embed === "tasks" && !include) || include === "all",
+                connections: (embed === "connections" && !include) || include === "all"
+                    ? {
+                        include: {
+                            user: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    email: true,
+                                    photoUrl: true,
+                                    role: true,
+                                },
+                            },
+                        },
+                    }
+                    : false,
+                user: (embed === "user" && !include) || include === "all"
+                    ? {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            photoUrl: true,
+                            role: true,
+                        },
+                    }
+                    : false,
+            },
+        });
+        // Successful retrieval
         if (projects) {
             return res.status(200).json({
                 ok: true,
@@ -26,6 +75,7 @@ const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
     catch (err) {
+        // Error handling
         return res.status(500).json({
             error: err instanceof Error ? err.message : null,
             message: "Error retrieving projects",
@@ -33,6 +83,12 @@ const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getProjects = getProjects;
+/**
+ * Handles the retrieval of a project by its unique identifier.
+ *
+ * @param req Express request object, containing the project ID.
+ * @param res Express response object for sending back the project or error messages.
+ */
 const getProjectByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const project = yield prisma_1.default.project.findUnique({
@@ -61,90 +117,6 @@ const getProjectByID = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getProjectByID = getProjectByID;
-const getProjectsByEmbeddedQuery = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = req.query;
-    let whereFilter = {};
-    for (const [key, value] of Object.entries(query)) {
-        whereFilter[key] = value;
-    }
-    try {
-        const projects = yield prisma_1.default.project.findMany({
-            where: Object.keys(query).length === 0
-                ? {
-                    id: null,
-                }
-                : whereFilter,
-            include: {
-                tasks: true,
-                connections: {
-                    include: {
-                        user: true,
-                    },
-                },
-            },
-        });
-        if (projects.length === 0) {
-            return res.status(404).json({
-                ok: false,
-                message: "Project not found",
-            });
-        }
-        return res.status(200).json({
-            ok: true,
-            message: "Project found",
-            data: projects,
-        });
-    }
-    catch (err) {
-        return res.status(500).json({
-            message: "Error retrieving project",
-            error: err instanceof Error ? err.message : null,
-        });
-    }
-});
-exports.getProjectsByEmbeddedQuery = getProjectsByEmbeddedQuery;
-const getProjectsByQuery = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = req.query;
-    let whereFilter = {};
-    for (const [key, value] of Object.entries(query)) {
-        whereFilter[key] = value;
-    }
-    try {
-        const projects = yield prisma_1.default.project.findMany({
-            where: Object.keys(query).length === 0
-                ? {
-                    id: null,
-                }
-                : whereFilter,
-            include: {
-                tasks: true,
-                connections: {
-                    include: {
-                        user: true,
-                    },
-                },
-            },
-        });
-        if (projects.length === 0) {
-            return res.status(404).json({
-                ok: false,
-                message: "Project not found",
-            });
-        }
-        return res.status(200).json({
-            ok: true,
-            message: "Project found",
-            data: projects,
-        });
-    }
-    catch (err) {
-        return res.status(500).json({
-            message: "Error retrieving project",
-            error: err instanceof Error ? err.message : null,
-        });
-    }
-});
-exports.getProjectsByQuery = getProjectsByQuery;
 const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.createProject = createProject;
 const updateProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });

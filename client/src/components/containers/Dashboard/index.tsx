@@ -18,10 +18,12 @@ import { setProjects } from "@/redux/slices/project-slice";
 
 // Hooks
 import { useSelector, useDispatch } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useAuth from "@/hooks/useAuth";
 
 const Dashboard = () => {
+  const queryClient = useQueryClient();
+
   // Local State
   const [selectedProject, setSelectedProject] = useState<null | ProjectProps>(
     null
@@ -39,8 +41,13 @@ const Dashboard = () => {
   const { error, data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: () => getProjectsFromUser(user.id),
-    retry: 3
   });
+
+  useEffect(() => {
+    return () => {
+      queryClient.clear();
+    };
+  }, []);
 
   // // Set Projects to Redux when component mounts
   useEffect(() => {

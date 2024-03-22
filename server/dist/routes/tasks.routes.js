@@ -41,7 +41,6 @@ dotenv.config({
 const tasksRouter = express_1.default.Router();
 // Route definitions
 tasksRouter.get("/", task_controller_1.getTasks); // GET /tasks - Get all tasks
-tasksRouter.get("/query", task_controller_1.getTasksByEmbeddedQuery); // GET /tasks/query?key=value - Get task by query
 // Exporting the tasksRouter to be used in the application's main router.
 // This modularization enhances scalability and separation of concerns.
 exports.default = tasksRouter;

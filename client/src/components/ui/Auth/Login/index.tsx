@@ -1,16 +1,25 @@
 import Button from "@/components/shared/ui/Button";
 import useAuth from "@/hooks/useAuth";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 const Login = () => {
-  const { signIn, isAuthenticated } = useAuth();
+  const { signIn } = useAuth();
 
   const [loginInput, setLoginInput] = useState<SignInInputProps>({
     email: "",
     password: "",
   });
 
-  const handleSubmit = () => {};
+  const [error, setError] = useState<string | undefined>(undefined);
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const response = await signIn(loginInput);
+    if (!response?.ok) {
+      setError(response?.message);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginInput((prevInput) => ({
@@ -19,16 +28,22 @@ const Login = () => {
     }));
   };
 
-
-  console.log({
-    handleSubmit,
-    handleInputChange,
-    isAuthenticated,
-    loginInput,
-  });
-
   return (
     <form className="flex flex-col gap-4 max-w-[500px] w-full">
+      {error && (
+        <motion.p
+          className="p-2 bg-red-400 font-bold text-white rounded-lg text-center"
+          key={error}
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
+        >
+          {error}
+        </motion.p>
+      )}
       <input
         type="text"
         name="email"
@@ -47,7 +62,7 @@ const Login = () => {
         type="button"
         variant="transparent"
         className="p-4"
-        onClick={() => signIn(JSON.stringify(loginInput))}
+        onClick={handleSubmit}
       >
         Login
       </Button>

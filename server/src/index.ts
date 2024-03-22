@@ -4,8 +4,8 @@ import morgan from "morgan";
 import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
-import rateLimit from "express-rate-limit";
-import session from "express-session";
+// import rateLimit from "express-rate-limit";
+// import session from "express-session";
 import csurf from "csurf"; // For CSRF protection
 // import helmet from "helmet";
 // import compression from "compression";
@@ -40,11 +40,16 @@ const port = process.env.PORT || 3000;
 // Improve security by adding various HTTP headers
 // app.use(helmet());
 
+if (!process.env.CORS_ORIGIN) {
+  console.error("=> CORS_ORIGIN is not defined in .env file");
+}
+
 // Enable Cross-Origin Resource Sharing with options
 app.use(
   cors({
     // Specify allowed origins for better security, use '*' for development only
-    origin: "*",
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
     methods: ["GET,POST,PUT,DELETE"],
   })
 );
@@ -62,7 +67,8 @@ app.use(morgan("combined"));
 // Parse incoming requests with JSON payloads
 app.use(json());
 
-app.use(cookieParser())
+// Parse Cookie header and populate req.cookies with an object keyed by the cookie names. 
+app.use(cookieParser());
 
 // Parse requests with URL-encoded payloads
 app.use(urlencoded({ extended: true }));
@@ -106,15 +112,21 @@ app.use((req, res, next) => {
 // File upload configuration
 // const upload = multer({ dest: "uploads/" });
 
-// Session management
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET ?? "",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true, httpOnly: true },
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET ?? "",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       httpOnly: true,
+//       sameSite: "strict",
+//       secure: process.env.NODE_ENV === "production" ? true : false,
+//       path: "/",
+//       maxAge: 24 * 60 * 60 * 1000,
+//       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+//     },
+//   })
+// );
 
 // CSRF protection
 app.use(csurf());
@@ -128,19 +140,19 @@ app.use(csurf());
 // });
 
 // Checks the routes in the app
-const routesChecker = () => {
-  const routes = [];
+// const routesChecker = () => {
+//   const routes = [];
 
-  app._router.stack.forEach((middleware: any) => {
-    if (middleware.route) {
-      routes.push(middleware.route);
-    } else if (middleware.name === "router") {
-      middleware.handle.stack.forEach((handler: any) => {
-        routes.push(handler.route);
-      });
-    }
-  });
-};
+//   app._router.stack.forEach((middleware: any) => {
+//     if (middleware.route) {
+//       routes.push(middleware.route);
+//     } else if (middleware.name === "router") {
+//       middleware.handle.stack.forEach((handler: any) => {
+//         routes.push(handler.route);
+//       });
+//     }
+//   });
+// };
 
 // Start the server and listen on the port specified in the .env file or port 3000
 app.listen(port, () => {

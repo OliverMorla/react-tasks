@@ -31,8 +31,6 @@ const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
 // Importing controller for handling user-related routes
 const user_controller_1 = require("../controllers/user.controller");
-// Importing user validator for validating user data 
-const validators_1 = require("../utils/validators");
 // Initializing environment variables from the .env file.
 // This enables the use of environmental variables throughout the application.
 dotenv.config({
@@ -43,8 +41,8 @@ dotenv.config({
 const userRouter = express_1.default.Router();
 // Define routes
 userRouter.get("/:id", user_controller_1.getUserByID); // GET /user/:id - Get a user by ID
-userRouter.delete("/:id", user_controller_1.deleteUser); //DELETE  /user/:id - Delete a user by ID
-userRouter.put("/:id", validators_1.createUserValidator, user_controller_1.updateUser); //PUT /user - Update a user
+userRouter.delete("/", user_controller_1.deleteUser); //DELETE  /user/:id - Delete a user by ID
+userRouter.put("/", user_controller_1.updateUser); //PUT /user/:id - Update a user by ID
 // Exporting the userRouter to be used in the application's main router.
 // This modularization enhances scalability and separation of concerns.
 exports.default = userRouter;

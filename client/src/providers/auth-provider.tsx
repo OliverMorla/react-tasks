@@ -1,46 +1,92 @@
-import { createContext, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { createContext, useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 export const AuthContext = createContext<AuthContextProps | null>(null);
 
-
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  if (!import.meta.env.VITE_API_URL) {
+    console.error("=> Failed to read .env for AuthProvider");
+  }
+
+  const location = useLocation();
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<UserProps | undefined>(undefined);
 
-  if (!import.meta.env.VITE_API_URL) {
-    console.error("=> Failed to read .env for provider");
-  }
+  const checkSession = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/auth/session`, {
+        credentials: "include",
+      });
 
-  const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await res.json();
 
-  const checkSession = async () => {};
+      if (response.ok) {
+        setIsAuthenticated(true);
+        setUser(response.data);
+      } else {
+        setUser(undefined);
+        setIsAuthenticated(false);
+      }
+    } catch (err) {
+      console.log(err instanceof Error ? `=> ${err.message}` : null);
+    }
+  };
 
-  const signIn = async (input: BodyInit) => {
-
-    console.log(input)
+  const signIn = async (
+    input: BodyInit
+  ): Promise<AuthResponseProps | undefined> => {
     try {
       const res = await fetch(`${apiUrl}/auth/login`, {
         method: "POST",
-        body: input,
+        body: JSON.stringify(input),
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
-      const data = await res.json();
+      const response = await res.json();
 
-      console.log(data)
-
-      if (data.ok) {
+      if (response.ok) {
         setIsAuthenticated(true);
-        setUser(data);
+        setUser(response.data);
       }
+
+      return response;
     } catch (err) {
-      console.log(err instanceof Error ? `=>${err.message}` : null);
+      console.log(err instanceof Error ? `=> ${err.message}` : null);
     }
   };
-  const signUp = async () => {};
-  const signOut = async () => {};
+  const signUp = async (
+    input: BodyInit
+  ): Promise<AuthResponseProps | undefined> => {};
+  const signOut = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/auth/logout`, {
+        credentials: "include",
+      });
+
+      const response = await res.json();
+
+      if (response.ok) {
+        setUser(undefined);
+        setIsAuthenticated(false);
+        return response;
+      }
+    } catch (err) {
+      console.log(err instanceof Error ? `=> ${err.message}` : null);
+    }
+  };
+
+  useEffect(() => {
+    checkSession();
+    console.log("=> Checking if user session exist...");
+    console.log({ isAuthenticated, user });
+  }, [location.pathname]);
 
   const value = {
     isAuthenticated,

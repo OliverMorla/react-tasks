@@ -25,7 +25,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importStar(require("express"));
 const dotenv = __importStar(require("dotenv"));
@@ -33,7 +32,8 @@ const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const express_session_1 = __importDefault(require("express-session"));
+// import rateLimit from "express-rate-limit";
+// import session from "express-session";
 const csurf_1 = __importDefault(require("csurf")); // For CSRF protection
 // import helmet from "helmet";
 // import compression from "compression";
@@ -61,10 +61,14 @@ const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
 // Improve security by adding various HTTP headers
 // app.use(helmet());
+if (!process.env.CORS_ORIGIN) {
+    console.error("=> CORS_ORIGIN is not defined in .env file");
+}
 // Enable Cross-Origin Resource Sharing with options
 app.use((0, cors_1.default)({
     // Specify allowed origins for better security, use '*' for development only
-    origin: "*",
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
     methods: ["GET,POST,PUT,DELETE"],
 }));
 // Log HTTP requests to the console for debugging
@@ -77,6 +81,7 @@ app.use((0, morgan_1.default)("combined"));
 // app.use(limiter);
 // Parse incoming requests with JSON payloads
 app.use((0, express_1.json)());
+// Parse Cookie header and populate req.cookies with an object keyed by the cookie names. 
 app.use((0, cookie_parser_1.default)());
 // Parse requests with URL-encoded payloads
 app.use((0, express_1.urlencoded)({ extended: true }));
@@ -113,13 +118,21 @@ app.use((req, res, next) => {
 });
 // File upload configuration
 // const upload = multer({ dest: "uploads/" });
-// Session management
-app.use((0, express_session_1.default)({
-    secret: (_a = process.env.SESSION_SECRET) !== null && _a !== void 0 ? _a : "",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true, httpOnly: true },
-}));
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET ?? "",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       httpOnly: true,
+//       sameSite: "strict",
+//       secure: process.env.NODE_ENV === "production" ? true : false,
+//       path: "/",
+//       maxAge: 24 * 60 * 60 * 1000,
+//       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+//     },
+//   })
+// );
 // CSRF protection
 app.use((0, csurf_1.default)());
 // Use `upload.single('file')` or `upload.array('files', 5)` in specific routes
@@ -129,19 +142,18 @@ app.use((0, csurf_1.default)());
 //   res.status(err.statusCode || 500).json({ message: err.message || "Internal Server Error" });
 // });
 // Checks the routes in the app
-const routesChecker = () => {
-    const routes = [];
-    app._router.stack.forEach((middleware) => {
-        if (middleware.route) {
-            routes.push(middleware.route);
-        }
-        else if (middleware.name === "router") {
-            middleware.handle.stack.forEach((handler) => {
-                routes.push(handler.route);
-            });
-        }
-    });
-};
+// const routesChecker = () => {
+//   const routes = [];
+//   app._router.stack.forEach((middleware: any) => {
+//     if (middleware.route) {
+//       routes.push(middleware.route);
+//     } else if (middleware.name === "router") {
+//       middleware.handle.stack.forEach((handler: any) => {
+//         routes.push(handler.route);
+//       });
+//     }
+//   });
+// };
 // Start the server and listen on the port specified in the .env file or port 3000
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

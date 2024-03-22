@@ -11,6 +11,8 @@ import prisma from "../lib/prisma";
  *
  * @param req Express request object, containing the user data.
  * @param res Express response object for sending back the success message or error messages.
+ *
+ * @returns A promise that reveals whether the user was created successfully or not.
  */
 const signUp = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -82,6 +84,8 @@ const signUp = async (req: Request, res: Response) => {
  *
  * @param req Express request object, containing the user data.
  * @param res Express Response object, for sending back the success message or error messages.
+ *
+ * @returns A promise that reveals whether the user was logged in successfully or not.
  */
 const signIn = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -105,8 +109,7 @@ const signIn = async (req: Request, res: Response) => {
 
   try {
     if (!process.env.HASH_ROUNDS) {
-      console.error("=> HASH_ROUNDS does not exist");
-      return;
+      return console.error("=> HASH_ROUNDS does not exist");
     }
 
     const user = await prisma.user.findUnique({
@@ -148,21 +151,22 @@ const signIn = async (req: Request, res: Response) => {
         expiresIn: "24h",
       });
 
-      if (!token) {
-        return res.status(500).json({
-          ok: false,
-          message: "Error creating token",
-        });
-      }
+        if (!token) {
+          return res.status(500).json({
+            ok: false,
+            message: "Error creating token",
+          });
+        }
 
-      // Send the token in a cookie
-      res.cookie("session", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000,
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      });
+        // Send the token in a cookie
+        res.cookie("session", token, {
+          httpOnly: true,
+          sameSite: "strict",
+          secure: process.env.NODE_ENV === "production" ? true : false,
+          path: "/",
+          maxAge: 24 * 60 * 60 * 1000,
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        });
 
       return res.status(200).json({
         ok: true,
@@ -182,6 +186,8 @@ const signIn = async (req: Request, res: Response) => {
  *
  * @param req Express request object, containing the user data.
  * @param res Express response object for sending back the success message or error messages.
+ *
+ * @returns A promise that reveals whether the user was logged out successfully or not.
  */
 const signOut = async (req: Request, res: Response) => {
   res.clearCookie("session");
@@ -191,7 +197,14 @@ const signOut = async (req: Request, res: Response) => {
   });
 };
 
-const session = async (req: Request, res: Response, next: NextFunction) => {
+/**
+ *
+ * @param req Express request object, that contains the session token
+ * @param res Express response object for sending back the success message or error messages
+ *
+ * @returns A promise that reveals whether the session was found or not
+ */
+const session = async (req: Request, res: Response) => {
   if (!process.env.JWT_SECRET) {
     console.error("=> Failed to read .env in session");
     return res.status(500).json({
@@ -211,8 +224,11 @@ const session = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const decoded = jwt.verify(token, jwtSecret);
     // If verification is successful and the token hasn't expired, continue
+
     return res.status(200).json({
+      ok: true,
       message: "Session found",
+      data: decoded,
     });
   } catch (err) {
     // Check if the error is because the token has expired

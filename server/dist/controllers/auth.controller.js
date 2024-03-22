@@ -45,6 +45,8 @@ const prisma_1 = __importDefault(require("../lib/prisma"));
  *
  * @param req Express request object, containing the user data.
  * @param res Express response object for sending back the success message or error messages.
+ *
+ * @returns A promise that reveals whether the user was created successfully or not.
  */
 const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = (0, express_validator_1.validationResult)(req);
@@ -109,6 +111,8 @@ exports.signUp = signUp;
  *
  * @param req Express request object, containing the user data.
  * @param res Express Response object, for sending back the success message or error messages.
+ *
+ * @returns A promise that reveals whether the user was logged in successfully or not.
  */
 const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = (0, express_validator_1.validationResult)(req);
@@ -128,8 +132,7 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     try {
         if (!process.env.HASH_ROUNDS) {
-            console.error("=> HASH_ROUNDS does not exist");
-            return;
+            return console.error("=> HASH_ROUNDS does not exist");
         }
         const user = yield prisma_1.default.user.findUnique({
             where: {
@@ -172,8 +175,9 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             // Send the token in a cookie
             res.cookie("session", token, {
                 httpOnly: true,
-                secure: true,
                 sameSite: "strict",
+                secure: process.env.NODE_ENV === "production" ? true : false,
+                path: "/",
                 maxAge: 24 * 60 * 60 * 1000,
                 expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             });
@@ -196,6 +200,8 @@ exports.signIn = signIn;
  *
  * @param req Express request object, containing the user data.
  * @param res Express response object for sending back the success message or error messages.
+ *
+ * @returns A promise that reveals whether the user was logged out successfully or not.
  */
 const signOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.clearCookie("session");
@@ -205,7 +211,14 @@ const signOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 exports.signOut = signOut;
-const session = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+/**
+ *
+ * @param req Express request object, that contains the session token
+ * @param res Express response object for sending back the success message or error messages
+ *
+ * @returns A promise that reveals whether the session was found or not
+ */
+const session = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     if (!process.env.JWT_SECRET) {
         console.error("=> Failed to read .env in session");
@@ -224,7 +237,9 @@ const session = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         const decoded = jwt.verify(token, jwtSecret);
         // If verification is successful and the token hasn't expired, continue
         return res.status(200).json({
+            ok: true,
             message: "Session found",
+            data: decoded,
         });
     }
     catch (err) {

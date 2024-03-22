@@ -42,9 +42,9 @@ dotenv.config({
 // This approach modularizes routing and makes the application more maintainable.
 const authRouter = express_1.default.Router();
 // Route definitions
-authRouter.post("/login", validators_1.loginUserValidator, auth_controller_1.signIn); // POST /auth/login - Logs in a user
-authRouter.post("/register", validators_1.createUserValidator, auth_controller_1.signUp); // POST /auth/register - Registers a new user
-authRouter.post("/logout", auth_controller_1.signOut); // POST /auth/logout - Logs out a user
+authRouter.post("/login", validators_1.signInUserValidator, auth_controller_1.signIn); // POST /auth/login - Logs in a user
+authRouter.post("/register", validators_1.signUpUserValidator, auth_controller_1.signUp); // POST /auth/register - Registers a new user
+authRouter.get("/logout", auth_controller_1.signOut); // POST /auth/logout - Logs out a user
 authRouter.get("/session", auth_controller_1.session); // GET /auth/session - Get the current session
 // Exporting the authRouter to be used in the application's main router.
 // This modularization enhances scalability and separation of concerns.

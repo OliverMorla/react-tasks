@@ -23,10 +23,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logOutUser = exports.loginUser = exports.deleteUser = exports.updateUser = exports.createUser = exports.getUserByID = exports.getUsers = void 0;
-const express_validator_1 = require("express-validator");
+exports.deleteUser = exports.updateUser = exports.getUserByID = exports.getUsers = void 0;
 const entities_1 = require("../entities");
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const prisma_1 = __importDefault(require("../lib/prisma"));
 /**
  * Handles the retrieval of users with optional filtering, embedding, and pagination.
@@ -52,10 +50,10 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 .findMany({
                 where: Object.keys(whereFilter).length > 0 ? whereFilter : {},
                 include: {
-                    projects: (embed === "project" && !include) || include === "all",
-                    comments: (embed === "comment" && !include) || include === "all",
-                    connections: (embed === "connection" && !include) || include === "all",
-                    tasks: (embed === "task" && !include) || include === "all",
+                    projects: (embed === "projects" && !include) || include === "all",
+                    comments: (embed === "comments" && !include) || include === "all",
+                    connections: (embed === "connections" && !include) || include === "all",
+                    tasks: (embed === "tasks" && !include) || include === "all",
                 },
                 skip: page ? parseInt(page) * 10 : 0, // Pagination offset calculation.
                 take: limit ? parseInt(limit) : 10, // Number of items to retrieve.
@@ -107,6 +105,7 @@ exports.getUsers = getUsers;
  *
  * @param req Express request object, containing the ID parameter.
  * @param res Express response object for sending back the found connection or an error message.
+ *
  */
 const getUserByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -137,144 +136,6 @@ const getUserByID = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getUserByID = getUserByID;
 /**
- * Creates a new user with the provided data.
- *
- * @param req Express request object, containing the user data.
- * @param res Express response object for sending back the success message or error messages.
- */
-const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const errors = (0, express_validator_1.validationResult)(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            ok: false,
-            message: "Validation error",
-            errors: errors.array(),
-        });
-    }
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
-        return res.status(400).json({
-            ok: false,
-            message: "All fields are required",
-        });
-    }
-    try {
-        if (!process.env.HASH_ROUNDS) {
-            console.error("=> HASH_ROUNDS does not exist");
-            return;
-        }
-        bcryptjs_1.default.genSalt(parseInt(process.env.HASH_ROUNDS), (err, salt) => __awaiter(void 0, void 0, void 0, function* () {
-            bcryptjs_1.default.hash(password, salt, (err, hashedPassword) => __awaiter(void 0, void 0, void 0, function* () {
-                if (err) {
-                    return res.status(500).json({
-                        ok: false,
-                        message: "Error hashing password",
-                        error: err instanceof Error ? err.message : null,
-                    });
-                }
-                const user = yield prisma_1.default.user.create({
-                    data: {
-                        name,
-                        email,
-                        password: hashedPassword,
-                    },
-                });
-                if (!user) {
-                    return res.status(500).json({
-                        ok: false,
-                        message: "Error creating user",
-                    });
-                }
-                return res.status(201).json({
-                    ok: true,
-                    message: "User created successfully",
-                });
-            }));
-        }));
-    }
-    catch (err) {
-        return res.status(500).json({
-            message: "Error creating user",
-            error: err instanceof Error ? err.message : null,
-        });
-    }
-});
-exports.createUser = createUser;
-/**
- * Logs in a user with the provided email and password.
- *
- * @param req Express request object, containing the user data.
- * @param res Express Response object, for sending back the success message or error messages.
- */
-const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const errors = (0, express_validator_1.validationResult)(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            ok: false,
-            message: "Validation error",
-            errors: errors.array(),
-        });
-    }
-    const { email, password } = req.body;
-    if (!email || !password) {
-        res.status(400).json({
-            ok: false,
-            message: "All fields are required",
-        });
-    }
-    try {
-        if (!process.env.HASH_ROUNDS) {
-            console.error("=> HASH_ROUNDS does not exist");
-            return;
-        }
-        const user = yield prisma_1.default.user.findUnique({
-            where: {
-                email,
-            },
-        });
-        if (!user) {
-            return res.status(404).json({
-                ok: false,
-                message: "User not found",
-            });
-        }
-        bcryptjs_1.default.compare(password, user.password, (err, result) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    message: "Error comparing passwords",
-                    error: err instanceof Error ? err.message : null,
-                });
-            }
-            if (!result) {
-                return res.status(401).json({
-                    ok: false,
-                    message: "Wrong password",
-                });
-            }
-            return res.status(200).json({
-                ok: true,
-                message: "User logged in successfully",
-            });
-        });
-    }
-    catch (err) {
-        return res.status(500).json({
-            message: "Error logging in",
-            error: err instanceof Error ? err.message : null,
-        });
-    }
-});
-exports.loginUser = loginUser;
-/**
- * Logs out a user by invalidating their session.
- *
- * @param req Express request object, containing the user data.
- * @param res Express response object for sending back the success message or error messages.
- */
-const logOutUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
-exports.logOutUser = logOutUser;
-/**
  * Updates a user with the provided data.
  *
  * @param req Express request object, containing the user data.
@@ -304,7 +165,8 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const doesUserExist = yield prisma_1.default.user.findUnique({
             where: {
-                id: req.params.id,
+                //@ts-ignore
+                id: req.user.id,
             },
         });
         if (!doesUserExist) {
@@ -315,7 +177,8 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         const user = yield prisma_1.default.user.delete({
             where: {
-                id: req.params.id,
+                //@ts-ignore
+                id: req.user.id,
             },
         });
         if (user) {

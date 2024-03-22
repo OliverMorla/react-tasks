@@ -6,7 +6,6 @@ import * as dotenv from "dotenv";
 import {
   createProject,
   deleteProject,
-  getProjectsByEmbeddedQuery,
   getProjectByID,
   getProjects,
   updateProject,
@@ -24,7 +23,6 @@ const projectsRouter = express.Router();
 
 // Route definitions
 projectsRouter.get("/", getProjects); // GET /projects - Get all projects
-projectsRouter.get("/query", getProjectsByEmbeddedQuery); // GET /projects/query?key=value - Get project by query
 
 // Exporting the projectsRouter to be used in the application's main router.
 // This modularization enhances scalability and separation of concerns.

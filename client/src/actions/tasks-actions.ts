@@ -6,21 +6,21 @@ if (!apiUrl) {
 
 const getTasksFromProject = async (projectId: string) => {
   try {
-    const res = await fetch(`${apiUrl}/tasks/query?projectId=${projectId}`);
+    const res = await fetch(`${apiUrl}/tasks?projectId=${projectId}`);
     const { data } = await res.json();
     return data;
   } catch (err) {
-    console.error(err instanceof Error ? `=>${err.message}` : "Internal error");
+    console.error(err instanceof Error ? `=> ${err.message}` : "Internal error");
   }
 };
 
 const getTasksByID = async (taskId: string) => {
   try {
-    const res = await fetch(`${apiUrl}/tasks/query?id=${taskId}`);
+    const res = await fetch(`${apiUrl}/tasks?id=${taskId}`);
     const { data } = await res.json();
     return data[0];
   } catch (err) {
-    console.error(err instanceof Error ? `=>${err.message}` : "Internal error");
+    console.error(err instanceof Error ? `=> ${err.message}` : "Internal error");
   }
 };
 

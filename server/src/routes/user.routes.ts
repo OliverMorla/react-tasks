@@ -4,14 +4,13 @@ import * as dotenv from "dotenv";
 
 // Importing controller for handling user-related routes
 import {
-  createUser,
   deleteUser,
   getUserByID,
   updateUser,
 } from "../controllers/user.controller";
 
-// Importing user validator for validating user data 
-import { createUserValidator } from "../utils/validators";
+// Importing user validator for validating user data
+import { updateUserValidator } from "../utils/validators";
 
 // Initializing environment variables from the .env file.
 // This enables the use of environmental variables throughout the application.
@@ -23,10 +22,11 @@ dotenv.config({
 // This approach modularizes routing and makes the application more maintainable.
 const userRouter = express.Router();
 
+
 // Define routes
 userRouter.get("/:id", getUserByID); // GET /user/:id - Get a user by ID
-userRouter.delete("/:id", deleteUser); //DELETE  /user/:id - Delete a user by ID
-userRouter.put("/:id", createUserValidator, updateUser); //PUT /user - Update a user
+userRouter.delete("/", deleteUser); //DELETE  /user/:id - Delete a user by ID
+userRouter.put("/", updateUser); //PUT /user/:id - Update a user by ID
 
 // Exporting the userRouter to be used in the application's main router.
 // This modularization enhances scalability and separation of concerns.

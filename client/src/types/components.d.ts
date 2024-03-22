@@ -225,3 +225,12 @@ interface SignInInputProps {
   email: string;
   password: string;
 }
+
+interface SignUpInputProps {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+

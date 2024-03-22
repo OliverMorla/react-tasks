@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import Button from "@/components/shared/ui/Button";
+import useAuth from "@/hooks/useAuth";
 
 const SidebarUserOverlay = () => {
+  const { signOut } = useAuth()
   return (
     <motion.div
       className="absolute bg-[var(--color-text-darker)] text-[var(--color-text-lightest)] left-0 bottom-0 rounded-lg min-w-[95px]"
@@ -26,7 +28,7 @@ const SidebarUserOverlay = () => {
           </Button>
         </li>
         <li className="p-2">
-          <Button variant="clear" onClick={() => {}}>
+          <Button variant="clear" type="button" onClick={() => signOut()}>
             Log Out
           </Button>
         </li>

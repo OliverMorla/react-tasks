@@ -110,6 +110,12 @@ exports.getUsers = getUsers;
 const getUserByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield prisma_1.default.user.findUnique({
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                photoUrl: true,
+            },
             where: {
                 id: req.params.id,
             },

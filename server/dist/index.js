@@ -98,15 +98,15 @@ app.use("/api", (0, express_1.static)("./src/public/api", { extensions: ["json"]
 // Define routes for your application
 // For example, user-related routes are managed by userRouter
 app.use("/user", middleware_1.isAuthenticated, user_routes_1.default); // Single User
-app.use("/users", middleware_1.isAuthenticated, users_routes_1.default); // Multiple User
+app.use("/users", users_routes_1.default); // Multiple User
 app.use("/project", middleware_1.isAuthenticated, project_routes_1.default); // Single Project
-app.use("/projects", middleware_1.isAuthenticated, projects_routes_1.default); // Multiple Projects
+app.use("/projects", projects_routes_1.default); // Multiple Projects
 app.use("/comment", middleware_1.isAuthenticated, comments_routes_1.default); // Single Comment
-app.use("/comments", middleware_1.isAuthenticated, comments_routes_1.default); // Multiple Comments
+app.use("/comments", comments_routes_1.default); // Multiple Comments
 app.use("/connection", middleware_1.isAuthenticated, connection_routes_1.default); // Single Connection
-app.use("/connections", middleware_1.isAuthenticated, connections_routes_1.default); // Multiple Connections
+app.use("/connections", connections_routes_1.default); // Multiple Connections
 app.use("/task", middleware_1.isAuthenticated, task_routes_1.default); // Single Task
-app.use("/tasks", middleware_1.isAuthenticated, tasks_routes_1.default); // Multiple Tasks
+app.use("/tasks", tasks_routes_1.default); // Multiple Tasks
 app.use("/auth", auth_routes_1.default); // Authentication
 // Define a default route that returns a welcome message
 app.get("/", (req, res) => {

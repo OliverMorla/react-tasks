@@ -88,15 +88,15 @@ app.use("/api", expressStatic("./src/public/api", { extensions: ["json"] })); //
 // Define routes for your application
 // For example, user-related routes are managed by userRouter
 app.use("/user", isAuthenticated, userRouter); // Single User
-app.use("/users", isAuthenticated, usersRouter); // Multiple User
+app.use("/users", usersRouter); // Multiple User
 app.use("/project", isAuthenticated, projectRouter); // Single Project
-app.use("/projects", isAuthenticated, projectsRouter); // Multiple Projects
+app.use("/projects", projectsRouter); // Multiple Projects
 app.use("/comment", isAuthenticated, commentsRouter); // Single Comment
-app.use("/comments", isAuthenticated, commentsRouter); // Multiple Comments
+app.use("/comments", commentsRouter); // Multiple Comments
 app.use("/connection", isAuthenticated, connectionRouter); // Single Connection
-app.use("/connections", isAuthenticated, connectionsRouter); // Multiple Connections
+app.use("/connections", connectionsRouter); // Multiple Connections
 app.use("/task", isAuthenticated, taskRouter); // Single Task
-app.use("/tasks", isAuthenticated, tasksRouter); // Multiple Tasks
+app.use("/tasks", tasksRouter); // Multiple Tasks
 app.use("/auth", authRouter); // Authentication
 
 // Define a default route that returns a welcome message

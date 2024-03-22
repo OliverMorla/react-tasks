@@ -91,11 +91,17 @@ const getUsers = async (req: Request, res: Response) => {
  *
  * @param req Express request object, containing the ID parameter.
  * @param res Express response object for sending back the found connection or an error message.
- * 
+ *
  */
 const getUserByID = async (req: Request, res: Response) => {
   try {
     const user = await prisma.user.findUnique({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        photoUrl: true,
+      },
       where: {
         id: req.params.id,
       },

@@ -117,6 +117,7 @@ interface TaskTagsProps {
 /* ======== Modal ======== */
 
 interface NewTaskModalProps {
+  projectId: string;
   showNewTaskModal: boolean;
   setShowNewTaskModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -233,4 +234,3 @@ interface SignUpInputProps {
   password: string;
   passwordConfirm: string;
 }
-

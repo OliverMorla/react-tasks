@@ -206,7 +206,7 @@ const NewProjectModal = ({
             type="text"
             name="createdBy"
             className="bg-transparent border-[--color-text-lightest] border-[1px] outline-[--color-primary] p-2 rounded-lg"
-            value={user.name}
+            value={user?.name}
             readOnly
           />
         </div>

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import axios from "axios";
 
 export const AuthContext = createContext<AuthContextProps | null>(null);
 
@@ -18,67 +19,90 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkSession = async () => {
     try {
-      const res = await fetch(`${apiUrl}/auth/session`, {
-        credentials: "include",
-      });
-
-      const response = await res.json();
-
-      if (response.ok) {
-        setIsAuthenticated(true);
-        setUser(response.data);
-      } else {
-        setUser(undefined);
-        setIsAuthenticated(false);
-      }
-    } catch (err) {
-      console.log(err instanceof Error ? `=> ${err.message}` : null);
-    }
-  };
-
-  const signIn = async (
-    input: BodyInit
-  ): Promise<AuthResponseProps | undefined> => {
-    try {
-      const res = await fetch(`${apiUrl}/auth/login`, {
-        method: "POST",
-        body: JSON.stringify(input),
+      const res = await axios.get<AuthResponseProps>(`${apiUrl}/auth/session`, {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        withCredentials: true,
       });
 
-      const response = await res.json();
-
-      if (response.ok) {
-        setIsAuthenticated(true);
-        setUser(response.data);
+      if (!res.data.ok) {
+        throw new Error(res.data.message);
       }
 
-      return response;
+      setUser(res.data.data);
+      setIsAuthenticated(true);
+      return res.data;
     } catch (err) {
-      console.log(err instanceof Error ? `=> ${err.message}` : null);
+      console.error(err instanceof Error ? `=> ${err.message}` : null);
     }
   };
-  const signUp = async (
-    input: BodyInit
-  ): Promise<AuthResponseProps | undefined> => {};
+
+  const signIn = async (input: SignInInputProps) => {
+    try {
+      const res = await axios.post<AuthResponseProps>(
+        `${apiUrl}/auth/login`,
+        input,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (!res.data.ok) {
+        throw new Error(res.data.message);
+      }
+
+      setUser(res.data.data);
+      setIsAuthenticated(true);
+      return res.data;
+    } catch (err) {
+      console.error(err instanceof Error ? `=> ${err.message}` : null);
+    }
+  };
+
+  const signUp = async (input: SignUpInputProps) => {
+    try {
+      const res = await axios.post<AuthResponseProps>(
+        `${apiUrl}/auth/register`,
+        input,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (!res.data.ok) {
+        throw new Error(res.data.message);
+      }
+
+      return res.data;
+    } catch (err) {
+      console.error(err instanceof Error ? `=> ${err.message}` : null);
+    }
+  };
+
   const signOut = async () => {
     try {
-      const res = await fetch(`${apiUrl}/auth/logout`, {
-        credentials: "include",
+      const res = await axios.get<AuthResponseProps>(`${apiUrl}/auth/logout`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
       });
 
-      const response = await res.json();
-
-      if (response.ok) {
-        setUser(undefined);
-        setIsAuthenticated(false);
-        return response;
+      if (!res.data.ok) {
+        throw new Error(res.data.message);
       }
+      setUser(undefined);
+      setIsAuthenticated(false);
+      return res.data;
     } catch (err) {
-      console.log(err instanceof Error ? `=> ${err.message}` : null);
+      console.error(err instanceof Error ? `=> ${err.message}` : null);
     }
   };
 

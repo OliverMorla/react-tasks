@@ -78,6 +78,7 @@ const DashboardSelectedProject = ({
             <p className="font-bold">{title}</p>
           </div>
           <DashboardNewTaskToggles
+            projectId={id}
             showNewTaskModal={showNewTaskModal}
             setShowNewTaskModal={setShowNewTaskModal}
           />
@@ -290,6 +291,7 @@ const DashboardSelectedProject = ({
                 }}
               ></motion.div>
               <NewTaskModal
+                projectId={id}
                 showNewTaskModal={showNewTaskModal}
                 setShowNewTaskModal={setShowNewTaskModal}
               />

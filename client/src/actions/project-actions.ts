@@ -10,7 +10,7 @@ const getProjectsFromUser = async (userId: string) => {
     const { data } = await res.json();
     return data;
   } catch (err) {
-    console.error(err instanceof Error ? `=> ${err.message}` : "Internal error");
+    console.error(err instanceof Error ? `=> ${err.message}` : "=> Internal error");
   }
 };
 

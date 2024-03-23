@@ -16,7 +16,7 @@ const Modal = ({ title, desc, setShowModal, showModal, type }: ModalProps) => {
             <h1 className="mr-0">{title}</h1>
             <Button
               name="exit-modal-button"
-              presetIcon="close"
+              presetIcon="closeCircle"
               className="ml-auto"
               onClick={() => setShowModal(!showModal)}
             />

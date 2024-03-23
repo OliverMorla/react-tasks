@@ -40,7 +40,11 @@ const Dashboard = () => {
   // Fetch Projects from API using React Query
   const { error, data, isLoading } = useQuery({
     queryKey: ["projects"],
-    queryFn: () => getProjectsFromUser(user.id),
+    queryFn: () => {
+      if (user?.id) {
+        return getProjectsFromUser(user.id);
+      }
+    },
   });
 
   useEffect(() => {

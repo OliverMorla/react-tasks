@@ -51,12 +51,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       );
 
-      if (!res.data.ok) {
-        throw new Error(res.data.message);
-      }
-
+      console.log(res)
       setUser(res.data.data);
       setIsAuthenticated(true);
+
       return res.data;
     } catch (err) {
       console.error(err instanceof Error ? `=> ${err.message}` : null);
@@ -72,13 +70,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         }
       );
-
-      if (!res.data.ok) {
-        throw new Error(res.data.message);
-      }
 
       return res.data;
     } catch (err) {

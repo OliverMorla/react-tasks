@@ -15,9 +15,6 @@ const signInUserValidator: ValidationChain[] = [
 
 const signUpUserValidator: ValidationChain[] = [
   body("name").notEmpty().withMessage("Name is required"),
-  body("name")
-    .matches(/ ^[A-Za-z]+$/)
-    .withMessage("Name must contain letters"),
 
   body("email").notEmpty().withMessage("Email is required"),
   body("email").isEmail().withMessage("Invalid email"),

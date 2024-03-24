@@ -1,12 +1,8 @@
 interface AuthContextProps {
   isAuthenticated: boolean;
   user: UserProps | undefined;
-  signIn: (
-    input: SignInInputProps
-  ) => Promise<AuthResponseProps | undefined>;
-  signUp: (
-    input: SignUpInputProps
-  ) => Promise<AuthResponseProps | undefined>;
+  signIn: (input: SignInInputProps) => Promise<AuthResponseProps | undefined>;
+  signUp: (input: SignUpInputProps) => Promise<AuthResponseProps | undefined>;
   signOut: () => Promise<AuthResponseProps | undefined>;
   checkSession?: () => Promise<AuthResponseProps | undefined>;
 }
@@ -22,4 +18,5 @@ interface AuthResponseProps {
   data?: UserProps;
   ok: boolean;
   message: string;
+  errors?: [];
 }

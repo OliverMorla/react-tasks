@@ -26,18 +26,31 @@ const signUp = async (req: Request, res: Response) => {
   }
 
   const { name, email, password } = req.body;
-
+  
   if (!name || !email || !password) {
     return res.status(400).json({
       ok: false,
       message: "All fields are required",
     });
   }
-
+  
   try {
     if (!process.env.HASH_ROUNDS) {
       console.error("=> HASH_ROUNDS does not exist");
       return;
+    }
+    
+    const doesUserExist = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    
+    if (doesUserExist) {
+      return res.status(400).json({
+        ok: false,
+        message: "User already exists",
+      });
     }
 
     bcrypt.genSalt(parseInt(process.env.HASH_ROUNDS), async (err, salt) => {
@@ -112,19 +125,20 @@ const signIn = async (req: Request, res: Response) => {
       return console.error("=> HASH_ROUNDS does not exist");
     }
 
+    
     const user = await prisma.user.findUnique({
       where: {
         email,
       },
     });
-
+    
     if (!user) {
       return res.status(404).json({
         ok: false,
         message: "User not found",
       });
     }
-
+    
     bcrypt.compare(password, user.password, (err, result) => {
       if (err) {
         return res.status(500).json({
@@ -133,40 +147,40 @@ const signIn = async (req: Request, res: Response) => {
           error: err instanceof Error ? err.message : null,
         });
       }
-
+      
       if (!process.env.JWT_SECRET) {
         return console.error("=> Failed to read .env in signIn");
       }
-
+      
       const jwtSecret = process.env.JWT_SECRET;
-
+      
       if (!result) {
-        return res.status(401).json({
+        return res.status(200).json({
           ok: false,
           message: "Wrong password",
         });
       }
-
+      
       const token = jwt.sign(user, jwtSecret, {
         expiresIn: "24h",
       });
 
-        if (!token) {
-          return res.status(500).json({
-            ok: false,
-            message: "Error creating token",
-          });
-        }
-
-        // Send the token in a cookie
-        res.cookie("session", token, {
-          httpOnly: true,
-          sameSite: "strict",
-          secure: process.env.NODE_ENV === "production" ? true : false,
-          path: "/",
-          maxAge: 24 * 60 * 60 * 1000,
-          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      if (!token) {
+        return res.status(500).json({
+          ok: false,
+          message: "Error creating token",
         });
+      }
+
+      // Send the token in a cookie
+      res.cookie("session", token, {
+        httpOnly: true,
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        path: "/",
+        maxAge: 24 * 60 * 60 * 1000,
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      });
 
       return res.status(200).json({
         ok: true,

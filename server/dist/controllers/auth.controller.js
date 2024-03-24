@@ -69,6 +69,17 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             console.error("=> HASH_ROUNDS does not exist");
             return;
         }
+        const doesUserExist = yield prisma_1.default.user.findUnique({
+            where: {
+                email,
+            },
+        });
+        if (doesUserExist) {
+            return res.status(400).json({
+                ok: false,
+                message: "User already exists",
+            });
+        }
         bcryptjs_1.default.genSalt(parseInt(process.env.HASH_ROUNDS), (err, salt) => __awaiter(void 0, void 0, void 0, function* () {
             bcryptjs_1.default.hash(password, salt, (err, hashedPassword) => __awaiter(void 0, void 0, void 0, function* () {
                 if (err) {
@@ -158,7 +169,7 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
             const jwtSecret = process.env.JWT_SECRET;
             if (!result) {
-                return res.status(401).json({
+                return res.status(200).json({
                     ok: false,
                     message: "Wrong password",
                 });

@@ -15,9 +15,6 @@ const signInUserValidator = [
 exports.signInUserValidator = signInUserValidator;
 const signUpUserValidator = [
     (0, express_validator_1.body)("name").notEmpty().withMessage("Name is required"),
-    (0, express_validator_1.body)("name")
-        .matches(/ ^[A-Za-z]+$/)
-        .withMessage("Name must contain letters"),
     (0, express_validator_1.body)("email").notEmpty().withMessage("Email is required"),
     (0, express_validator_1.body)("email").isEmail().withMessage("Invalid email"),
     (0, express_validator_1.body)("password").notEmpty().withMessage("Password is required"),

@@ -1,7 +1,7 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
 import Button from "@/components/shared/ui/Button";
 import useAuth from "@/hooks/useAuth";
-import { motion } from "framer-motion";
-import { useState } from "react";
 
 const Login = () => {
   const { signIn } = useAuth();
@@ -15,10 +15,29 @@ const Login = () => {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    if (loginInput.email === "" || loginInput.password === "") {
+      setError("All fields are required");
+      return;
+    }
+
     const response = await signIn(loginInput);
+
+    console.log(response)
     if (!response?.ok) {
       setError(response?.message);
+      return;
     }
+
+    setLoginInput({
+      email: "",
+      password: "",
+    });
+
+    setError(undefined);
+
+    console.log(response);
+    return;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +47,13 @@ const Login = () => {
     }));
   };
 
+  console.log({
+    loginInput,
+    error,
+  });
+
   return (
-    <form className="flex flex-col gap-4 max-w-[500px] w-full">
+    <form className="flex flex-col w-full gap-4">
       {error && (
         <motion.p
           className="p-2 bg-red-400 font-bold text-white rounded-lg text-center"
@@ -49,14 +73,14 @@ const Login = () => {
         name="email"
         placeholder="Enter your email"
         onChange={handleInputChange}
-        className="flex-grow py-4 px-2 border-b-[1px] border-b-[--color-text-lighter]"
+        className="w-full py-4 px-2 border-b-[1px] border-b-[--color-text-lighter]"
       />
       <input
         type="password"
         name="password"
         placeholder="Enter your password"
         onChange={handleInputChange}
-        className="flex-grow py-4 px-2 border-b-[1px] border-b-[--color-text-lighter]"
+        className="w-full py-4 px-2 border-b-[1px] border-b-[--color-text-lighter]"
       />
       <Button
         type="button"

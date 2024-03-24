@@ -231,6 +231,7 @@ interface SignUpInputProps {
   firstName?: string;
   lastName?: string;
   email: string;
+  name?: string;
   password: string;
   passwordConfirm: string;
 }

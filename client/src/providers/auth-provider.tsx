@@ -32,9 +32,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       setUser(res.data.data);
       setIsAuthenticated(true);
+
       return res.data;
     } catch (err) {
-      console.error(err instanceof Error ? `=> ${err.message}` : null);
+      if (axios.isAxiosError(err)) {
+        return err.response?.data;
+      }
     }
   };
 
@@ -51,13 +54,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       );
 
-      console.log(res)
       setUser(res.data.data);
       setIsAuthenticated(true);
 
       return res.data;
     } catch (err) {
-      console.error(err instanceof Error ? `=> ${err.message}` : null);
+      if (axios.isAxiosError(err)) {
+        return err.response?.data;
+      }
     }
   };
 
@@ -75,7 +79,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       return res.data;
     } catch (err) {
-      console.error(err instanceof Error ? `=> ${err.message}` : null);
+      if (axios.isAxiosError(err)) {
+        return err.response?.data;
+      }
     }
   };
 
@@ -88,14 +94,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         withCredentials: true,
       });
 
-      if (!res.data.ok) {
-        throw new Error(res.data.message);
-      }
       setUser(undefined);
       setIsAuthenticated(false);
+
       return res.data;
     } catch (err) {
-      console.error(err instanceof Error ? `=> ${err.message}` : null);
+      if (axios.isAxiosError(err)) {
+        return err.response?.data;
+      }
     }
   };
 

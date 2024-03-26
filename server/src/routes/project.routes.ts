@@ -23,6 +23,7 @@ const projectRouter = express.Router();
 
 // Route definitions
 projectRouter.get("/:id", getProjectByID); // GET /project/:id - Get a project by ID
+projectRouter.delete("/:id", deleteProject); // DELETE /project/:id - Delete a project by ID
 projectRouter.post("/", createProject); // POST /project - Create a project
 
 // Exporting the projectRouter to be used in the application's main router.

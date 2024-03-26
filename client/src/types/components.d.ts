@@ -135,10 +135,20 @@ interface TaskModalProps {
 
 interface NewProjectModalInputProps {
   title: string;
-  type: string;
-  connections: any[];
-  createdBy: string;
-  createdAt: string;
+  description?: string;
+  readonly status: "InProgress" | "Completed" | "NotStarted";
+  tags?: string[];
+
+  readonly userId?: string;
+  readonly priority: "High" | "Medium" | "Low" | "NotSet";
+  readonly type: "Personal" | "Shared" | "NotSet";
+  readonly privacy: "Public" | "Private" | "NotSet";
+  readonly isArchived: boolean;
+  readonly createdAt: Date | string;
+  readonly dueDate: Date | string;
+
+  readonly connections?: ConnectionProps[];
+  readonly tasks?: TasksProps[];
 }
 
 /* ======== ====== ======== */
@@ -225,6 +235,7 @@ interface LoadingAnimationProps
 interface SignInInputProps {
   email: string;
   password: string;
+  rememberMe?: boolean;
 }
 
 interface SignUpInputProps {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useRef } from "react";
-import { motion, scroll } from "framer-motion";
+import { motion } from "framer-motion";
 
 import useAuth from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
@@ -18,8 +18,11 @@ const NewProjectModal = ({
   // this ref is used to get the scroll container element
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // this useAuth hook is used to get the user data and check if the user is authenticated
+  const { isAuthenticated, user } = useAuth();
+
   // this state is used to store the page number for the available users
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(0);
 
   // this state is used to store the users data that are available for the project
   const [users, setUsers] = useState<UserProps[]>([]);
@@ -27,20 +30,16 @@ const NewProjectModal = ({
   // this state is used to store the input data for the new project
   const [input, setInput] = useState<NewProjectModalInputProps>({
     title: "",
-    type: "public",
+    description: "",
+    type: "NotSet",
+    privacy: "NotSet",
+    priority: "NotSet",
+    status: "NotStarted",
+    isArchived: false,
+    userId: user?.id,
+    dueDate: "",
     connections: [],
-    createdBy: "",
     createdAt: new Date().toLocaleString(),
-  });
-
-  // this useAuth hook is used to get the user data and check if the user is authenticated
-  const { isAuthenticated, user } = useAuth();
-
-  // this useQuery is used to fetch the available users for the project
-  const { isPending, data, error, isLoading } = useQuery<UserProps[]>({
-    queryKey: ["users"],
-    queryFn: () => getUsers(pageNumber),
-    refetchInterval: 1000,
   });
 
   // this function is used to handle the input changes on the form
@@ -50,6 +49,14 @@ const NewProjectModal = ({
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // this useQuery is used to fetch the available users for the project
+  const { isPending, data, error, isLoading } = useQuery<UserProps[]>({
+    queryKey: ["users"],
+    queryFn: () => getUsers(pageNumber),
+    maxPages: 1,
+    refetchInterval: 1000,
+  });
+
   // this useEffect is used to add the users to the users array when the users are fetched
   useEffect(() => {
     if (data) {
@@ -58,43 +65,33 @@ const NewProjectModal = ({
   }, [data]);
 
   // this useEffect is used to observe the scroll event on the scroll container and fetch the next page of users
-  // useEffect(() => {
-  //   const scrollContainer = document.getElementById("scroll-container");
-  //   if (!scrollContainer) return;
+  useEffect(() => {
+    const scrollContainer = document.getElementById("scroll-container");
+    if (!scrollContainer) return;
 
-  //   const handleScroll = () => {
-  //     const isAtEnd =
-  //       scrollContainer.scrollWidth - scrollContainer.scrollLeft ===
-  //       scrollContainer.clientWidth;
+    const handleScroll = () => {
+      const isAtEnd =
+        scrollContainer.scrollWidth - scrollContainer.scrollLeft ===
+        scrollContainer.clientWidth;
 
-  //     if (isAtEnd) {
-  //       setPageNumber((prevPage) => prevPage + 1);
-  //     }
-  //   };
+      if (isAtEnd) {
+        console.log(isAtEnd);
+        setPageNumber((prevPage) => prevPage + 1);
+        console.log(pageNumber);
+      }
+    };
 
-  //   scrollContainer.addEventListener("scroll", handleScroll);
+    scrollContainer.addEventListener("scroll", handleScroll);
 
-  //   return () => scrollContainer.removeEventListener("scroll", handleScroll);
-  // }, []);
-
-  // useEffect(() => {
-  //   scroll(
-  //     (progress) => {
-  //       console.log(progress);
-  //     },
-  //     {
-  //       source: document.getElementById("scroll-container") as HTMLElement,
-  //       axis: "x",
-  //     }
-  //   );
-  // }, []);
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // this function is used to handle the connections that are added to the project and remove them from the available users
-  // const handleInputConnections = (user: any) => {
-  //   if (users.includes(user)) {
-  //     setusers((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
-  //   }
-  // };
+  const handleInputConnections = (user: any) => {
+    if (users.includes(user)) {
+      setUsers((prevUsers) => prevUsers.filter((u) => u.id !== user.id));
+    }
+  };
 
   // if the user is not authenticated and there is no user data, return null
   if (!isAuthenticated && !user) {
@@ -103,21 +100,17 @@ const NewProjectModal = ({
 
   // testing purposes only
   console.log({
-    isAuthenticated,
-    isLoading,
-    isPending,
     data,
     error,
+    isLoading,
+    isPending,
     pageNumber,
-    setPageNumber,
     input,
-    users,
-    scroll,
   });
 
   return (
     <motion.div
-      className="bg-[--color-text-darker] max-w-[500px] flex-1 flex flex-col p-4 gap-4 rounded-lg z-20 text-white items-center"
+      className="bg-[--color-text-darker] max-w-[500px] max-h-[500px] overflow-y-scroll w-full flex flex-col p-4 gap-4 rounded-lg z-20 text-white items-center"
       initial={{
         opacity: 0,
         y: 100,
@@ -151,17 +144,79 @@ const NewProjectModal = ({
           />
         </div>
         <div className="flex flex-col gap-2 w-full">
-          <label htmlFor="type">Type*</label>
+          <label htmlFor="title">Description*</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            className="bg-transparent border-[--color-text-lightest] border-[1px] outline-[--color-primary] p-2 rounded-lg"
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="flex gap-2 w-full">
+          <label htmlFor="title">Archived*</label>
+          <input
+            type="checkbox"
+            id="archived"
+            name="archived"
+            className="bg-transparent border-[--color-text-lightest] border-[1px] outline-[--color-primary] p-2 rounded-lg"
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <label htmlFor="privacy">Priority*</label>
           <select
-            name="users"
+            name="priority"
             onChange={handleInputChange}
             className="text-white bg-transparent border-[--color-text-lightest] border-[1px] p-2 rounded-lg"
           >
-            <option value="public" className="text-black">
+            <option value="NotSet" className="text-black">
+              --- Not Selected ---
+            </option>
+            <option value="Low" className="text-black">
+              Low
+            </option>
+            <option value="Medium" className="text-black">
+              Medium
+            </option>
+            <option value="High" className="text-black">
+              High
+            </option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <label htmlFor="privacy">Privacy*</label>
+          <select
+            name="privacy"
+            onChange={handleInputChange}
+            className="text-white bg-transparent border-[--color-text-lightest] border-[1px] p-2 rounded-lg"
+          >
+            <option value="NotSet" className="text-black">
+              --- Not Selected ---
+            </option>
+            <option value="Public" className="text-black">
               Public
             </option>
-            <option value="private" className="text-black">
+            <option value="Private" className="text-black">
               Private
+            </option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <label htmlFor="type">Type*</label>
+          <select
+            name="type"
+            onChange={handleInputChange}
+            className="text-white bg-transparent border-[--color-text-lightest] border-[1px] p-2 rounded-lg"
+          >
+            <option value="NotSet" className="text-black">
+              --- Not Selected ---
+            </option>
+            <option value="Personal" className="text-black">
+              Personal
+            </option>
+            <option value="Shared" className="text-black">
+              Shared
             </option>
           </select>
         </div>
@@ -187,9 +242,9 @@ const NewProjectModal = ({
                       onClick={() => {
                         setInput((prev) => ({
                           ...prev,
-                          connections: [...prev.connections, user],
+                          connections: [...prev.connections!, user],
                         }));
-                        // handleInputConnections(user);
+                        handleInputConnections(user);
                       }}
                     />
                   ))}
@@ -220,7 +275,15 @@ const NewProjectModal = ({
             readOnly
           />
         </div>
-
+        <div className="flex flex-col gap-2 w-full">
+          <label htmlFor="projectName">Due Date*</label>
+          <input
+            type="datetime-local"
+            name="dueDate"
+            onChange={handleInputChange}
+            className="bg-transparent border-[--color-text-lightest] border-[1px] outline-[--color-primary] p-2 rounded-lg text-white"
+          />
+        </div>
         <Button type="submit" className="self-center" variant="transparent">
           Create Project
         </Button>

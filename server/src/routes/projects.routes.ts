@@ -8,6 +8,7 @@ import {
   deleteProject,
   getProjectByID,
   getProjects,
+  getSharedProjects,
   updateProject,
 } from "../controllers/project.controller";
 

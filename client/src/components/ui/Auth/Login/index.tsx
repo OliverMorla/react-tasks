@@ -6,9 +6,11 @@ import useAuth from "@/hooks/useAuth";
 const Login = () => {
   const { signIn } = useAuth();
 
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [loginInput, setLoginInput] = useState<SignInInputProps>({
     email: "",
     password: "",
+    rememberMe,
   });
 
   const [error, setError] = useState<string | undefined>(undefined);
@@ -21,9 +23,16 @@ const Login = () => {
       return;
     }
 
+    if (rememberMe) {
+      localStorage.setItem("rememberMe", String(rememberMe));
+      localStorage.setItem("email", loginInput.email);
+    } else {
+      localStorage.removeItem("rememberMe");
+      localStorage.removeItem("email");
+    }
+
     const response = await signIn(loginInput);
 
-    console.log(response)
     if (!response?.ok) {
       setError(response?.message);
       return;
@@ -36,7 +45,6 @@ const Login = () => {
 
     setError(undefined);
 
-    console.log(response);
     return;
   };
 
@@ -47,9 +55,19 @@ const Login = () => {
     }));
   };
 
+  const handleCheckboxChange = () => {
+    setLoginInput((prevState) => ({
+      ...prevState,
+      rememberMe: !rememberMe,
+    }));
+
+    setRememberMe(!rememberMe);
+  };
+
   console.log({
-    loginInput,
+    input: loginInput,
     error,
+    rememberMe,
   });
 
   return (
@@ -90,6 +108,16 @@ const Login = () => {
       >
         Login
       </Button>
+      <div className="flex items-center justify-center gap-2 opacity-60">
+        <input
+          type="checkbox"
+          name="rememberPassword"
+          onChange={handleCheckboxChange}
+          checked={rememberMe}
+          className="cursor-pointer"
+        />
+        <label htmlFor="rememberPassword">Remember Credentials</label>
+      </div>
     </form>
   );
 };

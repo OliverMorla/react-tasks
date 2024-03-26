@@ -1,7 +1,7 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
 import Button from "@/components/shared/ui/Button";
 import useAuth from "@/hooks/useAuth";
-import { motion } from "framer-motion";
-import { useState } from "react";
 
 const Register = () => {
   const { signUp } = useAuth();
@@ -42,7 +42,6 @@ const Register = () => {
       registerInput.passwordConfirm === ""
     ) {
       setError("All fields are required");
-
       return;
     }
 
@@ -65,8 +64,9 @@ const Register = () => {
       });
 
       setMessage(response.message);
-
       return;
+    } else {
+      setError("Passwords don't match");
     }
   };
 

@@ -12,7 +12,7 @@ import prisma from "../lib/prisma";
  * @param res Express response object for sending back the projects or error messages.
  */
 const getProjects = async (req: Request, res: Response) => {
-  const { page, limit, embed, include } = req.query;
+  const { page, limit, embed, include, shared } = req.query;
   let whereFilter: WhereFilterProps = {};
 
   // Build the filter object from query parameters, excluding reserved options.
@@ -23,6 +23,67 @@ const getProjects = async (req: Request, res: Response) => {
   });
 
   try {
+    if (shared) {
+      const projects = await prisma.project.findMany({
+        where: {
+          connections: {
+            some: {
+              userId: shared as string,
+            },
+          },
+        },
+        include: {
+          tasks: (embed === "tasks" && !include) || include === "all",
+          connections:
+            (embed === "connections" && !include) || include === "all"
+              ? {
+                  include: {
+                    user: {
+                      select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        photoUrl: true,
+                        role: true,
+                      },
+                    },
+                  },
+                }
+              : false,
+          user:
+            (embed === "user" && !include) || include === "all"
+              ? {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    photoUrl: true,
+                    role: true,
+                  },
+                }
+              : false,
+        },
+        skip: page ? parseInt(page as string) * 10 : 0, // Pagination offset calculation.
+        take: limit ? parseInt(limit as string) : 10, // Number of items to retrieve.
+      });
+
+      if (projects.length === 0) {
+        return res.status(404).json({
+          ok: false,
+          message: "No projects found",
+        });
+      }
+
+      // Successful retrieval
+      if (projects) {
+        return res.status(200).json({
+          ok: true,
+          message: "Projects retrieved successfully",
+          data: projects,
+        });
+      }
+    }
+
     const projects = await prisma.project.findMany({
       where: Object.keys(whereFilter).length > 0 ? whereFilter : {},
       include: {
@@ -56,7 +117,16 @@ const getProjects = async (req: Request, res: Response) => {
               }
             : false,
       },
+      skip: page ? parseInt(page as string) * 10 : 0, // Pagination offset calculation.
+      take: limit ? parseInt(limit as string) : 10, // Number of items to retrieve.
     });
+
+    if (projects.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        message: "No projects found",
+      });
+    }
 
     // Successful retrieval
     if (projects) {
@@ -110,6 +180,59 @@ const getProjectByID = async (req: Request, res: Response) => {
   }
 };
 
+const getSharedProjects = async (req: Request, res: Response) => {
+  const { page, limit, embed, include } = req.query;
+  let whereFilter: WhereFilterProps = {};
+
+  // Build the filter object from query parameters, excluding reserved options.
+  Object.entries(req.query).forEach(([key, value]) => {
+    if (!queryOptions.includes(key)) {
+      whereFilter[key] = value as WhereFilterValue;
+    }
+  });
+
+  try {
+    const projects = await prisma.project.findMany({
+      where: {
+        connections: {
+          some: {
+            userId: "ead8ded3-a66a-4dc2-a63a-7e028db1bd35",
+          },
+        },
+      },
+
+      include: {
+        connections: true,
+      },
+
+      skip: page ? parseInt(page as string) * 10 : 0, // Pagination offset calculation.
+      take: limit ? parseInt(limit as string) : 10, // Number of items to retrieve.
+    });
+
+    if (projects.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        message: "No projects found",
+      });
+    }
+
+    // Successful retrieval
+    if (projects) {
+      return res.status(200).json({
+        ok: true,
+        message: "Projects retrieved successfully",
+        data: projects,
+      });
+    }
+  } catch (err) {
+    // Error handling
+    return res.status(500).json({
+      error: err instanceof Error ? err.message : null,
+      message: "Error retrieving projects",
+    });
+  }
+};
+
 const createProject = async (req: Request, res: Response) => {};
 const updateProject = async (req: Request, res: Response) => {};
 const deleteProject = async (req: Request, res: Response) => {};
@@ -117,6 +240,7 @@ const deleteProject = async (req: Request, res: Response) => {};
 export {
   getProjects,
   getProjectByID,
+  getSharedProjects,
   createProject,
   updateProject,
   deleteProject,

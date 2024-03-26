@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
@@ -13,7 +14,10 @@ import LoadingAnimation from "@/components/ui/Loading";
 import Button from "@/components/shared/ui/Button";
 
 // Actions
-import { getProjectsFromUser } from "@/actions/project-actions";
+import {
+  getProjectsFromUser,
+  getSharedProjectsFromUser,
+} from "@/actions/project-actions";
 import { setProjects } from "@/redux/slices/project-slice";
 
 // Hooks
@@ -37,7 +41,11 @@ const Dashboard = () => {
   // Session User
   const { user } = useAuth();
 
-  console.log(user)
+  if (!user) {
+    return null;
+  }
+
+  console.log(user);
 
   // const { data: session } = useQuery({
   //   queryKey: ["projects", user?.id],
@@ -54,6 +62,11 @@ const Dashboard = () => {
         return getProjectsFromUser(user.id);
       }
     },
+  });
+
+  const { data: sharedProjects } = useQuery<ProjectProps[]>({
+    queryKey: ["sharedProjects", user?.id],
+    queryFn: () => getSharedProjectsFromUser(user.id),
   });
 
   useEffect(() => {
@@ -107,7 +120,32 @@ const Dashboard = () => {
             <div className="flex gap-4 w-full overflow-x-scroll p-4">
               {isLoading && !error && <LoadingAnimation />}
               {projects &&
-                projects.map((project, index) => (
+                projects.map((project: ProjectProps, index) => (
+                  <ProjectCard
+                    key={index}
+                    id={project.id}
+                    title={project.title}
+                    tasks={project.tasks}
+                    connections={project.connections}
+                    type={project.type}
+                    description={project.description}
+                    dueDate={project.dueDate}
+                    createdAt={project.createdAt}
+                    priority={project.priority}
+                    tags={project.tags}
+                    privacy={project.privacy}
+                    status={project.status}
+                    onClick={() => setSelectedProject(project)}
+                  />
+                ))}
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 w-[90%]">
+            <h1 className="font-bold text-2xl">Shared projects</h1>
+            <div className="flex gap-4 w-full overflow-x-scroll p-4">
+              {isLoading && !error && <LoadingAnimation />}
+              {sharedProjects &&
+                sharedProjects.map((project, index) => (
                   <ProjectCard
                     key={index}
                     id={project.id}

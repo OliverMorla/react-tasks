@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 
 export const AuthContext = createContext<AuthContextProps | null>(null);
 

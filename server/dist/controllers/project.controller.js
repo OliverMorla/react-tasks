@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProject = exports.updateProject = exports.createProject = exports.getProjectByID = exports.getProjects = void 0;
+exports.deleteProject = exports.updateProject = exports.createProject = exports.getSharedProjects = exports.getProjectByID = exports.getProjects = void 0;
 const entities_1 = require("../entities");
 const prisma_1 = __importDefault(require("../lib/prisma"));
 /**
@@ -24,7 +24,7 @@ const prisma_1 = __importDefault(require("../lib/prisma"));
  * @param res Express response object for sending back the projects or error messages.
  */
 const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { page, limit, embed, include } = req.query;
+    const { page, limit, embed, include, shared } = req.query;
     let whereFilter = {};
     // Build the filter object from query parameters, excluding reserved options.
     Object.entries(req.query).forEach(([key, value]) => {
@@ -33,6 +33,62 @@ const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
     });
     try {
+        if (shared) {
+            const projects = yield prisma_1.default.project.findMany({
+                where: {
+                    connections: {
+                        some: {
+                            userId: shared,
+                        },
+                    },
+                },
+                include: {
+                    tasks: (embed === "tasks" && !include) || include === "all",
+                    connections: (embed === "connections" && !include) || include === "all"
+                        ? {
+                            include: {
+                                user: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        email: true,
+                                        photoUrl: true,
+                                        role: true,
+                                    },
+                                },
+                            },
+                        }
+                        : false,
+                    user: (embed === "user" && !include) || include === "all"
+                        ? {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                                photoUrl: true,
+                                role: true,
+                            },
+                        }
+                        : false,
+                },
+                skip: page ? parseInt(page) * 10 : 0, // Pagination offset calculation.
+                take: limit ? parseInt(limit) : 10, // Number of items to retrieve.
+            });
+            if (projects.length === 0) {
+                return res.status(404).json({
+                    ok: false,
+                    message: "No projects found",
+                });
+            }
+            // Successful retrieval
+            if (projects) {
+                return res.status(200).json({
+                    ok: true,
+                    message: "Projects retrieved successfully",
+                    data: projects,
+                });
+            }
+        }
         const projects = yield prisma_1.default.project.findMany({
             where: Object.keys(whereFilter).length > 0 ? whereFilter : {},
             include: {
@@ -64,7 +120,15 @@ const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                     }
                     : false,
             },
+            skip: page ? parseInt(page) * 10 : 0, // Pagination offset calculation.
+            take: limit ? parseInt(limit) : 10, // Number of items to retrieve.
         });
+        if (projects.length === 0) {
+            return res.status(404).json({
+                ok: false,
+                message: "No projects found",
+            });
+        }
         // Successful retrieval
         if (projects) {
             return res.status(200).json({
@@ -117,6 +181,54 @@ const getProjectByID = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getProjectByID = getProjectByID;
+const getSharedProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { page, limit, embed, include } = req.query;
+    let whereFilter = {};
+    // Build the filter object from query parameters, excluding reserved options.
+    Object.entries(req.query).forEach(([key, value]) => {
+        if (!entities_1.queryOptions.includes(key)) {
+            whereFilter[key] = value;
+        }
+    });
+    try {
+        const projects = yield prisma_1.default.project.findMany({
+            where: {
+                connections: {
+                    some: {
+                        userId: "ead8ded3-a66a-4dc2-a63a-7e028db1bd35",
+                    },
+                },
+            },
+            include: {
+                connections: true,
+            },
+            skip: page ? parseInt(page) * 10 : 0, // Pagination offset calculation.
+            take: limit ? parseInt(limit) : 10, // Number of items to retrieve.
+        });
+        if (projects.length === 0) {
+            return res.status(404).json({
+                ok: false,
+                message: "No projects found",
+            });
+        }
+        // Successful retrieval
+        if (projects) {
+            return res.status(200).json({
+                ok: true,
+                message: "Projects retrieved successfully",
+                data: projects,
+            });
+        }
+    }
+    catch (err) {
+        // Error handling
+        return res.status(500).json({
+            error: err instanceof Error ? err.message : null,
+            message: "Error retrieving projects",
+        });
+    }
+});
+exports.getSharedProjects = getSharedProjects;
 const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.createProject = createProject;
 const updateProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });

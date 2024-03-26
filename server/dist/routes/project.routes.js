@@ -41,6 +41,7 @@ dotenv.config({
 const projectRouter = express_1.default.Router();
 // Route definitions
 projectRouter.get("/:id", project_controller_1.getProjectByID); // GET /project/:id - Get a project by ID
+projectRouter.delete("/:id", project_controller_1.deleteProject); // DELETE /project/:id - Delete a project by ID
 projectRouter.post("/", project_controller_1.createProject); // POST /project - Create a project
 // Exporting the projectRouter to be used in the application's main router.
 // This modularization enhances scalability and separation of concerns.

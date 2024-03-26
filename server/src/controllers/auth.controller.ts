@@ -175,7 +175,7 @@ const signIn = async (req: Request, res: Response) => {
       // Send the token in a cookie
       res.cookie("session", token, {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production" ? true : false,
         path: "/",
         maxAge: 24 * 60 * 60 * 1000,

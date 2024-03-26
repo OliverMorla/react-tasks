@@ -66,8 +66,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     try {
         if (!process.env.HASH_ROUNDS) {
-            console.error("=> HASH_ROUNDS does not exist");
-            return;
+            throw new Error("Missing required environment variable: HASH_ROUNDS");
         }
         const doesUserExist = yield prisma_1.default.user.findUnique({
             where: {
@@ -75,7 +74,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             },
         });
         if (doesUserExist) {
-            return res.status(400).json({
+            return res.status(409).json({
                 ok: false,
                 message: "User already exists",
             });
@@ -110,9 +109,11 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }));
     }
     catch (err) {
+        console.error(err instanceof Error ? err.message : null);
         return res.status(500).json({
+            ok: false,
             message: "Error creating user",
-            error: err instanceof Error ? err.message : null,
+            error: "An unexpected error occurred",
         });
     }
 });
@@ -143,7 +144,7 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     try {
         if (!process.env.HASH_ROUNDS) {
-            return console.error("=> HASH_ROUNDS does not exist");
+            throw new Error("Missing required environment variable: HASH_ROUNDS");
         }
         const user = yield prisma_1.default.user.findUnique({
             where: {
@@ -165,11 +166,11 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 });
             }
             if (!process.env.JWT_SECRET) {
-                return console.error("=> Failed to read .env in signIn");
+                throw new Error("Missing required environment variable: JWT_SECRET");
             }
             const jwtSecret = process.env.JWT_SECRET;
             if (!result) {
-                return res.status(200).json({
+                return res.status(401).json({
                     ok: false,
                     message: "Wrong password",
                 });
@@ -199,7 +200,9 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (err) {
+        console.error(err instanceof Error ? err.message : null);
         return res.status(500).json({
+            ok: false,
             message: "Error logging in",
             error: err instanceof Error ? err.message : null,
         });

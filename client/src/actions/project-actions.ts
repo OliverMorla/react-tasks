@@ -6,7 +6,7 @@ if (!apiUrl) {
 
 const getProjectsFromUser = async (userId: string) => {
   try {
-    const res = await fetch(`${apiUrl}/projects?userId=${userId}`);
+    const res = await fetch(`${apiUrl}/projects?userId=${userId}&include=all`);
     const { data } = await res.json();
     return data;
   } catch (err) {

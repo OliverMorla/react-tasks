@@ -22,11 +22,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <TaskProvider>
+          <TaskProvider>
+            <AuthProvider>
               <App />
-            </TaskProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </TaskProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </BrowserRouter>

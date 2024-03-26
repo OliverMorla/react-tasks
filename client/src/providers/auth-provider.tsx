@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useEffect, useState } from "react";
-import { useLocation } from "react-router";
 import axios from "axios";
+import { useLocation } from "react-router";
 
 export const AuthContext = createContext<AuthContextProps | null>(null);
 
@@ -12,10 +13,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.error("=> Failed to read .env for AuthProvider");
   }
 
-  const location = useLocation();
-
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<UserProps | undefined>(undefined);
+
+  // const location = useLocation();
 
   const checkSession = async () => {
     try {
@@ -26,20 +27,19 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         withCredentials: true,
       });
 
-      if (!res.data.ok) {
-        throw new Error(res.data.message);
-      }
-
       setUser(res.data.data);
       setIsAuthenticated(true);
 
       return res.data;
     } catch (err) {
+      setIsAuthenticated(false);
+      setUser(undefined); 
       if (axios.isAxiosError(err)) {
         return err.response?.data;
       }
     }
   };
+
 
   const signIn = async (input: SignInInputProps) => {
     try {
@@ -56,6 +56,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       setUser(res.data.data);
       setIsAuthenticated(true);
+
+      await checkSession();
 
       return res.data;
     } catch (err) {
@@ -106,10 +108,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    checkSession();
-    console.log("=> Checking if user session exist...");
-    console.log({ isAuthenticated, user });
-  }, [location.pathname]);
+    checkSession()
+  }, []);
 
   const value = {
     isAuthenticated,

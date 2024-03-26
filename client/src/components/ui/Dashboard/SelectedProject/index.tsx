@@ -41,7 +41,7 @@ const DashboardSelectedProject = ({
 
   // Fetch Projects from API using React Query
   const { error, data, isLoading } = useQuery({
-    queryKey: ["projects"],
+    queryKey: ["tasks", id],
     queryFn: () => getTasksFromProject(id),
   });
   useEffect(() => {
@@ -49,6 +49,8 @@ const DashboardSelectedProject = ({
       setTasks(data);
     }
   }, [data]);
+
+  console.log(data)
 
   console.log({
     title,

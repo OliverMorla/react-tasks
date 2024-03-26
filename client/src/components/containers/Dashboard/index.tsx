@@ -37,9 +37,18 @@ const Dashboard = () => {
   // Session User
   const { user } = useAuth();
 
+  console.log(user)
+
+  // const { data: session } = useQuery({
+  //   queryKey: ["projects", user?.id],
+  //   queryFn: () => {
+  //     return fetch("/api/auth/session").then((res) => res.json());
+  //   },
+  // });
+
   // Fetch Projects from API using React Query
   const { error, data, isLoading } = useQuery({
-    queryKey: ["projects"],
+    queryKey: ["projects", user?.id],
     queryFn: () => {
       if (user?.id) {
         return getProjectsFromUser(user.id);

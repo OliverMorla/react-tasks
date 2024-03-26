@@ -6,7 +6,7 @@ if (!apiUrl) {
 
 const getTasksFromProject = async (projectId: string) => {
   try {
-    const res = await fetch(`${apiUrl}/tasks?projectId=${projectId}`);
+    const res = await fetch(`${apiUrl}/tasks?projectId=${projectId}&include=all`);
     const { data } = await res.json();
     return data;
   } catch (err) {
@@ -16,7 +16,7 @@ const getTasksFromProject = async (projectId: string) => {
 
 const getTasksByID = async (taskId: string) => {
   try {
-    const res = await fetch(`${apiUrl}/tasks?id=${taskId}`);
+    const res = await fetch(`${apiUrl}/tasks?id=${taskId}&include=all`);
     const { data } = await res.json();
     return data[0];
   } catch (err) {
